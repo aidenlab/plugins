@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "juicebot": {
+      "type": "http",
+      "url": "https://juicebox-mcp-v2.aidenlab.workers.dev/mcp"
+    }
+  }
+}
