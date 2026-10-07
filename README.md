@@ -14,25 +14,22 @@ Paste this into Claude Code, Cowork, claude.ai, Codex or ChatGPT:
 Set up Juicebot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.
 ```
 
-The assistant reads [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md), works out which app it is in, installs what it can itself, walks you through the one or two clicks it cannot do, then opens Juicebox, loads a GM12878 map at HOXA and adds a gene track so you can see it working. If the short link is down, use `https://raw.githubusercontent.com/aidenlab/plugins/main/INSTALL-PROMPT.md` instead.
+The assistant reads [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md), works out which app it is in, installs what it can itself (Claude Code, Codex), walks you through the three clicks it cannot do (Claude's account-level plugin page, ChatGPT's custom MCP server), then hands you the first message for a new chat: Juicebox opens, loads a GM12878 map at HOXA and adds a gene track so you can see it working. If the short link is down, use `https://raw.githubusercontent.com/aidenlab/plugins/main/INSTALL-PROMPT.md` instead.
 
 ## Manual install
 
-Juicebot has two halves: the **MCP server** (the tools) and the **skill** (how the assistant uses them). The server also sends its core workflow to every client on connect, so tools alone are enough to work; the plugin adds the fuller skill.
+Juicebot has two halves: the **MCP server** (the tools) and the **skill** (how the assistant uses them). The server sends its core workflow to every client on connect, so tools alone are enough to work; the plugin adds the fuller skill.
 
-| App | Tools | Skill |
-|---|---|---|
-| Claude Code | plugin (bundled) or claude.ai connector | plugin |
-| Cowork / Claude desktop | claude.ai connector | plugin |
-| claude.ai chat | claude.ai connector | — |
-| Codex | plugin (bundled) | plugin |
-| ChatGPT | custom MCP server | — |
+**Claude — web, desktop Chat, Cowork (one account-level setup, three clicks).** Plugins and marketplaces live on your Claude account and follow you to every surface, Claude Code included.
 
-**Claude Code** — in a session: `/plugin install juicebot --marketplace aidenlab/plugins`, then `/reload-plugins`. From a terminal: `claude plugin install juicebot --marketplace aidenlab/plugins` (applies to the next session).
+1. Open **https://claude.ai/new#settings/customize-plugins** (or **Customize → Plugins** in the app; in Cowork open the Cowork tab first).
+2. **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`.
+3. **Discover → Juicebot → Add.**
+4. **Customize → Connectors** → enable **juicebot**. If it isn't listed, **Settings → Connectors → Add custom connector**, name `Juicebot`, URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
 
-**Cowork / Claude desktop app** — Cowork does not start plugin MCP servers, so add the server as a connector: **Settings → Connectors → Add custom connector**, name `Juicebot`, URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, no auth (on Team/Enterprise an admin adds it once as an organization connector; it then also appears in everyone's Claude Code). For the skill: **Cowork tab → Customize → Plugins → Add → Add marketplace → Add from a repository → `aidenlab/plugins` → Discover → Juicebot → Add**, or upload [`juicebot.plugin`](../../releases/latest) via **Add → Upload plugin**.
+Start a new conversation and the tools are there. Paid plans only (Pro, Max, Team, Enterprise).
 
-**claude.ai chat** — the connector above; no plugin.
+**Claude Code** — picks up the account install above on next start (`/login` forces it). Standalone: `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; from a terminal `claude plugin install juicebot --marketplace aidenlab/plugins`. The plugin bundles the server.
 
 **Codex** — `codex plugin marketplace add aidenlab/plugins`, then `codex plugin add juicebot@aidenlab`. `codex mcp list` shows the `juicebot` server; start a new chat.
 
@@ -48,12 +45,12 @@ You get a join link. Open it in a browser tab: the map loads, the view jumps to 
 
 ## Directory listing (one-click install, no marketplace)
 
-Plugins listed in Anthropic's community directory appear in Cowork's **Discover** tab and in the claude.ai plugin catalog, so any Cowork session can offer an install card and nobody has to add a marketplace. Submit at [claude.ai/admin-settings/directory/submissions/plugins/new](https://claude.ai/admin-settings/directory/submissions/plugins/new) (Team/Enterprise owner) or [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit); run `claude plugin validate ./plugins/juicebot` first. ChatGPT has the equivalent "With MCP" submission for the remote server. Until listed, the one-line prompt builds and sends the `.plugin` file instead.
+Plugins listed in Anthropic's community directory appear in Cowork's **Discover** tab and in the claude.ai plugin catalog, so any Cowork session can offer an install card and nobody has to add a marketplace. Submit at [claude.ai/admin-settings/directory/submissions/plugins/new](https://claude.ai/admin-settings/directory/submissions/plugins/new) (Team/Enterprise owner) or [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit); run `claude plugin validate ./plugins/juicebot` first. ChatGPT has the equivalent "With MCP" submission for the remote server. Until listed, users add the `aidenlab/plugins` marketplace once as above.
 
 ## For the whole organization (admins)
 
 1. **Connector:** add `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp` as an organization connector (Claude Team/Enterprise; ChatGPT workspace admins can publish the plugin to the workspace). Members get the tools with no setup.
-2. **Plugin:** Claude: Organization settings → Plugins & skills → Marketplaces → Add plugins → Sync from GitHub (needs a *private or internal* mirror with the Claude GitHub App) or upload `juicebot.plugin` as a ZIP. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
+2. **Plugin:** Claude: Organization settings → Plugins & skills → Marketplaces → Add plugins → Sync from GitHub (needs a *private or internal* mirror with the Claude GitHub App) or upload the release's `juicebot.plugin` as a ZIP. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 
 ## Layout and maintenance
 
