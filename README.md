@@ -4,7 +4,7 @@ Plugins from [the Aiden Lab](https://aidenlab.org) for Claude, ChatGPT and Codex
 
 | Plugin | What it does |
 |---|---|
-| [`juicebot`](plugins/juicebot) | Drive the [Juicebox](https://aidenlab.org/juicebox/) Hi-C contact-map viewer by chatting: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Hosted MCP server, nothing runs locally. |
+| [`juicebot`](plugins/juicebot) | Drive the [Juicebox](https://aidenlab.org/juicebox/) Hi-C contact-map viewer by chatting: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Hosted MCP server, nothing runs locally. The skill bundles a dependency-free CLI (Python or Node) that calls the same server over HTTPS, so it works in Claude Code, Cowork and Codex even when the MCP connector is not set up. |
 
 ## Install Juicebot: paste one line
 
@@ -19,6 +19,8 @@ The assistant reads [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md), works out which ap
 ## Manual install
 
 Juicebot has two halves: the **MCP server** (the tools) and the **skill** (how the assistant uses them). The server sends its core workflow to every client on connect, so tools alone are enough to work; the plugin adds the fuller skill.
+
+With the plugin installed but no connector, the skill falls back to `skills/juicebot/scripts/juicebot.py` (or `.mjs`): the same tools by name over plain HTTPS, several per shell call (`call load_map '{…}' load_track '{"url":"genes"}'`). Only the viewer must be a real browser.
 
 **Claude — web, desktop Chat, Cowork (one account-level setup).** Plugins and marketplaces live on your Claude account and follow you to every surface, Claude Code included.
 
@@ -61,6 +63,8 @@ plugins/juicebot/
   plugin.json                       portable Agent Plugins manifest (ChatGPT/Codex)
   mcp.json                          portable MCP server (type: streamable-http)
   skills/juicebot/SKILL.md          the skill, shared by all
+  skills/juicebot/scripts/          juicebot.py / juicebot.mjs: the connector-free CLI
+  skills/juicebot/references/       tools.md (generated from tools/list), cli.md
 INSTALL-PROMPT.md                   what the one-line prompt fetches
 install-worker/                     Cloudflare Worker serving it at juicebot-install.3dg.io
 scripts/package.sh                  builds dist/juicebot.plugin
@@ -69,6 +73,8 @@ scripts/package.sh                  builds dist/juicebot.plugin
 - Change the server URL in both `plugins/juicebot/.mcp.json` and `plugins/juicebot/mcp.json`.
 - Bump `version` in all four manifests when anything changes; users on an older version stay there until they update (`/plugin marketplace update aidenlab` + `/plugin update juicebot@aidenlab` in Claude Code; `codex plugin marketplace upgrade aidenlab` in Codex).
 - Validate: `claude plugin validate . && claude plugin validate ./plugins/juicebot`; `codex plugin marketplace add ./ && codex plugin add juicebot@aidenlab`.
+- CLI smoke test against the live server: `scripts/test-cli.sh`. Regenerate `references/tools.md` after a tool change (it mirrors `tools/list`).
+- The MCP server will move to a `3dg.io` hostname; the CLIs already try `juicebot-mcp.3dg.io` before the demo worker, so only the four manifests and `INSTALL-PROMPT.md` need the new URL (`grep -rl workers.dev`).
 - Tagging `v*` runs the release workflow, which attaches `juicebot.plugin` to the GitHub release.
 
 Server source: [weiszd/juicebox-mcp](https://github.com/weiszd/juicebox-mcp). License: MIT.

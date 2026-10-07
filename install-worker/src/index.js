@@ -12,6 +12,7 @@
  *   GET /            the markdown (text/markdown; text/html wrapper for browsers)
  *   GET /raw         always text/plain
  *   GET /<path>      any other file from the repo's default branch, e.g. /README.md
+ *   GET /juicebot.py, /juicebot.mjs   the CLI scripts from the plugin's skill
  *   GET /plugin      302 to the latest juicebot.plugin release asset
  *   GET /plugins     302 to the claude.ai plugins settings page (an external link opens
  *                    in a new tab on claude.ai web, keeping the chat in place)
@@ -71,7 +72,10 @@ export default {
       return Response.redirect(`https://github.com/${REPO}/releases/latest/download/juicebot.plugin`, 302);
     }
 
-    const path = url.pathname === '/' || url.pathname === '/raw' ? DOC : url.pathname.slice(1);
+    const SCRIPTS = 'plugins/juicebot/skills/juicebot/scripts/';
+    const path = url.pathname === '/' || url.pathname === '/raw' ? DOC
+      : /^\/juicebot\.(py|mjs)$/.test(url.pathname) ? SCRIPTS + url.pathname.slice(1)
+      : url.pathname.slice(1);
     if (path.includes('..') || path.startsWith('.git/')) return new Response('Not found\n', { status: 404 });
 
     const body = await fromGitHub(path, request);
