@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "juicebot": {
+      "type": "streamable-http",
+      "url": "https://juicebox-mcp-v2.aidenlab.workers.dev/mcp"
+    }
+  }
+}

@@ -6,14 +6,13 @@ Server source and tool reference: [weiszd/juicebox-mcp](https://github.com/weisz
 
 ## Install
 
-See the [marketplace README](../../README.md) for all clients. Quickest, in Claude Code:
+Paste into Claude Code, Cowork, claude.ai, Codex or ChatGPT:
 
 ```
-/plugin install juicebot --marketplace aidenlab/plugins
-/reload-plugins
+Set up Juicebot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.
 ```
 
-In Cowork and claude.ai the tools come from a connector (Settings → Connectors → Add custom connector → `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`); the plugin adds the skill.
+Manual paths for every client are in the [marketplace README](../../README.md). Quickest by hand: Claude Code `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins` then `codex plugin add juicebot@aidenlab`; Cowork, claude.ai and ChatGPT add `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp` as a connector / custom MCP server.
 
 ## Try it
 

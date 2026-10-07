@@ -1,0 +1,12 @@
+name = "juicebot-install"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Deploy from a machine logged in with `wrangler login` on the account that
+# owns the 3dg.io zone:   cd install-worker && npx wrangler deploy
+# Wrangler attaches the custom domain and creates its DNS record.
+routes = [
+  { pattern = "juicebot-install.3dg.io", custom_domain = true },
+]
+workers_dev = false
+preview_urls = false

@@ -11,8 +11,11 @@
   "plugins": [
     {
       "name": "juicebot",
-      "source": "./plugins/juicebot",
-      "description": "Drive the Juicebox Hi-C contact-map viewer from Claude: search ENCODE/4DN maps, load maps and tracks, navigate loci, and share sessions.",
+      "source": {
+        "source": "local",
+        "path": "./plugins/juicebot"
+      },
+      "description": "Drive the Juicebox Hi-C contact-map viewer from Claude, ChatGPT or Codex: search ENCODE/4DN maps, load maps and tracks, navigate loci, and share sessions.",
       "version": "1.1.0",
       "category": "science",
       "keywords": ["hi-c", "juicebox", "genomics", "3d-genome", "encode", "4dn"],
