@@ -33,15 +33,15 @@ No authentication. Connectors added in claude.ai are available in Cowork and are
 **Claude Code** — one line, in a session:
 
 ```
-/plugin install juicebot --marketplace aidenlab/claude-plugins
+/plugin install juicebot --marketplace aidenlab/plugins
 ```
 
-then `/reload-plugins` so the new plugin's skill and server attach to the running session (a fresh session picks them up by itself). From a terminal instead: `claude plugin install juicebot --marketplace aidenlab/claude-plugins`, which applies to the next session. Two-step equivalent: `/plugin marketplace add aidenlab/claude-plugins`, then `/plugin install juicebot@aidenlab`.
+then `/reload-plugins` so the new plugin's skill and server attach to the running session (a fresh session picks them up by itself). From a terminal instead: `claude plugin install juicebot --marketplace aidenlab/plugins`, which applies to the next session. Two-step equivalent: `/plugin marketplace add aidenlab/plugins`, then `/plugin install juicebot@aidenlab`.
 
 **Cowork / Claude desktop app**
 
 1. Open the **Cowork** tab, then **Customize** in the left sidebar → **Plugins**.
-2. **Add** → **Add marketplace** → **Add from a repository** → enter `aidenlab/claude-plugins`.
+2. **Add** → **Add marketplace** → **Add from a repository** → enter `aidenlab/plugins`.
 3. Open **Discover**, pick **Juicebot**, click **Add**.
 
 No marketplace? Download [`juicebot.plugin`](../../releases/latest) from the latest release and use **Customize → Plugins → Add → Upload plugin**. Plugins installed here sync to Claude Code when you sign in with the same Claude account.

@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Claude plugins from the Aiden Lab: Hi-C / 3D genome tooling.",
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "plugins": [
     {
       "name": "juicebot",
       "source": "./plugins/juicebot",
       "description": "Drive the Juicebox Hi-C contact-map viewer from Claude: search ENCODE/4DN maps, load maps and tracks, navigate loci, and share sessions.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "category": "science",
       "keywords": ["hi-c", "juicebox", "genomics", "3d-genome", "encode", "4dn"],
       "homepage": "https://github.com/weiszd/juicebox-mcp"

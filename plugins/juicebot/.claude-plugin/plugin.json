@@ -1,14 +1,14 @@
 {
   "name": "juicebot",
   "displayName": "Juicebot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "AI control of the Juicebox Hi-C contact-map viewer: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
   "author": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"
   },
   "homepage": "https://github.com/weiszd/juicebox-mcp",
-  "repository": "https://github.com/aidenlab/claude-plugins",
+  "repository": "https://github.com/aidenlab/plugins",
   "license": "MIT",
   "keywords": ["hi-c", "juicebox", "genomics", "3d-genome", "chromatin", "encode", "4dn", "mcp"],
   "mcpServers": "./.mcp.json"

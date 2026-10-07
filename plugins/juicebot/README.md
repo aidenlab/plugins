@@ -9,7 +9,7 @@ Server source and tool reference: [weiszd/juicebox-mcp](https://github.com/weisz
 See the [marketplace README](../../README.md) for all clients. Quickest, in Claude Code:
 
 ```
-/plugin install juicebot --marketplace aidenlab/claude-plugins
+/plugin install juicebot --marketplace aidenlab/plugins
 /reload-plugins
 ```
 
