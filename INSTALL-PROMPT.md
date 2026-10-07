@@ -27,7 +27,7 @@ Decide from your own environment; ask the user only if you cannot tell.
 1. Check `claude plugin list` for `juicebot@aidenlab`. If present and enabled, skip to verification.
 2. Run `claude plugin install juicebot --marketplace aidenlab/plugins`. If that flag is unsupported, run `claude plugin marketplace add aidenlab/plugins` then `claude plugin install juicebot@aidenlab`.
 3. Confirm with `claude plugin list`. The plugin bundles the server, so no separate connection is needed.
-4. If the Juicebot tools are not callable in this conversation yet, tell the user to run `/reload-plugins` (or start a new session) and give them the exact first message to paste afterwards: `Open Juicebox, load the ENCODE GM12878 in situ Hi-C map, go to the HOXA cluster and add the gene track.`
+4. If the Juicebot tools are not callable in this conversation yet, tell the user to run `/reload-plugins` (or start a new session), then end as described under "How to end your reply".
 5. If the user also has a claude.ai Juicebot connector, the tools appear twice; harmless. They can turn one off with `/mcp`.
 
 ## Cowork / Claude desktop app
@@ -39,7 +39,7 @@ You have a shell and a tool that sends files into the chat. Use them; do not han
 3. Build the plugin file yourself and send it. In your shell: `git clone --depth 1 https://github.com/aidenlab/plugins`, then zip the *contents* of `plugins/juicebot` into a file named `juicebot.plugin` so that `.claude-plugin/plugin.json`, `.mcp.json` and `skills/` sit at the zip root (`cd plugins/plugins/juicebot && zip -r ../../../juicebot.plugin .`). If `git` is unavailable, download the ready-made release asset instead: `curl -L -o juicebot.plugin https://github.com/aidenlab/plugins/releases/latest/download/juicebot.plugin` (do not use GitHub's `archive/…zip` URL; some sessions block it). Send `juicebot.plugin` to the user with your file-sending tool and tell them to press **Add** on the card that appears. That installs the skill and registers the plugin's `juicebot` MCP server.
 4. Connect the server. After they add the plugin, tell them to look in **Customize → Connectors** (or the connectors list in the chat's tools menu) for **juicebot** and enable it; a new conversation then has the tools. If no such entry appears, have them add it as a custom connector: **Settings → Connectors → Add custom connector**, name `Juicebot`, the server URL above, no authentication. On a Team or Enterprise plan an admin can add that connector once for the whole organization, and it also shows up in Claude Code automatically.
 5. Fallback if the file card cannot be accepted: **Cowork tab → Customize → Plugins → Add → Add marketplace → Add from a repository → `aidenlab/plugins` → Discover → Juicebot → Add**.
-6. Tools usually appear only in a new conversation. If they are not callable now, say so and give the exact first message to paste in a fresh chat (the sentence in the Claude Code section).
+6. Tools usually appear only in a new conversation. If they are not callable now, end as described under "How to end your reply".
 
 ## claude.ai chat
 
@@ -50,7 +50,7 @@ No shell and no plugins here; the tools come from a connector and the server's b
 1. Check `codex plugin list` for `juicebot@aidenlab`. Reuse it if installed and enabled.
 2. Otherwise run `codex plugin marketplace add aidenlab/plugins` then `codex plugin add juicebot@aidenlab`.
 3. Verify: `codex plugin list` shows `installed, enabled`; `codex mcp list` shows `juicebot` with the server URL above. The plugin bundles the server; do not add it again with `codex mcp add`.
-4. If the tools are not callable in this conversation, tell the user to start a new chat and give the exact first message to paste (the sentence in the Claude Code section). If they still do not appear, guide them through restarting Codex.
+4. If the tools are not callable in this conversation, end as described under "How to end your reply"; add one line that restarting Codex fixes it if they still do not appear.
 
 ## ChatGPT
 
@@ -58,6 +58,20 @@ No shell and no plugins here; the tools come from a connector and the server's b
 2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `Juicebot`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words. Custom MCP servers need a Pro, Team, Enterprise or Edu plan; on Free or Plus say so and stop, offering Claude Code or Codex as alternatives.
 3. Then help them install the resulting plugin, start a new chat, and enable Juicebot in it (the tools menu or `@Juicebot`, whichever the app offers). If an option is missing, explain the account or workspace limitation you can verify and the next step.
 4. ChatGPT gets tools and the server's built-in instructions; it does not get the plugin skill. That is fine.
+
+## How to end your reply when the tools are not callable yet (every application)
+
+Whenever setup is done but the Juicebot tools are not available in the current conversation, end your reply with exactly this shape, and nothing after it:
+
+1. One or two short lines stating what is done (installed / connected) and that the tools appear in a new chat.
+2. A line that says **Start a new chat and paste this:**
+3. The message alone, in a fenced code block so the user can copy it with one click:
+
+```
+Open Juicebox, load the ENCODE GM12878 in situ Hi-C map, go to the HOXA cluster and add the gene track.
+```
+
+Do not put the message inside a bullet or a paragraph, do not add alternatives after it, and do not restate manual steps the user has already completed. Fallback instructions (another way to install) go *before* this block, and only if a step actually failed.
 
 ## Verification and first use (every application)
 
