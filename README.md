@@ -46,6 +46,10 @@ Juicebot has two halves: the **MCP server** (the tools) and the **skill** (how t
 
 You get a join link. Open it in a browser tab: the map loads, the view jumps to HOXA, and a RefSeq gene track appears under the map. Every later command updates that tab. The join link is live and shared (everyone in the room follows along); "create a link I can share" makes a snapshot that preserves the current view.
 
+## Directory listing (one-click install, no marketplace)
+
+Plugins listed in Anthropic's community directory appear in Cowork's **Discover** tab and in the claude.ai plugin catalog, so any Cowork session can offer an install card and nobody has to add a marketplace. Submit at [claude.ai/admin-settings/directory/submissions/plugins/new](https://claude.ai/admin-settings/directory/submissions/plugins/new) (Team/Enterprise owner) or [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit); run `claude plugin validate ./plugins/juicebot` first. ChatGPT has the equivalent "With MCP" submission for the remote server. Until listed, the one-line prompt builds and sends the `.plugin` file instead.
+
 ## For the whole organization (admins)
 
 1. **Connector:** add `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp` as an organization connector (Claude Team/Enterprise; ChatGPT workspace admins can publish the plugin to the workspace). Members get the tools with no setup.
