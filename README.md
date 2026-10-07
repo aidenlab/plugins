@@ -8,35 +8,45 @@ A Claude plugin marketplace from [the Aiden Lab](https://aidenlab.org). Add it o
 
 ## Install Juicebot
 
-### Claude Code — one line
+Juicebot has two halves, and where you use Claude decides how each one gets there:
 
-Paste into a Claude Code session:
+| | Tools (the MCP server) | Skill (how Claude uses them) |
+|---|---|---|
+| **Claude Code** | bundled in the plugin, or from your claude.ai connector | plugin |
+| **Cowork / Claude desktop app** | claude.ai connector (Cowork does not start plugin MCP servers) | plugin |
+| **claude.ai chat** | claude.ai connector | — |
+
+So: **everyone on claude.ai adds the connector once** (step 1) and **installs the plugin for the skill** (step 2). Claude Code users who sign in with an API key instead of a claude.ai account skip step 1; the plugin brings its own copy of the server.
+
+### 1. Add the connector (claude.ai, Cowork, and it syncs into Claude Code)
+
+**Settings → Connectors → Add custom connector**, name `Juicebot`, URL
+
+```
+https://juicebox-mcp-v2.aidenlab.workers.dev/mcp
+```
+
+No authentication. Connectors added in claude.ai are available in Cowork and are fetched automatically by Claude Code whenever it is signed in with the same claude.ai account. On Team and Enterprise plans an **admin adds it once as an organization connector** and every member gets it with no setup.
+
+### 2. Install the plugin (the skill)
+
+**Claude Code** — one line, in a session:
 
 ```
 /plugin install juicebot --marketplace aidenlab/claude-plugins
 ```
 
-or from a terminal:
+then `/reload-plugins` so the new plugin's skill and server attach to the running session (a fresh session picks them up by itself). From a terminal instead: `claude plugin install juicebot --marketplace aidenlab/claude-plugins`, which applies to the next session. Two-step equivalent: `/plugin marketplace add aidenlab/claude-plugins`, then `/plugin install juicebot@aidenlab`.
 
-```bash
-claude plugin install juicebot --marketplace aidenlab/claude-plugins
-```
-
-That adds the marketplace and installs the plugin in one step. Restart Claude Code (or `/mcp` → reconnect) and the `juicebot` tools appear. Two-step equivalent: `/plugin marketplace add aidenlab/claude-plugins`, then `/plugin install juicebot@aidenlab`.
-
-### Claude desktop app (Cowork)
+**Cowork / Claude desktop app**
 
 1. Open the **Cowork** tab, then **Customize** in the left sidebar → **Plugins**.
 2. **Add** → **Add marketplace** → **Add from a repository** → enter `aidenlab/claude-plugins`.
 3. Open **Discover**, pick **Juicebot**, click **Add**.
 
-Plugins installed here sync to Claude Code when you sign in with the same Claude account.
+No marketplace? Download [`juicebot.plugin`](../../releases/latest) from the latest release and use **Customize → Plugins → Add → Upload plugin**. Plugins installed here sync to Claude Code when you sign in with the same Claude account.
 
-No marketplace? Download [`juicebot.plugin`](../../releases/latest) from the latest release and use **Customize → Plugins → Add → Upload plugin**.
-
-### Claude.ai chat / Claude Desktop (no plugin needed)
-
-Settings → Connectors → **Add custom connector**, URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`. You get the tools but not the skill.
+If you have both the connector and the plugin in Claude Code you will see the Juicebot tools twice (`claude.ai Juicebot` and `plugin:juicebot`). Harmless; `/mcp` toggles either one off per project.
 
 ### Other MCP clients (ChatGPT, Cursor, stdio-only)
 
@@ -44,17 +54,20 @@ Point them at `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp` (Streamable HTT
 
 ### Let Claude do it
 
-Paste the prompt in [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md) into Claude Code or Cowork; it runs the steps above for you.
+Paste the prompt in [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md) into Claude Code or Cowork; it runs the plugin steps for you and walks you through the connector.
 
 ## First run
 
-> Open Juicebox, load the ENCODE GM12878 in situ Hi-C map and go to the HOXA cluster.
+> Open Juicebox, load the ENCODE GM12878 in situ Hi-C map, go to the HOXA cluster and add the gene track.
 
-Claude replies with a join link. Open it in a browser tab; the map loads there and every later command updates that tab.
+Claude replies with a join link. Open it in a browser tab: the map loads, the view jumps to HOXA, and a RefSeq gene track appears under the map, so you can see each command land. Every later command updates that same tab.
 
 ## For the whole organization (admins)
 
-Org admins can distribute plugins to everyone on a Team/Enterprise plan from **Organization settings → Plugins & skills → Marketplaces → Add plugins → Sync from GitHub**. That path requires a *private or internal* repository with the Claude GitHub App installed, so mirror this repo privately (or fork it) for org-wide push. Alternatively upload `juicebot.plugin` as a ZIP there. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
+Two admin actions make Juicebot zero-setup for everyone on a Team/Enterprise plan:
+
+1. **Connector:** Organization settings → Connectors → add `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp` as an organization connector. Members get the tools in claude.ai, Cowork and Claude Code.
+2. **Plugin:** Organization settings → **Plugins & skills → Marketplaces → Add plugins → Sync from GitHub**. That path requires a *private or internal* repository with the Claude GitHub App installed, so mirror this repo privately (or fork it) for org-wide push; or upload `juicebot.plugin` as a ZIP there. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 
 ## Maintaining
 

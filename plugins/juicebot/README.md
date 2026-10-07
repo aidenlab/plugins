@@ -6,18 +6,20 @@ Server source and tool reference: [weiszd/juicebox-mcp](https://github.com/weisz
 
 ## Install
 
-See the [marketplace README](../../README.md) for all clients. Quickest:
+See the [marketplace README](../../README.md) for all clients. Quickest, in Claude Code:
 
 ```
-claude plugin marketplace add aidenlab/claude-plugins
-claude plugin install juicebot@aidenlab
+/plugin install juicebot --marketplace aidenlab/claude-plugins
+/reload-plugins
 ```
+
+In Cowork and claude.ai the tools come from a connector (Settings → Connectors → Add custom connector → `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`); the plugin adds the skill.
 
 ## Try it
 
-> Open Juicebox, load the ENCODE GM12878 in situ Hi-C map and go to the HOXA cluster.
+> Open Juicebox, load the ENCODE GM12878 in situ Hi-C map, go to the HOXA cluster and add the gene track.
 
-Claude returns a join link; open it in a tab, and the map appears there.
+Claude returns a join link; open it in a tab, and you watch the map load, jump to HOXA and gain a gene track.
 
 ## Contents
 

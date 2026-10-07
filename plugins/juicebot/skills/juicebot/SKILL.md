@@ -9,9 +9,10 @@ The `juicebot` MCP server exposes tools that drive a Juicebox viewer running in 
 
 ## Session start (always)
 
-1. Call `get_juicebox_url` once. It returns a join link (`…?room=<id>`) and a QR code. Give the user the link and ask them to open it in a browser tab. Do not call other viewer tools until they confirm the page is open (or a tool stops returning "no page connected").
-2. If the user pastes a join link they already have (they clicked "Start room" in Juicebox, or a colleague shared one), call `join_room` with it instead. Every page in the same room stays in sync, so this is also how a group looks at one view together.
-3. If a tool returns "no page connected" or "sent, unconfirmed", the tab is closed, not yet loaded, or on a different room. Re-send the join link rather than retrying blindly. Rooms expire after 24 h idle; a `room-expired` error means call `get_juicebox_url` again for a fresh room.
+1. Call `get_juicebox_url` once. It returns a join link (`…?room=<id>`) and a QR code. If a browser tool is available (Claude's built-in browser or Claude in Chrome), open the join link in it right away so Juicebox sits beside the conversation; always also give the user the link as a plain clickable URL (never in a code block). Otherwise ask them to open it in a browser tab. Do not call other viewer tools until a page is connected (they confirm, or a tool stops returning "no page connected").
+2. On a first session, make the result visible: after `load_map` and `goto_locus`, add the gene track (`load_track` with no URL loads RefSeq Select) unless the user said otherwise, and tell them what to look for: map tiles, the locus in the header, a gene track under the map.
+3. If the user pastes a join link they already have (they clicked "Start room" in Juicebox, or a colleague shared one), call `join_room` with it instead. Every page in the same room stays in sync, so this is also how a group looks at one view together.
+4. If a tool returns "no page connected" or "sent, unconfirmed", the tab is closed, not yet loaded, or on a different room. Re-send the join link rather than retrying blindly. Rooms expire after 24 h idle; a `room-expired` error means call `get_juicebox_url` again for a fresh room.
 
 ## Finding data
 
