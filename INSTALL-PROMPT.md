@@ -23,16 +23,20 @@ Decide from your own environment; ask the user only if you cannot tell.
 
 ## Claude (claude.ai web, desktop Chat, Cowork)
 
-Plugins and marketplaces are added to the user's **account**, once, and then follow them to web chat, the desktop app, Cowork and Claude Code. There is no command for this; it is three clicks on one settings page. Your job is to get the user there and give them the exact values. Do not build or send plugin files.
+Plugins and marketplaces are added to the user's **account**, once, and then follow them to web chat, the desktop app, Cowork and Claude Code. There is no command for this; it is a few clicks on one settings page. Keep the conversation short: two user actions in total, each as a single message. Do not build or send plugin files.
 
 1. If Juicebot tools are already callable here, skip to verification.
-2. If you have a plugin-catalog search tool, search it for `juicebot`. If it is listed (an organization marketplace or Anthropic's directory), render the install card, tell the user to click **Install**, and go to step 5.
-3. Add the marketplace and the plugin. If you have a browser tool, open `https://claude.ai/new#settings/customize-plugins` in it so the page sits beside the conversation (sign-in there is the user's; offer to do the clicks for them only if they say yes). Then give these steps one at a time, waiting for the user between them:
-   - Open **https://claude.ai/new#settings/customize-plugins** (or in the app: **Customize → Plugins**; in Cowork, open the Cowork tab first).
-   - Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins`, confirm.
-   - Open **Discover**, find **Juicebot**, click **Add**.
-4. Connect the server. Tell the user to open **Customize → Connectors** (or the connectors list in the chat's tools menu), find **juicebot**, and enable it. If it is not listed, have them add it as a custom connector: **Settings → Connectors → Add custom connector**, name `Juicebot`, the server URL above, no authentication. On a Team or Enterprise plan an admin can add that connector once for the whole organization.
-5. Tools appear in a new conversation. End as described under "How to end your reply".
+2. If you have a tool that lists the plugins on the user's account, call it for `juicebot` first. If the plugin is already there, skip to step 4. Otherwise, if you have a plugin-catalog search tool, search it for `juicebot`; if listed, render the install card and tell the user to click **Install**, then go to step 4.
+3. **One message, all the clicks.** If you have a browser tool, open `https://claude.ai/new#settings/customize-plugins` in it so the page sits beside the conversation. Then send exactly this and wait for the user to say they are done:
+
+   > Open https://claude.ai/new#settings/customize-plugins (in the app: **Customize → Plugins**; in Cowork, open the Cowork tab first). Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. The **Discover** tab opens on its own; find **Juicebot** and click **Add**. Tell me when that's done.
+
+4. **Confirm and connect the server.** When the user says it is done, call the tool that lists the plugins on their account, filtered to `juicebot`. It renders a card for the plugin with a **Manage** button. Then say, as one message:
+
+   > Juicebot is on your account. Click **Manage** on the card above and turn on the **juicebot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **juicebot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Juicebot`, the URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, no authentication.
+
+   On a Team or Enterprise plan, mention once that an admin can add that connector for the whole organization.
+5. The tools appear in a new conversation. End as described under "How to end your reply".
 
 Everything added this way also reaches Claude Code the next time it starts signed in with the same account (or after `/login`).
 
