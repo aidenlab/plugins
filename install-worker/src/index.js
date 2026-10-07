@@ -13,6 +13,8 @@
  *   GET /raw         always text/plain
  *   GET /<path>      any other file from the repo's default branch, e.g. /README.md
  *   GET /plugin      302 to the latest juicebot.plugin release asset
+ *   GET /plugins     302 to the claude.ai plugins settings page (an external link opens
+ *                    in a new tab on claude.ai web, keeping the chat in place)
  */
 
 const REPO = 'aidenlab/plugins';
@@ -62,6 +64,9 @@ export default {
       'X-Robots-Tag': 'noindex'
     };
 
+    if (url.pathname === '/plugins') {
+      return Response.redirect('https://claude.ai/new#settings/customize-plugins', 302);
+    }
     if (url.pathname === '/plugin') {
       return Response.redirect(`https://github.com/${REPO}/releases/latest/download/juicebot.plugin`, 302);
     }

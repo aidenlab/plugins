@@ -22,7 +22,7 @@ Juicebot has two halves: the **MCP server** (the tools) and the **skill** (how t
 
 **Claude — web, desktop Chat, Cowork (one account-level setup).** Plugins and marketplaces live on your Claude account and follow you to every surface, Claude Code included.
 
-1. Open **https://claude.ai/new#settings/customize-plugins** (or **Customize → Plugins** in the app; in Cowork open the Cowork tab first). **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`. The Discover tab opens; find **Juicebot → Add**.
+1. Open **https://juicebot-install.3dg.io/plugins** in a new tab (it lands on Claude's plugin settings; in the app: **Customize → Plugins**, in Cowork open the Cowork tab first). **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`. The Discover tab opens; find **Juicebot → Add**.
 2. On the plugin's **Manage** page turn on the **juicebot** server. If there is no switch, **Customize → Connectors** → enable **juicebot**; failing that, **Settings → Connectors → Add custom connector**, name `Juicebot`, URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
 
 Start a new conversation and the tools are there. Paid plans only (Pro, Max, Team, Enterprise).
