@@ -17,7 +17,8 @@ Start by telling them, in one or two sentences: Juicebot lets them control the J
 Decide from your own environment; ask the user only if you cannot tell.
 
 - A shell with the `claude` CLI, or `/plugin` slash commands → **Claude Code**.
-- A Claude desktop app task without a persistent shell, or claude.ai chat → **Cowork / Claude desktop / claude.ai**.
+- A Claude desktop app task (Cowork): a shell and a file-sending tool but no `claude` CLI → **Cowork / Claude desktop app**.
+- claude.ai chat: no shell → **claude.ai chat**.
 - A shell with the `codex` CLI → **Codex**.
 - ChatGPT → **ChatGPT**.
 
@@ -29,14 +30,19 @@ Decide from your own environment; ask the user only if you cannot tell.
 4. If the Juicebot tools are not callable in this conversation yet, tell the user to run `/reload-plugins` (or start a new session) and give them the exact first message to paste afterwards: `Open Juicebox, load the ENCODE GM12878 in situ Hi-C map, go to the HOXA cluster and add the gene track.`
 5. If the user also has a claude.ai Juicebot connector, the tools appear twice; harmless. They can turn one off with `/mcp`.
 
-## Cowork, Claude desktop app, claude.ai
+## Cowork / Claude desktop app
 
-Cowork and claude.ai do not start a plugin's MCP server; the tools come from a connector.
+You have a shell and a tool that sends files into the chat. Use them; do not hand the user a list of manual steps unless a step below fails.
 
-1. If Juicebot tools are already callable here, the connector exists; skip to the plugin.
-2. Otherwise walk the user through it, one step at a time: **Settings → Connectors → Add custom connector**, name `Juicebot`, the server URL above, no authentication. On a Team or Enterprise plan an admin can add it once as an organization connector so nobody else has to. Tell them this connector also shows up automatically in Claude Code when it is signed in with the same account.
-3. Plugin, for the skill (Cowork and the desktop app only): if you can fetch the web, download `https://github.com/aidenlab/plugins/releases/latest/download/juicebot.plugin` and send it to the user as a file so they can accept it from the chat. Otherwise: **Cowork tab → Customize → Plugins → Add → Add marketplace → Add from a repository → `aidenlab/plugins` → Discover → Juicebot → Add**.
-4. New connectors usually need a new conversation. If the tools are not callable now, say so and give the exact first message to paste in a fresh chat (the sentence in the Claude Code section).
+1. If Juicebot tools are already callable here, skip to verification.
+2. Build the plugin file yourself and send it. In your shell: `git clone --depth 1 https://github.com/aidenlab/plugins`, then zip the *contents* of `plugins/juicebot` into a file named `juicebot.plugin` so that `.claude-plugin/plugin.json`, `.mcp.json` and `skills/` sit at the zip root (`cd plugins/plugins/juicebot && zip -r ../../../juicebot.plugin .`). If `git` is unavailable, download the ready-made release asset instead: `curl -L -o juicebot.plugin https://github.com/aidenlab/plugins/releases/latest/download/juicebot.plugin` (do not use GitHub's `archive/…zip` URL; some sessions block it). Send `juicebot.plugin` to the user with your file-sending tool and tell them to press **Add** on the card that appears. That installs the skill and registers the plugin's `juicebot` MCP server.
+3. Connect the server. After they add the plugin, tell them to look in **Customize → Connectors** (or the connectors list in the chat's tools menu) for **juicebot** and enable it; a new conversation then has the tools. If no such entry appears, have them add it as a custom connector: **Settings → Connectors → Add custom connector**, name `Juicebot`, the server URL above, no authentication. On a Team or Enterprise plan an admin can add that connector once for the whole organization, and it also shows up in Claude Code automatically.
+4. Fallback if the file card cannot be accepted: **Cowork tab → Customize → Plugins → Add → Add marketplace → Add from a repository → `aidenlab/plugins` → Discover → Juicebot → Add**.
+5. Tools usually appear only in a new conversation. If they are not callable now, say so and give the exact first message to paste in a fresh chat (the sentence in the Claude Code section).
+
+## claude.ai chat
+
+No shell and no plugins here; the tools come from a connector and the server's built-in instructions. Walk the user through **Settings → Connectors → Add custom connector**, name `Juicebot`, the server URL above, no authentication, one step at a time; then a new chat. On Team or Enterprise, an admin can add it as an organization connector once.
 
 ## Codex
 
