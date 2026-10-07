@@ -33,7 +33,7 @@ import urllib.request
 
 # Candidate endpoints, tried in order the first time a session is created. The
 # 3dg.io name is the lab's stable hostname (the Worker behind it may change);
-# the workers.dev name is the frozen demo deployment. Override with --server or
+# the workers.dev name is the frozen demo deployment, kept as a fallback. Override with --server or
 # JUICEBOT_URL. The one that answers is remembered in the state file.
 SERVERS = [
     "https://juicebot-mcp.3dg.io/mcp",

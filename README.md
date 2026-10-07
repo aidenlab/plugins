@@ -25,7 +25,7 @@ With the plugin installed but no connector, the skill falls back to `skills/juic
 **Claude — web, desktop Chat, Cowork (one account-level setup).** Plugins and marketplaces live on your Claude account and follow you to every surface, Claude Code included.
 
 1. Open **https://juicebot-install.3dg.io/plugins** in a new tab (it lands on Claude's plugin settings; in the app: **Customize → Plugins**, in Cowork open the Cowork tab first). **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`. The Discover tab opens; find **Juicebot → Add**.
-2. On the plugin's **Manage** page turn on the **juicebot** server. If there is no switch, **Customize → Connectors** → enable **juicebot**; failing that, **Settings → Connectors → Add custom connector**, name `Juicebot`, URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
+2. On the plugin's **Manage** page turn on the **juicebot** server. If there is no switch, **Customize → Connectors** → enable **juicebot**; failing that, **Settings → Connectors → Add custom connector**, name `Juicebot`, URL `https://juicebot-mcp.3dg.io/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
 
 Start a new conversation and the tools are there. Paid plans only (Pro, Max, Team, Enterprise).
 
@@ -35,7 +35,7 @@ Start a new conversation and the tools are there. Paid plans only (Pro, Max, Tea
 
 **ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `Juicebot`, the URL above, authentication **None** (Pro, Team, Enterprise or Edu plans). Enable it in a new chat.
 
-**Other MCP clients** (Cursor, stdio-only tools) — point them at the URL; bridge stdio-only clients with `npx -y mcp-remote https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`.
+**Other MCP clients** (Cursor, stdio-only tools) — point them at the URL; bridge stdio-only clients with `npx -y mcp-remote https://juicebot-mcp.3dg.io/mcp`.
 
 ## First run
 
@@ -49,7 +49,7 @@ Plugins listed in Anthropic's community directory appear in Cowork's **Discover*
 
 ## For the whole organization (admins)
 
-1. **Connector:** add `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp` as an organization connector (Claude Team/Enterprise; ChatGPT workspace admins can publish the plugin to the workspace). Members get the tools with no setup.
+1. **Connector:** add `https://juicebot-mcp.3dg.io/mcp` as an organization connector (Claude Team/Enterprise; ChatGPT workspace admins can publish the plugin to the workspace). Members get the tools with no setup.
 2. **Plugin:** Claude: Organization settings → Plugins & skills → Marketplaces → Add plugins → Sync from GitHub (needs a *private or internal* mirror with the Claude GitHub App) or upload the release's `juicebot.plugin` as a ZIP. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 
 ## Layout and maintenance
@@ -74,7 +74,7 @@ scripts/package.sh                  builds dist/juicebot.plugin
 - Bump `version` in all four manifests when anything changes; users on an older version stay there until they update (`/plugin marketplace update aidenlab` + `/plugin update juicebot@aidenlab` in Claude Code; `codex plugin marketplace upgrade aidenlab` in Codex).
 - Validate: `claude plugin validate . && claude plugin validate ./plugins/juicebot`; `codex plugin marketplace add ./ && codex plugin add juicebot@aidenlab`.
 - CLI smoke test against the live server: `scripts/test-cli.sh`. Regenerate `references/tools.md` after a tool change (it mirrors `tools/list`).
-- The MCP server will move to a `3dg.io` hostname; the CLIs already try `juicebot-mcp.3dg.io` before the demo worker, so only the four manifests and `INSTALL-PROMPT.md` need the new URL (`grep -rl workers.dev`).
+- The MCP endpoint is `https://juicebot-mcp.3dg.io/mcp`, a custom domain that currently fronts the frozen demo Worker and will be moved to production without changing anything here. The CLIs fall back to the demo Worker's `workers.dev` address if the hostname ever fails.
 - Tagging `v*` runs the release workflow, which attaches `juicebot.plugin` to the GitHub release.
 
 Server source: [weiszd/juicebox-mcp](https://github.com/weiszd/juicebox-mcp). License: MIT.

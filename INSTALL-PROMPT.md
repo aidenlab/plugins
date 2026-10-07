@@ -7,7 +7,7 @@ Start by telling them, in one or two sentences: Juicebot lets them control the J
 ## Facts
 
 - Marketplace: `aidenlab/plugins` on GitHub (marketplace name `aidenlab`). Plugin: `juicebot`, so `juicebot@aidenlab`.
-- MCP server: `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top.
+- MCP server: `https://juicebot-mcp.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top.
 - A server connection supplies tools. The plugin supplies the skill. Both is best; tools alone are enough to work.
 - Reuse anything already installed or connected. Never add a second connection to the same server.
 - Distinguish three states and report only what you have verified: **installed** (plugin present and enabled), **server connected** (Juicebot tools are callable in this conversation), **viewer working** (a page answered a command).
@@ -33,7 +33,7 @@ Plugins and marketplaces are added to the user's **account**, once, and then fol
 
 4. **Confirm and connect the server.** When the user says it is done, call the tool that lists the plugins on their account, filtered to `juicebot`. It renders a card for the plugin with a **Manage** button. Then say, as one message:
 
-   > Juicebot is on your account. Click **Manage** on the card above and turn on the **juicebot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **juicebot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Juicebot`, the URL `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, no authentication.
+   > Juicebot is on your account. Click **Manage** on the card above and turn on the **juicebot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **juicebot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Juicebot`, the URL `https://juicebot-mcp.3dg.io/mcp`, no authentication.
 
    On a Team or Enterprise plan, mention once that an admin can add that connector for the whole organization.
 5. The tools appear in a new conversation. End as described under "How to end your reply".

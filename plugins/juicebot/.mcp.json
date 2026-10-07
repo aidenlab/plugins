@@ -2,7 +2,7 @@
   "mcpServers": {
     "juicebot": {
       "type": "http",
-      "url": "https://juicebox-mcp-v2.aidenlab.workers.dev/mcp"
+      "url": "https://juicebot-mcp.3dg.io/mcp"
     }
   }
 }
