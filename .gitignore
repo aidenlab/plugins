@@ -3,3 +3,4 @@ dist/
 .claude/settings.local.json
 install-worker/node_modules/
 install-worker/.wrangler/
+/.idea
