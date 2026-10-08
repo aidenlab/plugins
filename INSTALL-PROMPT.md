@@ -27,9 +27,9 @@ Plugins and marketplaces are added to the user's **account**, once, and then fol
 
 1. If Juicebot tools are already callable here, skip to verification.
 2. If you have a tool that lists the plugins on the user's account, call it for `juicebot` first. If the plugin is already there, skip to step 4. Otherwise, if you have a plugin-catalog search tool, search it for `juicebot`; if listed, render the install card and tell the user to click **Install**, then go to step 4.
-3. **One message, all the clicks.** If you have a browser tool, open `https://juicebot-install.3dg.io/plugins` in it so the page sits beside the conversation. Then send exactly this and wait for the user to say they are done:
+3. **One message, all the clicks.** Do not open the settings page yourself; send exactly this and wait for the user to say they are done:
 
-   > Open **https://juicebot-install.3dg.io/plugins** in a new tab (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put; it lands on Claude's plugin settings. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. The **Discover** tab opens on its own; find **Juicebot** and click **Add**. Tell me when that's done.
+   > Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. The **Discover** tab opens on its own; find **Juicebot** and click **Add**. Tell me when that's done.
 
 4. **Confirm and connect the server.** When the user says it is done, call the tool that lists the plugins on their account, filtered to `juicebot`. It renders a card for the plugin with a **Manage** button. Then say, as one message:
 

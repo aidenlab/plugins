@@ -12,7 +12,7 @@ Paste into Claude Code, Cowork, claude.ai, Codex or ChatGPT:
 Set up Juicebot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.
 ```
 
-Manual paths for every client are in the [marketplace README](../../README.md). Quickest by hand: Claude Code `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins` then `codex plugin add juicebot@aidenlab`; Claude web/desktop/Cowork: https://juicebot-install.3dg.io/plugins → Add → Add marketplace → `aidenlab/plugins` → Discover → Juicebot → Add, then enable the juicebot connector; ChatGPT adds `https://juicebot-mcp.3dg.io/mcp` as a custom MCP server.
+Manual paths for every client are in the [marketplace README](../../README.md). Quickest by hand: Claude Code `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins` then `codex plugin add juicebot@aidenlab`; Claude web/desktop/Cowork: https://claude.ai/new#settings/customize-plugins → Add → Add marketplace → `aidenlab/plugins` → Discover → Juicebot → Add, then enable the juicebot connector; ChatGPT adds `https://juicebot-mcp.3dg.io/mcp` as a custom MCP server.
 
 ## Try it
 
