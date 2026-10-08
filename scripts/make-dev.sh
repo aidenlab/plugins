@@ -15,6 +15,8 @@ import json, re, pathlib
 def sub(path, pairs, must=True):
     p = pathlib.Path(path); s = p.read_text(); orig = s
     for a, b in pairs:
+        if b in s and b != a and a in b:
+            continue  # already applied (keeps the script idempotent)
         s = s.replace(a, b)
     p.write_text(s)
     return s != orig
@@ -41,6 +43,17 @@ DOCS = ["README.md", "INSTALL-PROMPT.md", "plugins/juicebot/README.md",
         "plugins/juicebot/skills/juicebot/references/tools.md"]
 for d in DOCS:
     sub(d, HOSTS + NAMES)
+
+# Sentences that describe the production arrangement.
+sub("README.md", [("a custom domain that currently fronts the frozen demo Worker and will be moved to production without changing anything here. The CLIs fall back to the demo Worker's `workers.dev` address if the hostname ever fails.",
+                   "the Juicebot dev stack (Worker `juicebot-mcp-dev`, page `juicebot-dev.3dg.io`). The dev CLIs have no fallback server.")])
+sub("plugins/juicebot/skills/juicebot/references/cli.md", [("The scripts try `https://juicebot-mcp-dev.3dg.io/mcp` and then the frozen demo `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, and remember the first that answers.",
+                   "This dev copy of the scripts uses `https://juicebot-mcp-dev.3dg.io/mcp` only.")])
+sub("plugins/juicebot/skills/juicebot/scripts/juicebot.py", [("JUICEBOT_URL     MCP endpoint, e.g. https://juicebot-mcp.3dg.io/mcp", "JUICEBOT_URL     MCP endpoint, e.g. https://juicebot-mcp-dev.3dg.io/mcp"),
+    ("# Candidate endpoints, tried in order the first time a session is created. The\n# 3dg.io name is the lab's stable hostname (the Worker behind it may change);\n# the workers.dev name is the frozen demo deployment, kept as a fallback. Override with --server or\n# JUICEBOT_URL. The one that answers is remembered in the state file.",
+     "# Dev branch: the dev stack only. Override with --server or JUICEBOT_URL.")])
+sub("plugins/juicebot/skills/juicebot/scripts/juicebot.mjs", [("// Candidate endpoints, tried in order the first time a session is created. The\n// 3dg.io name is the lab's stable hostname; the workers.dev name is the frozen\n// demo deployment. Override with --server or JUICEBOT_URL.",
+     "// Dev branch: the dev stack only. Override with --server or JUICEBOT_URL.")])
 
 # Banner on the two entry documents.
 for d, banner in [("README.md", "> **Dev branch.** Everything here points at the Juicebot *dev* stack (`juicebot-mcp-dev.3dg.io`, page `juicebot-dev.3dg.io`). Production is on `main`.\n\n"),
