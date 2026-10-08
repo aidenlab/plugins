@@ -23,6 +23,9 @@ if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_US
   process.exit(r.status ?? 1);
 }
 
+// PROFILE names the deployment this copy belongs to ("" for production, "dev" on
+// the dev branch); it keeps the state files apart so two CLIs never share a room.
+const PROFILE = '';
 // Candidate endpoints, tried in order the first time a session is created. The
 // 3dg.io name is the lab's stable hostname; the workers.dev name is the frozen
 // demo deployment. Override with --server or JUICEBOT_URL.
@@ -36,7 +39,7 @@ const USER_AGENT = 'juicebot-cli/1.0 (+https://github.com/aidenlab/plugins)';
 const TIMEOUT_MS = 60_000;
 const PROTOCOL_VERSION = '2025-06-18';
 const STATE_PATH = process.env.JUICEBOT_STATE
-  || join(process.env.XDG_STATE_HOME || join(homedir(), '.local', 'state'), 'juicebot', 'session.json');
+  || join(process.env.XDG_STATE_HOME || join(homedir(), '.local', 'state'), 'juicebot', `session${PROFILE ? '-' + PROFILE : ''}.json`);
 
 class Transport extends Error {}
 class SessionGone extends Error {}
@@ -105,7 +108,8 @@ class Session {
       this.sid = this.room;
       return;
     }
-    if (!fresh && state.sid && (!this.url || state.url === this.url)) {
+    const known = this.url || (SERVERS.includes(state.url) && state.url);
+    if (!fresh && state.sid && known && state.url === known) {
       this.url = state.url; this.sid = state.sid;
       return;
     }

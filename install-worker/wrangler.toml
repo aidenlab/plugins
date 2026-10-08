@@ -10,3 +10,19 @@ routes = [
 ]
 workers_dev = false
 preview_urls = false
+
+[vars]
+BRANCH = "main"
+
+# Dev stack: serves the repo's dev branch (which points at juicebot-mcp-dev.3dg.io).
+#   cd install-worker && npx wrangler deploy --env dev
+[env.dev]
+name = "juicebot-install-dev"
+routes = [
+  { pattern = "juicebot-install-dev.3dg.io", custom_domain = true },
+]
+workers_dev = false
+preview_urls = false
+
+[env.dev.vars]
+BRANCH = "dev"

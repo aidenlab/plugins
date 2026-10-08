@@ -19,12 +19,12 @@
  */
 
 const REPO = 'aidenlab/plugins';
-const BRANCH = 'main';
+const DEFAULT_BRANCH = 'main';  // overridden by the BRANCH var ([env.dev] serves the dev branch)
 const DOC = 'INSTALL-PROMPT.md';
 const CACHE_SECONDS = 300;
 
-async function fromGitHub(path, request) {
-  const upstream = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${path}`;
+async function fromGitHub(path, request, branch) {
+  const upstream = `https://raw.githubusercontent.com/${REPO}/${branch}/${path}`;
   const res = await fetch(upstream, {
     headers: { 'User-Agent': 'juicebot-install-worker' },
     cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true }
@@ -54,7 +54,8 @@ function htmlPage(markdown) {
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
+    const branch = (env && env.BRANCH) || DEFAULT_BRANCH;
     if (request.method !== 'GET' && request.method !== 'HEAD') {
       return new Response('Method not allowed\n', { status: 405, headers: { Allow: 'GET, HEAD' } });
     }
@@ -78,7 +79,7 @@ export default {
       : url.pathname.slice(1);
     if (path.includes('..') || path.startsWith('.git/')) return new Response('Not found\n', { status: 404 });
 
-    const body = await fromGitHub(path, request);
+    const body = await fromGitHub(path, request, branch);
     if (body instanceof Response) return body;
 
     if (url.pathname === '/raw') {

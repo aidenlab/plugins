@@ -31,6 +31,10 @@ import sys
 import urllib.error
 import urllib.request
 
+# PROFILE names the deployment this copy of the script belongs to ("" for
+# production, "dev" on the dev branch). It keeps the state files apart so a
+# dev and a production CLI on one machine never share a room.
+PROFILE = ""
 # Candidate endpoints, tried in order the first time a session is created. The
 # 3dg.io name is the lab's stable hostname (the Worker behind it may change);
 # the workers.dev name is the frozen demo deployment, kept as a fallback. Override with --server or
@@ -49,7 +53,7 @@ PROTOCOL_VERSION = "2025-06-18"
 
 STATE_PATH = os.environ.get("JUICEBOT_STATE") or os.path.join(
     os.environ.get("XDG_STATE_HOME") or os.path.join(os.path.expanduser("~"), ".local", "state"),
-    "juicebot", "session.json")
+    "juicebot", "session%s.json" % ("-" + PROFILE if PROFILE else ""))
 
 
 class Transport(Exception):
@@ -148,7 +152,8 @@ class Session:
             self.url = self.url or state.get("url") or self._first_live()
             self.sid = self.room
             return
-        if not fresh and state.get("sid") and (not self.url or state.get("url") == self.url):
+        known = self.url or (state.get("url") in SERVERS and state.get("url"))
+        if not fresh and state.get("sid") and known and state.get("url") == known:
             self.url, self.sid = state["url"], state["sid"]
             return
         if self.url:
