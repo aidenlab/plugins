@@ -41,7 +41,7 @@ Try in this order; the first that exists wins.
 
 1. `${CLAUDE_PLUGIN_ROOT}/skills/juicebot/scripts/juicebot.py` (Claude Code sets the variable for plugin skills).
 2. The directory this skill was loaded from: `find ~/.claude ~/.codex -path '*juicebot/scripts/juicebot.py' 2>/dev/null | head -1`.
-3. Download: `curl -fsSL https://juicebot-install.3dg.io/juicebot.py -o juicebot.py` (or `/juicebot.mjs`).
+3. Download: `curl -fsSL https://juicebot-install-dev.3dg.io/juicebot.py -o juicebot.py` (or `/juicebot.mjs`).
 
 Use `python3` when present, else `node`. Nothing to install either way.
 
@@ -71,4 +71,4 @@ Use `python3` when present, else `node`. Nothing to install either way.
 
 ## Changing the server
 
-The scripts try `https://juicebot-mcp.3dg.io/mcp` and then the frozen demo `https://juicebox-mcp-v2.aidenlab.workers.dev/mcp`, and remember the first that answers. `JUICEBOT_URL` or `--server` overrides both (for example the dev stack `https://juicebot-mcp-dev.3dg.io/mcp`). After a server change, `reset`.
+This dev copy of the scripts uses `https://juicebot-mcp-dev.3dg.io/mcp` only. `JUICEBOT_URL` or `--server` overrides both (for example the dev stack `https://juicebot-mcp-dev.3dg.io/mcp`). After a server change, `reset`.

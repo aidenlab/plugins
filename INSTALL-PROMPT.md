@@ -1,13 +1,15 @@
 # Juicebot setup — instructions for the assistant
 
+> Dev build: this installs **juicebot-dev** from the `dev` branch against the dev stack (`juicebot-mcp-dev.3dg.io`). Names and URLs below already say so; do not substitute the production ones.
+
 You are reading this because a user pasted a one-line request to set up Juicebot. Follow it in the application you are running in. Talk to the user as someone comfortable with chat but unfamiliar with plugins, terminals and MCP: plain language, short explanations, one action at a time when their participation is needed. Perform every step you can yourself; never ask them to type a terminal command you could run.
 
 Start by telling them, in one or two sentences: Juicebot lets them control the Juicebox genome viewer by typing ordinary requests. The map appears in a browser tab, which must stay open while you work together.
 
 ## Facts
 
-- Marketplace: `aidenlab/plugins` on GitHub (marketplace name `aidenlab`). Plugin: `juicebot`, so `juicebot@aidenlab`.
-- MCP server: `https://juicebot-mcp.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top.
+- Marketplace: `aidenlab/plugins` on GitHub (marketplace name `aidenlab-dev`, git branch `dev`). Plugin: `juicebot`, so `juicebot-dev@aidenlab-dev`.
+- MCP server: `https://juicebot-mcp-dev.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top.
 - A server connection supplies tools. The plugin supplies the skill. Both is best; tools alone are enough to work.
 - Reuse anything already installed or connected. Never add a second connection to the same server.
 - Distinguish three states and report only what you have verified: **installed** (plugin present and enabled), **server connected** (Juicebot tools are callable in this conversation), **viewer working** (a page answered a command).
@@ -27,13 +29,13 @@ Plugins and marketplaces are added to the user's **account**, once, and then fol
 
 1. If Juicebot tools are already callable here, skip to verification.
 2. If you have a tool that lists the plugins on the user's account, call it for `juicebot` first. If the plugin is already there, skip to step 4. Otherwise, if you have a plugin-catalog search tool, search it for `juicebot`; if listed, render the install card and tell the user to click **Install**, then go to step 4.
-3. **One message, all the clicks.** If you have a browser tool, open `https://juicebot-install.3dg.io/plugins` in it so the page sits beside the conversation. Then send exactly this and wait for the user to say they are done:
+3. **One message, all the clicks.** If you have a browser tool, open `https://juicebot-install-dev.3dg.io/plugins` in it so the page sits beside the conversation. Then send exactly this and wait for the user to say they are done:
 
-   > Open **https://juicebot-install.3dg.io/plugins** in a new tab (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put; it lands on Claude's plugin settings. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. The **Discover** tab opens on its own; find **Juicebot** and click **Add**. Tell me when that's done.
+   > Open **https://juicebot-install-dev.3dg.io/plugins** in a new tab (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put; it lands on Claude's plugin settings. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Click **Add → Add marketplace → Add from a repository** is main-only; for the dev build use **Add → Upload plugin** with `juicebot-dev.plugin` from https://github.com/aidenlab/plugins/releases and confirm. The **Discover** tab opens on its own; find **Juicebot** and click **Add**. Tell me when that's done.
 
 4. **Confirm and connect the server.** When the user says it is done, call the tool that lists the plugins on their account, filtered to `juicebot`. It renders a card for the plugin with a **Manage** button. Then say, as one message:
 
-   > Juicebot is on your account. Click **Manage** on the card above and turn on the **juicebot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **juicebot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Juicebot`, the URL `https://juicebot-mcp.3dg.io/mcp`, no authentication.
+   > Juicebot is on your account. Click **Manage** on the card above and turn on the **juicebot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **juicebot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Juicebot`, the URL `https://juicebot-mcp-dev.3dg.io/mcp`, no authentication.
 
    On a Team or Enterprise plan, mention once that an admin can add that connector for the whole organization.
 5. The tools appear in a new conversation. End as described under "How to end your reply".
@@ -42,16 +44,16 @@ Everything added this way also reaches Claude Code the next time it starts signe
 
 ## Claude Code
 
-1. Check `claude plugin list` for `juicebot@aidenlab`. If present and enabled, skip to verification. If the user already added the plugin to their account (section above), it syncs in by itself; `/login` forces the sync.
-2. Otherwise run `claude plugin install juicebot --marketplace aidenlab/plugins`. If that flag is unsupported, run `claude plugin marketplace add aidenlab/plugins` then `claude plugin install juicebot@aidenlab`.
+1. Check `claude plugin list` for `juicebot-dev@aidenlab-dev`. If present and enabled, skip to verification. If the user already added the plugin to their account (section above), it syncs in by itself; `/login` forces the sync.
+2. Otherwise run `claude plugin install juicebot-dev --marketplace aidenlab/plugins#dev`. If that flag is unsupported, run `claude plugin marketplace add aidenlab/plugins#dev` then `claude plugin install juicebot-dev@aidenlab-dev`.
 3. Confirm with `claude plugin list`. The plugin bundles the server, so no separate connection is needed.
 4. If the Juicebot tools are not callable in this conversation yet, tell the user to run `/reload-plugins` (or start a new session), then end as described under "How to end your reply".
 5. If the user also has a claude.ai Juicebot connector, the tools appear twice; harmless. They can turn one off with `/mcp`.
 
 ## Codex
 
-1. Check `codex plugin list` for `juicebot@aidenlab`. Reuse it if installed and enabled.
-2. Otherwise run `codex plugin marketplace add aidenlab/plugins` then `codex plugin add juicebot@aidenlab`.
+1. Check `codex plugin list` for `juicebot-dev@aidenlab-dev`. Reuse it if installed and enabled.
+2. Otherwise run `codex plugin marketplace add aidenlab/plugins --ref dev` then `codex plugin add juicebot-dev@aidenlab-dev`.
 3. Verify: `codex plugin list` shows `installed, enabled`; `codex mcp list` shows `juicebot` with the server URL above. The plugin bundles the server; do not add it again with `codex mcp add`.
 4. If the tools are not callable in this conversation, end as described under "How to end your reply"; add one line that restarting Codex fixes it if they still do not appear.
 

@@ -1,6 +1,6 @@
 ---
 name: juicebot
-description: Drives the Juicebox Hi-C contact-map viewer through the Juicebot MCP tools, or through the bundled juicebot CLI when the MCP connector is not available. Use whenever the user mentions Juicebox, Juicebot, Hi-C maps, contact maps, .hic files, loops, TADs, compartments, ENCODE or 4DN Hi-C data, or asks to load, navigate, compare, track, or share a genome map view.
+description: Drives the Juicebox Hi-C contact-map viewer (Juicebot DEV stack) through the Juicebot MCP tools, or through the bundled juicebot CLI when the MCP connector is not available. Use whenever the user mentions Juicebox, Juicebot, Hi-C maps, contact maps, .hic files, loops, TADs, compartments, ENCODE or 4DN Hi-C data, or asks to load, navigate, compare, track, or share a genome map view.
 ---
 
 # Juicebot: Juicebox from Claude
@@ -22,7 +22,7 @@ $J call goto_locus '{"locus":"MYC"}'     # any tool: call NAME 'JSON'
 $J call load_map '{"url":"...hic","locus":"HOXA1"}' load_track '{"url":"genes"}'   # several in one go
 ```
 
-If `${CLAUDE_PLUGIN_ROOT}` is unset, find the script with `find ~/.claude ~/.codex -path '*juicebot/scripts/juicebot.py' | head -1`, or download it: `curl -fsSL https://juicebot-install.3dg.io/juicebot.py -o juicebot.py`. No dependencies. Exit code 2 means the tool reported an error (its message is printed); 1 means the server was unreachable. Details, options and troubleshooting: see `references/cli.md`.
+If `${CLAUDE_PLUGIN_ROOT}` is unset, find the script with `find ~/.claude ~/.codex -path '*juicebot/scripts/juicebot.py' | head -1`, or download it: `curl -fsSL https://juicebot-install-dev.3dg.io/juicebot.py -o juicebot.py`. No dependencies. Exit code 2 means the tool reported an error (its message is printed); 1 means the server was unreachable. Details, options and troubleshooting: see `references/cli.md`.
 
 Chain calls that do not depend on each other into one `call` so the user waits for one shell command, not three. Do not retry a call that said "No page is connected"; re-send the join link instead.
 
