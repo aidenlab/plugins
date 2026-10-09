@@ -1,11 +1,11 @@
 ---
 name: juicebot
-description: Drives the Juicebox Hi-C contact-map viewer through the Juicebot MCP tools, or through the bundled juicebot CLI when the MCP connector is not available. Use whenever the user mentions Juicebox, Juicebot, Hi-C maps, contact maps, .hic files, loops, TADs, compartments, ENCODE or 4DN Hi-C data, or asks to load, navigate, compare, track, or share a genome map view.
+description: Drives the Juicebox Hi-C contact-map viewer through the JuiceBot MCP tools, or through the bundled juicebot CLI when the MCP connector is not available. Use whenever the user mentions Juicebox, JuiceBot, Hi-C maps, contact maps, .hic files, loops, TADs, compartments, ENCODE or 4DN Hi-C data, or asks to load, navigate, compare, track, or share a genome map view.
 ---
 
-# Juicebot: Juicebox from Claude
+# JuiceBot: Juicebox from Claude
 
-Juicebot drives a Juicebox viewer running in the user's browser. Tools never return images; they push commands to a page over a WebSocket "room". A viewer tab must be open for anything visible to happen.
+JuiceBot drives a Juicebox viewer running in the user's browser. Tools never return images; they push commands to a page over a WebSocket "room". A viewer tab must be open for anything visible to happen.
 
 ## Tools or CLI
 

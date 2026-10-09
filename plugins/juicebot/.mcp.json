@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "juicebot": {
+    "JuiceBot": {
       "type": "http",
       "url": "https://juicebot-mcp.3dg.io/mcp"
     }

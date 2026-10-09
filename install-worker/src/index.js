@@ -2,7 +2,7 @@
  * juicebot-install.3dg.io — serves INSTALL-PROMPT.md from the aidenlab/plugins
  * repository so a user can paste one line into any assistant:
  *
- *   Set up Juicebot for me: fetch https://juicebot-install.3dg.io and follow
+ *   Set up JuiceBot for me: fetch https://juicebot-install.3dg.io and follow
  *   its instructions for the app you are running in.
  *
  * It proxies rather than redirects: several assistants' fetch tools do not
@@ -43,11 +43,11 @@ function wantsHtml(request) {
 function htmlPage(markdown) {
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Juicebot setup</title>
+<title>JuiceBot setup</title>
 <style>body{max-width:48rem;margin:2rem auto;padding:0 1rem;font:16px/1.5 system-ui,sans-serif;color:#222}pre{white-space:pre-wrap;background:#f6f6f6;padding:1rem;border-radius:6px}code{background:#f0f0f0;padding:.1em .3em;border-radius:3px}</style>
-<h1>Juicebot setup</h1>
+<h1>JuiceBot setup</h1>
 <p>Paste this into Claude Code, Cowork, claude.ai, Codex or ChatGPT:</p>
-<pre><code>Set up Juicebot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.</code></pre>
+<pre><code>Set up JuiceBot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.</code></pre>
 <p>The assistant reads the instructions below and does the rest. Manual steps: <a href="https://github.com/${REPO}#manual-install">github.com/${REPO}</a>.</p>
 <hr>
 <pre>${esc(markdown)}</pre>`;

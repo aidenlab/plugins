@@ -1,8 +1,8 @@
-# Juicebot setup — instructions for the assistant
+# JuiceBot setup — instructions for the assistant
 
-You are reading this because a user pasted a one-line request to set up Juicebot. Follow it in the application you are running in. Talk to the user as someone comfortable with chat but unfamiliar with plugins, terminals and MCP: plain language, short explanations, one action at a time when their participation is needed. Perform every step you can yourself; never ask them to type a terminal command you could run.
+You are reading this because a user pasted a one-line request to set up JuiceBot. Follow it in the application you are running in. Talk to the user as someone comfortable with chat but unfamiliar with plugins, terminals and MCP: plain language, short explanations, one action at a time when their participation is needed. Perform every step you can yourself; never ask them to type a terminal command you could run.
 
-Start by telling them, in one or two sentences: Juicebot lets them control the Juicebox genome viewer by typing ordinary requests. The map appears in a browser tab, which must stay open while you work together.
+Start by telling them, in one or two sentences: JuiceBot lets them control the Juicebox genome viewer by typing ordinary requests. The map appears in a browser tab, which must stay open while you work together.
 
 ## Facts
 
@@ -10,7 +10,7 @@ Start by telling them, in one or two sentences: Juicebot lets them control the J
 - MCP server: `https://juicebot-mcp.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top.
 - A server connection supplies tools. The plugin supplies the skill. Both is best; tools alone are enough to work.
 - Reuse anything already installed or connected. Never add a second connection to the same server.
-- Distinguish three states and report only what you have verified: **installed** (plugin present and enabled), **server connected** (Juicebot tools are callable in this conversation), **viewer working** (a page answered a command).
+- Distinguish three states and report only what you have verified: **installed** (plugin present and enabled), **server connected** (JuiceBot tools are callable in this conversation), **viewer working** (a page answered a command).
 
 ## Which application am I in?
 
@@ -25,15 +25,15 @@ Decide from your own environment; ask the user only if you cannot tell.
 
 Plugins and marketplaces are added to the user's **account**, once, and then follow them to web chat, the desktop app, Cowork and Claude Code. There is no command for this; it is a few clicks on one settings page. Keep the conversation short: two user actions in total, each as a single message. Do not build or send plugin files.
 
-1. If Juicebot tools are already callable here, skip to verification.
+1. If JuiceBot tools are already callable here, skip to verification.
 2. If you have a tool that lists the plugins on the user's account, call it for `juicebot` first. If the plugin is already there, skip to step 4. Otherwise, if you have a plugin-catalog search tool, search it for `juicebot`; if listed, render the install card and tell the user to click **Install**, then go to step 4.
 3. **One message, all the clicks.** Do not open the settings page yourself; send exactly this and wait for the user to say they are done:
 
-   > Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. The **Discover** tab opens on its own; find **Juicebot** and click **Add**. Tell me when that's done.
+   > Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. The **Discover** tab opens on its own; find **JuiceBot** and click **Add**. Tell me when that's done.
 
 4. **Confirm and connect the server.** When the user says it is done, call the tool that lists the plugins on their account, filtered to `juicebot`. It renders a card for the plugin with a **Manage** button. Then say, as one message:
 
-   > Juicebot is on your account. Click **Manage** on the card above and turn on the **juicebot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **juicebot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Juicebot`, the URL `https://juicebot-mcp.3dg.io/mcp`, no authentication.
+   > JuiceBot is on your account. Click **Manage** on the card above and turn on the **JuiceBot** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **JuiceBot**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `JuiceBot`, the URL `https://juicebot-mcp.3dg.io/mcp`, no authentication.
 
    On a Team or Enterprise plan, mention once that an admin can add that connector for the whole organization.
 5. The tools appear in a new conversation. End as described under "How to end your reply".
@@ -45,8 +45,8 @@ Everything added this way also reaches Claude Code the next time it starts signe
 1. Check `claude plugin list` for `juicebot@aidenlab`. If present and enabled, skip to verification. If the user already added the plugin to their account (section above), it syncs in by itself; `/login` forces the sync.
 2. Otherwise run `claude plugin install juicebot --marketplace aidenlab/plugins`. If that flag is unsupported, run `claude plugin marketplace add aidenlab/plugins` then `claude plugin install juicebot@aidenlab`.
 3. Confirm with `claude plugin list`. The plugin bundles the server, so no separate connection is needed.
-4. If the Juicebot tools are not callable in this conversation yet, tell the user to run `/reload-plugins` (or start a new session), then end as described under "How to end your reply".
-5. If the user also has a claude.ai Juicebot connector, the tools appear twice; harmless. They can turn one off with `/mcp`.
+4. If the JuiceBot tools are not callable in this conversation yet, tell the user to run `/reload-plugins` (or start a new session), then end as described under "How to end your reply".
+5. If the user also has a claude.ai JuiceBot connector, the tools appear twice; harmless. They can turn one off with `/mcp`.
 
 ## Codex
 
@@ -57,14 +57,14 @@ Everything added this way also reaches Claude Code the next time it starts signe
 
 ## ChatGPT
 
-1. If Juicebot tools are already available here, skip to verification.
-2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `Juicebot`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words. Custom MCP servers need a Pro, Team, Enterprise or Edu plan; on Free or Plus say so and stop, offering Claude Code or Codex as alternatives.
-3. Then help them install the resulting plugin, start a new chat, and enable Juicebot in it (the tools menu or `@Juicebot`, whichever the app offers). If an option is missing, explain the account or workspace limitation you can verify and the next step.
+1. If JuiceBot tools are already available here, skip to verification.
+2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `JuiceBot`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words. Custom MCP servers need a Pro, Team, Enterprise or Edu plan; on Free or Plus say so and stop, offering Claude Code or Codex as alternatives.
+3. Then help them install the resulting plugin, start a new chat, and enable JuiceBot in it (the tools menu or `@JuiceBot`, whichever the app offers). If an option is missing, explain the account or workspace limitation you can verify and the next step.
 4. ChatGPT gets tools and the server's built-in instructions; it does not get the plugin skill. That is fine.
 
 ## How to end your reply when the tools are not callable yet (every application)
 
-Whenever setup is done but the Juicebot tools are not available in the current conversation, end your reply with exactly this shape, and nothing after it:
+Whenever setup is done but the JuiceBot tools are not available in the current conversation, end your reply with exactly this shape, and nothing after it:
 
 1. One or two short lines stating what is done (installed / connected) and that the tools appear in a new chat.
 2. A line that says **Start a new chat and paste this:**

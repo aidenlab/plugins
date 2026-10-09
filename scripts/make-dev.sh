@@ -37,6 +37,11 @@ NAMES = [
     ("Add from a repository → `aidenlab/plugins`", "Add from a repository → `aidenlab/plugins` (the dev branch cannot be chosen there: upload `juicebot-dev.plugin` from the latest dev release instead)"),
     ("Add from a repository**, enter `aidenlab/plugins`", "Add from a repository** is main-only; for the dev build use **Add → Upload plugin** with `juicebot-dev.plugin` from https://github.com/aidenlab/plugins/releases"),
     ("marketplace name `aidenlab`", "marketplace name `aidenlab-dev`, git branch `dev`"),
+    ("**JuiceBot** server", "**JuiceBot-dev** server"),
+    ("find **JuiceBot**", "find **JuiceBot-dev**"),
+    ("enable **JuiceBot**", "enable **JuiceBot-dev**"),
+    ("name `JuiceBot`", "name `JuiceBot-dev`"),
+    ("`JuiceBot` server", "`JuiceBot-dev` server"),
 ]
 DOCS = ["README.md", "INSTALL-PROMPT.md", "plugins/juicebot/README.md",
         "plugins/juicebot/skills/juicebot/SKILL.md", "plugins/juicebot/skills/juicebot/references/cli.md",
@@ -70,22 +75,24 @@ def edit_json(path, fn):
 def devver(v): return v if v.endswith("-dev") else v + "-dev"
 def plugin_manifest(d):
     d["name"] = "juicebot-dev"
-    if "displayName" in d: d["displayName"] = "Juicebot (dev)"
+    if "displayName" in d: d["displayName"] = "JuiceBot (dev)"
     d["version"] = devver(d["version"])
     if not d["description"].startswith("[dev stack] "): d["description"] = "[dev stack] " + d["description"]
     ext = d.get("extensions", {}).get("com.openai")
-    if ext and "displayName" in ext: ext["displayName"] = "Juicebot (dev)"
+    if ext and "displayName" in ext: ext["displayName"] = "JuiceBot (dev)"
 def marketplace(d):
     d["name"] = "aidenlab-dev"
     d["metadata"]["version"] = devver(d["metadata"]["version"])
     for pl in d["plugins"]:
         if pl["name"] == "juicebot":
             pl["name"] = "juicebot-dev"; pl["version"] = devver(pl["version"])
+            if "displayName" in pl: pl["displayName"] = "JuiceBot (dev)"
             if not pl["description"].startswith("[dev stack] "): pl["description"] = "[dev stack] " + pl["description"]
 def mcp(d):
     key = "servers" if "servers" in d else "mcpServers"
-    if "juicebot" in d[key]:
-        d[key]["juicebot-dev"] = d[key].pop("juicebot")
+    for old in ("JuiceBot", "juicebot"):
+        if old in d[key]:
+            d[key]["JuiceBot-dev"] = d[key].pop(old)
     for v in d[key].values():
         for a, b in HOSTS: v["url"] = v["url"].replace(a, b)
 edit_json("plugins/juicebot/.claude-plugin/plugin.json", plugin_manifest)

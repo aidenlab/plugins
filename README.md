@@ -6,34 +6,34 @@ Plugins from [the Aiden Lab](https://aidenlab.org) for Claude, ChatGPT and Codex
 |---|---|
 | [`juicebot`](plugins/juicebot) | Drive the [Juicebox](https://aidenlab.org/juicebox/) Hi-C contact-map viewer by chatting: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Hosted MCP server, nothing runs locally. The skill bundles a dependency-free CLI (Python or Node) that calls the same server over HTTPS, so it works in Claude Code, Cowork and Codex even when the MCP connector is not set up. |
 
-## Install Juicebot: paste one line
+## Install JuiceBot: paste one line
 
 Paste this into Claude Code, Cowork, claude.ai, Codex or ChatGPT:
 
 ```
-Set up Juicebot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.
+Set up JuiceBot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.
 ```
 
 The assistant reads [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md), works out which app it is in, installs what it can itself (Claude Code, Codex), walks you through the three clicks it cannot do (Claude's account-level plugin page, ChatGPT's custom MCP server), then hands you the first message for a new chat: Juicebox opens, loads a GM12878 map at HOXA and adds a gene track so you can see it working. If the short link is down, use `https://raw.githubusercontent.com/aidenlab/plugins/main/INSTALL-PROMPT.md` instead.
 
 ## Manual install
 
-Juicebot has two halves: the **MCP server** (the tools) and the **skill** (how the assistant uses them). The server sends its core workflow to every client on connect, so tools alone are enough to work; the plugin adds the fuller skill.
+JuiceBot has two halves: the **MCP server** (the tools) and the **skill** (how the assistant uses them). The server sends its core workflow to every client on connect, so tools alone are enough to work; the plugin adds the fuller skill.
 
 With the plugin installed but no connector, the skill falls back to `skills/juicebot/scripts/juicebot.py` (or `.mjs`): the same tools by name over plain HTTPS, several per shell call (`call load_map '{…}' load_track '{"url":"genes"}'`). Only the viewer must be a real browser.
 
 **Claude — web, desktop Chat, Cowork (one account-level setup).** Plugins and marketplaces live on your Claude account and follow you to every surface, Claude Code included.
 
-1. Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (in the app: **Customize → Plugins**, in Cowork open the Cowork tab first). **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`. The Discover tab opens; find **Juicebot → Add**.
-2. On the plugin's **Manage** page turn on the **juicebot** server. If there is no switch, **Customize → Connectors** → enable **juicebot**; failing that, **Settings → Connectors → Add custom connector**, name `Juicebot`, URL `https://juicebot-mcp.3dg.io/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
+1. Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (in the app: **Customize → Plugins**, in Cowork open the Cowork tab first). **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`. The Discover tab opens; find **JuiceBot → Add**.
+2. On the plugin's **Manage** page turn on the **JuiceBot** server. If there is no switch, **Customize → Connectors** → enable **JuiceBot**; failing that, **Settings → Connectors → Add custom connector**, name `JuiceBot`, URL `https://juicebot-mcp.3dg.io/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
 
 Start a new conversation and the tools are there. Paid plans only (Pro, Max, Team, Enterprise).
 
 **Claude Code** — picks up the account install above on next start (`/login` forces it). Standalone: `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; from a terminal `claude plugin install juicebot --marketplace aidenlab/plugins`. The plugin bundles the server.
 
-**Codex** — `codex plugin marketplace add aidenlab/plugins`, then `codex plugin add juicebot@aidenlab`. `codex mcp list` shows the `juicebot` server; start a new chat.
+**Codex** — `codex plugin marketplace add aidenlab/plugins`, then `codex plugin add juicebot@aidenlab`. `codex mcp list` shows the `JuiceBot` server; start a new chat.
 
-**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `Juicebot`, the URL above, authentication **None** (Pro, Team, Enterprise or Edu plans). Enable it in a new chat.
+**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `JuiceBot`, the URL above, authentication **None** (Pro, Team, Enterprise or Edu plans). Enable it in a new chat.
 
 **Other MCP clients** (Cursor, stdio-only tools) — point them at the URL; bridge stdio-only clients with `npx -y mcp-remote https://juicebot-mcp.3dg.io/mcp`.
 
@@ -65,6 +65,7 @@ plugins/juicebot/
   skills/juicebot/SKILL.md          the skill, shared by all
   skills/juicebot/scripts/          juicebot.py / juicebot.mjs: the connector-free CLI
   skills/juicebot/references/       tools.md (generated from tools/list), cli.md
+  assets/                           icon.svg (source: make_icon.py), icon.png 512, icon-128.png
 INSTALL-PROMPT.md                   what the one-line prompt fetches
 install-worker/                     Cloudflare Worker serving it at juicebot-install.3dg.io
 scripts/package.sh                  builds dist/juicebot.plugin

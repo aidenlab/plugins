@@ -1,4 +1,4 @@
-# Juicebot tool reference
+# JuiceBot tool reference
 
 Generated from the live server's `tools/list` (32 tools). Call them as MCP tools when the connector is present, or as `juicebot.py call <name> '<json>'` otherwise; names and arguments are identical.
 

@@ -1,6 +1,6 @@
 # juicebot CLI reference
 
-The CLI is an MCP client over plain HTTPS. The Juicebot server is stateless Streamable HTTP, so a "session" is only a header, and the session id is also the Juicebox room id. `scripts/juicebot.py` (Python 3.8+) and `scripts/juicebot.mjs` (Node 18+) are the same program; both use only the standard library.
+The CLI is an MCP client over plain HTTPS. The JuiceBot server is stateless Streamable HTTP, so a "session" is only a header, and the session id is also the Juicebox room id. `scripts/juicebot.py` (Python 3.8+) and `scripts/juicebot.mjs` (Node 18+) are the same program; both use only the standard library.
 
 ## Contents
 
