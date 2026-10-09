@@ -25,16 +25,13 @@ if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_US
 
 // PROFILE names the deployment this copy belongs to ("" for production, "dev" on
 // the dev branch); it keeps the state files apart so two CLIs never share a room.
-const PROFILE = '';
-// Candidate endpoints, tried in order the first time a session is created. The
-// 3dg.io name is the lab's stable hostname; the workers.dev name is the frozen
-// demo deployment. Override with --server or JUICEBOT_URL.
+const PROFILE = 'dev';
+// Dev branch: the dev stack only. Override with --server or JUICEBOT_URL.
 const SERVERS = [
-  'https://juicebot-mcp.3dg.io/mcp',
-  'https://juicebox-mcp-v2.aidenlab.workers.dev/mcp'
+  'https://juicebot-mcp-dev.3dg.io/mcp'
 ];
 // Cloudflare's Browser Integrity Check (error 1010) rejects some library User-Agents.
-const USER_AGENT = 'juicebot-cli/1.0 (+https://github.com/aidenlab/plugins)';
+const USER_AGENT = 'juicebot-cli-dev/1.0 (+https://github.com/aidenlab/plugins)';
 // Tool calls wait up to 10 s for the page's ack; ENCODE portal searches can be slow.
 const TIMEOUT_MS = 60_000;
 const PROTOCOL_VERSION = '2025-06-18';

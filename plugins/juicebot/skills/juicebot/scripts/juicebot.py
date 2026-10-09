@@ -20,7 +20,7 @@ Options:
   --server URL   MCP endpoint for this invocation (overrides JUICEBOT_URL and the built-in list)
 
 Environment:
-  JUICEBOT_URL     MCP endpoint, e.g. https://juicebot-mcp.3dg.io/mcp
+  JUICEBOT_URL     MCP endpoint, e.g. https://juicebot-mcp-dev.3dg.io/mcp
   JUICEBOT_STATE   state file (default: ~/.local/state/juicebot/session.json, or $XDG_STATE_HOME)
 
 Exit codes: 0 ok; 2 the tool reported an error (most often: no page connected); 1 transport or usage error.
@@ -34,18 +34,14 @@ import urllib.request
 # PROFILE names the deployment this copy of the script belongs to ("" for
 # production, "dev" on the dev branch). It keeps the state files apart so a
 # dev and a production CLI on one machine never share a room.
-PROFILE = ""
-# Candidate endpoints, tried in order the first time a session is created. The
-# 3dg.io name is the lab's stable hostname (the Worker behind it may change);
-# the workers.dev name is the frozen demo deployment, kept as a fallback. Override with --server or
-# JUICEBOT_URL. The one that answers is remembered in the state file.
+PROFILE = "dev"
+# Dev branch: the dev stack only. Override with --server or JUICEBOT_URL.
 SERVERS = [
-    "https://juicebot-mcp.3dg.io/mcp",
-    "https://juicebox-mcp-v2.aidenlab.workers.dev/mcp",
+    "https://juicebot-mcp-dev.3dg.io/mcp",
 ]
 # Cloudflare's Browser Integrity Check (error 1010) rejects Python's default
 # "Python-urllib/x.y" User-Agent, so every request carries this one instead.
-USER_AGENT = "juicebot-cli/1.0 (+https://github.com/aidenlab/plugins)"
+USER_AGENT = "juicebot-cli-dev/1.0 (+https://github.com/aidenlab/plugins)"
 # Tool calls wait up to 10 s for the page to acknowledge, plus the ENCODE portal
 # searches that can take a while; 60 s leaves headroom without hanging forever.
 TIMEOUT_SECONDS = 60

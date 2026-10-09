@@ -1,22 +1,22 @@
 {
-  "name": "aidenlab",
+  "name": "aidenlab-dev",
   "owner": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"
   },
   "metadata": {
     "description": "Claude, ChatGPT and Codex plugins from the Aiden Lab: Hi-C / 3D genome tooling.",
-    "version": "1.3.1"
+    "version": "1.3.1-dev"
   },
   "plugins": [
     {
-      "name": "juicebot",
+      "name": "juicebot-dev",
       "source": {
         "source": "local",
         "path": "./plugins/juicebot"
       },
-      "description": "Drive the Juicebox Hi-C contact-map viewer from Claude, ChatGPT or Codex: search ENCODE/4DN maps, load maps and tracks, navigate loci, and share sessions.",
-      "version": "1.3.1",
+      "description": "[dev stack] Drive the Juicebox Hi-C contact-map viewer from Claude, ChatGPT or Codex: search ENCODE/4DN maps, load maps and tracks, navigate loci, and share sessions.",
+      "version": "1.3.1-dev",
       "category": "science",
       "keywords": [
         "hi-c",
@@ -27,7 +27,7 @@
         "4dn"
       ],
       "homepage": "https://github.com/weiszd/juicebox-mcp",
-      "displayName": "JuiceBot"
+      "displayName": "JuiceBot (dev)"
     }
   ]
 }

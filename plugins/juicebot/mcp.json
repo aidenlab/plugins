@@ -1,9 +1,9 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
-    "JuiceBot": {
+    "JuiceBot-dev": {
       "type": "streamable-http",
-      "url": "https://juicebot-mcp.3dg.io/mcp"
+      "url": "https://juicebot-mcp-dev.3dg.io/mcp"
     }
   }
 }

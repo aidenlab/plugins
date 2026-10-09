@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "juicebot",
-  "version": "1.3.1",
-  "description": "AI control of the Juicebox Hi-C contact-map viewer: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
+  "name": "juicebot-dev",
+  "version": "1.3.1-dev",
+  "description": "[dev stack] AI control of the Juicebox Hi-C contact-map viewer: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
   "author": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"
@@ -24,7 +24,7 @@
   "mcpServers": "./mcp.json",
   "extensions": {
     "com.openai": {
-      "displayName": "JuiceBot",
+      "displayName": "JuiceBot (dev)",
       "category": "Science",
       "interface": {
         "composerIcon": "./assets/icon-128.png",
