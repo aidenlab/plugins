@@ -33,7 +33,7 @@ Start a new conversation and the tools are there. Paid plans only (Pro, Max, Tea
 
 **Codex** — `codex plugin marketplace add aidenlab/plugins`, then `codex plugin add juicebot@aidenlab`. `codex mcp list` shows the `JuiceBot` server; start a new chat.
 
-**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `JuiceBot`, the URL above, authentication **None**. Enable it in a new chat.
+**ChatGPT** — any plan, including Free: [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `JuiceBot`, the URL above, authentication **None** → **Create as a plugin** → install. Enable it in a new chat. This route gives the tools, not the skill. Business/Enterprise/Edu workspaces can import the whole marketplace instead (see admins below).
 
 **Other MCP clients** (Cursor, stdio-only tools) — point them at the URL; bridge stdio-only clients with `npx -y mcp-remote https://juicebot-mcp.3dg.io/mcp`.
 
@@ -50,7 +50,8 @@ Plugins listed in Anthropic's community directory appear in Cowork's **Discover*
 ## For the whole organization (admins)
 
 1. **Connector:** add `https://juicebot-mcp.3dg.io/mcp` as an organization connector (Claude Team/Enterprise; ChatGPT workspace admins can publish the plugin to the workspace). Members get the tools with no setup.
-2. **Plugin:** Claude: Organization settings → Plugins & skills → Marketplaces → Add plugins → Sync from GitHub (needs a *private or internal* mirror with the Claude GitHub App) or upload the release's `juicebot.plugin` as a ZIP. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
+2. **Plugin (ChatGPT Business/Enterprise/Edu):** Admin console → (workspace) → Plugins → Add → Import marketplace, Source `https://github.com/aidenlab/plugins`, Path and Branch empty. Daily sync keeps it current; set JuiceBot's installation policy afterwards. ChatGPT may label it *Desktop only* because the server is declared in `mcp.json`. See [Importing and syncing plugin marketplaces from GitHub](https://help.openai.com/en/articles/20001504-importing-and-syncing-plugin-marketplaces-from-github).
+3. **Plugin (Claude):** Organization settings → Plugins & skills → Marketplaces → Add plugins → Sync from GitHub (needs a *private or internal* mirror with the Claude GitHub App) or upload the release's `juicebot.plugin` as a ZIP. See [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 
 ## Layout and maintenance
 

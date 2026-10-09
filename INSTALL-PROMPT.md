@@ -57,10 +57,11 @@ Everything added this way also reaches Claude Code the next time it starts signe
 
 ## ChatGPT
 
-1. If JuiceBot tools are already available here, skip to verification.
-2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `JuiceBot`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words.
-3. Then help them install the resulting plugin, start a new chat, and enable JuiceBot in it (the tools menu or `@JuiceBot`, whichever the app offers). If an option is missing, explain the account or workspace limitation you can verify and the next step.
-4. ChatGPT gets tools and the server's built-in instructions; it does not get the plugin skill. That is fine.
+1. If JuiceBot tools are already available here, or JuiceBot shows under **Installed** at chatgpt.com/plugins, skip to verification.
+2. **Business, Enterprise or Edu workspace:** a workspace admin can add the whole marketplace once for everyone: **Admin console → (workspace) → Plugins → Add → Import marketplace**, Source `https://github.com/aidenlab/plugins`, Path and Branch empty, then set JuiceBot's installation policy. Members then install JuiceBot from the workspace directory. If the user is not an admin, say this once as something to pass on to their admin and continue with step 3 for themselves.
+3. **Any plan, including Free:** guide the user to **chatgpt.com/plugins → + → Add custom MCP server**, name `JuiceBot`, the server URL above, authentication **None**. Explain the risk confirmation in plain words, then have them select **Create as a plugin** and install it.
+4. Start a new chat and enable JuiceBot in it (`@JuiceBot`, or **+** / **Plugins** in the composer). If an option is missing, explain the account or workspace limitation you can verify and the next step.
+5. The custom-MCP route gives ChatGPT the tools and the server's built-in instructions, not the plugin skill. That is fine.
 
 ## How to end your reply when the tools are not callable yet (every application)
 

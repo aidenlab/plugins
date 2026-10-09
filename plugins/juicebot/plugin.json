@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "juicebot",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "AI control of the Juicebox Hi-C contact-map viewer: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
   "author": {
     "name": "The Aiden Lab",
@@ -20,16 +20,24 @@
     "4dn",
     "mcp"
   ],
-  "skills": "./skills/",
-  "mcpServers": "./mcp.json",
   "extensions": {
     "com.openai": {
-      "displayName": "JuiceBot",
-      "category": "Science",
       "interface": {
+        "displayName": "JuiceBot",
+        "shortDescription": "Explore Hi-C contact maps",
+        "longDescription": "Drive the Juicebox Hi-C contact-map viewer by typing plain requests: search ENCODE and 4DN Hi-C maps, load maps and tracks, navigate to genes and loci, compare panels, and share sessions. The map opens in a browser tab that must stay open while you work. Connects to the Aiden Lab's hosted MCP server; no account is needed.",
+        "developerName": "The Aiden Lab",
+        "category": "Science",
+        "capabilities": ["Read"],
+        "websiteURL": "https://aidenlab.org",
+        "defaultPrompt": [
+          "Load the GM12878 Hi-C map and go to the HOXA cluster.",
+          "Go to MYC and add the gene track.",
+          "Create a link I can share showing this view."
+        ],
+        "brandColor": "#e8231b",
         "composerIcon": "./assets/icon-128.png",
-        "logo": "./assets/icon.png",
-        "brandColor": "#e8231b"
+        "logo": "./assets/icon.png"
       }
     }
   }
