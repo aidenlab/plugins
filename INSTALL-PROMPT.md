@@ -58,7 +58,7 @@ Everything added this way also reaches Claude Code the next time it starts signe
 ## ChatGPT
 
 1. If JuiceBot tools are already available here, skip to verification.
-2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `JuiceBot`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words. Custom MCP servers need a Pro, Team, Enterprise or Edu plan; on Free or Plus say so and stop, offering Claude Code or Codex as alternatives.
+2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `JuiceBot`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words.
 3. Then help them install the resulting plugin, start a new chat, and enable JuiceBot in it (the tools menu or `@JuiceBot`, whichever the app offers). If an option is missing, explain the account or workspace limitation you can verify and the next step.
 4. ChatGPT gets tools and the server's built-in instructions; it does not get the plugin skill. That is fine.
 

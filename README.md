@@ -33,7 +33,7 @@ Start a new conversation and the tools are there. Paid plans only (Pro, Max, Tea
 
 **Codex** — `codex plugin marketplace add aidenlab/plugins`, then `codex plugin add juicebot@aidenlab`. `codex mcp list` shows the `JuiceBot` server; start a new chat.
 
-**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `JuiceBot`, the URL above, authentication **None** (Pro, Team, Enterprise or Edu plans). Enable it in a new chat.
+**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `JuiceBot`, the URL above, authentication **None**. Enable it in a new chat.
 
 **Other MCP clients** (Cursor, stdio-only tools) — point them at the URL; bridge stdio-only clients with `npx -y mcp-remote https://juicebot-mcp.3dg.io/mcp`.
 
