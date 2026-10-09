@@ -1,9 +1,8 @@
 {
   "name": "juicebot",
   "displayName": "JuiceBot",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "AI control of the Juicebox Hi-C contact-map viewer: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
-  "icon": "./assets/icon.png",
   "author": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"

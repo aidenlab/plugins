@@ -65,7 +65,8 @@ plugins/juicebot/
   skills/juicebot/SKILL.md          the skill, shared by all
   skills/juicebot/scripts/          juicebot.py / juicebot.mjs: the connector-free CLI
   skills/juicebot/references/       tools.md (generated from tools/list), cli.md
-  assets/                           icon.svg (source: make_icon.py), icon.png 512, icon-128.png
+  assets/                           icon.svg (source: make_icon.py), icon.png 512, icon-128.png — used by the OpenAI
+                                    manifest and the directory submission form; claude.ai strips an `icon` key from plugin.json
 INSTALL-PROMPT.md                   what the one-line prompt fetches
 install-worker/                     Cloudflare Worker serving it at juicebot-install.3dg.io
 scripts/package.sh                  builds dist/juicebot.plugin
