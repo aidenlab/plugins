@@ -29,14 +29,14 @@ if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_US
 
 // PROFILE names the deployment this copy belongs to ("" for production, "dev" on
 // the dev branch); it keeps the state files apart so two CLIs never share a Room.
-const PROFILE = '';
+const PROFILE = 'dev';
 // Candidate endpoints, tried in order when no Room is known yet. Override with
 // --server or GEENEE_URL. The one that answers is remembered with the Room.
 const SERVERS = [
   'https://geenee-dev.3dg.io/mcp'
 ];
 // A descriptive User-Agent: Cloudflare's Browser Integrity Check (error 1010) rejects some library defaults.
-const USER_AGENT = 'geenee-cli/2.0 (+https://github.com/aidenlab/plugins)';
+const USER_AGENT = 'geenee-cli-dev/2.0 (+https://github.com/aidenlab/plugins)';
 // Viewer acks take up to 15 s and catalogue searches can be slow.
 const TIMEOUT_MS = 60_000;
 const OPEN_TOOL = 'open_geenee';

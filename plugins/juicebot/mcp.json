@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
-    "Geenee": {
+    "Geenee-dev": {
       "type": "streamable-http",
       "url": "https://geenee-dev.3dg.io/mcp"
     }

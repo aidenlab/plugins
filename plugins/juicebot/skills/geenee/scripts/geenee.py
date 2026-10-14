@@ -40,7 +40,7 @@ import urllib.request
 # PROFILE names the deployment this copy of the script belongs to ("" for
 # production, "dev" on the dev branch). It keeps the state files apart so a
 # dev and a production CLI on one machine never share a Room.
-PROFILE = ""
+PROFILE = "dev"
 # Candidate endpoints, tried in order when no Room is known yet. Override with
 # --server or GEENEE_URL. The one that answers is remembered with the Room.
 SERVERS = [
@@ -48,7 +48,7 @@ SERVERS = [
 ]
 # A descriptive User-Agent: Cloudflare's Browser Integrity Check (error 1010)
 # rejects some library defaults on some hostnames.
-USER_AGENT = "geenee-cli/2.0 (+https://github.com/aidenlab/plugins)"
+USER_AGENT = "geenee-cli-dev/2.0 (+https://github.com/aidenlab/plugins)"
 # Viewer acks take up to 15 s and catalogue searches can be slow; 60 s leaves headroom.
 TIMEOUT_SECONDS = 60
 OPEN_TOOL = "open_geenee"

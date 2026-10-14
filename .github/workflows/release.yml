@@ -1,7 +1,7 @@
 name: release
 on:
   push:
-    tags: ["v*"]
+    tags: ["v*-dev*"]
 permissions:
   contents: write
 jobs:
@@ -14,8 +14,9 @@ jobs:
           node-version: 22
       - run: npm install -g @anthropic-ai/claude-code
       - run: claude plugin validate . && claude plugin validate ./plugins/juicebot
-      - run: scripts/package.sh juicebot
+      - run: scripts/package.sh juicebot juicebot-dev
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist/juicebot.plugin
+          files: dist/juicebot-dev.plugin
+          prerelease: true
           generate_release_notes: true

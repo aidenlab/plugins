@@ -41,7 +41,7 @@ Try in this order; the first that exists wins.
 
 1. `${CLAUDE_PLUGIN_ROOT}/skills/geenee/scripts/geenee.py` (Claude Code sets the variable for plugin skills).
 2. The directory this skill was loaded from: `find ~/.claude ~/.codex -path '*geenee/scripts/geenee.py' 2>/dev/null | head -1`.
-3. Download: `curl -fsSL https://geenee-install.3dg.io/geenee.py -o geenee.py` (or `/geenee.mjs`).
+3. Download: `curl -fsSL https://geenee-install-dev.3dg.io/geenee.py -o geenee.py` (or `/geenee.mjs`).
 
 Use `python3` when present, else `node`. Nothing to install either way.
 

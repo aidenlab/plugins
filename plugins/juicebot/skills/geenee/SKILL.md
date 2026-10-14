@@ -1,6 +1,6 @@
 ---
 name: geenee
-description: Drives Geenee, the Aiden Lab's genome workspace holding the igv genome browser and the Juicebox Hi-C contact-map viewer, through the Geenee MCP tools (igv_*, juicebox_*, open_geenee), or through the bundled geenee CLI when the MCP connector is not available. Use whenever the user mentions Geenee, IGV, Juicebox, JuiceBot, a genome browser, Hi-C or contact maps, .hic files, loops, TADs, compartments, ENCODE or 4DN data, bigWig/BED/peak tracks, or asks to open, load, navigate, compare, track, or share a genome view.
+description: Drives Geenee (DEV build of the plugin), the Aiden Lab's genome workspace holding the igv genome browser and the Juicebox Hi-C contact-map viewer, through the Geenee MCP tools (igv_*, juicebox_*, open_geenee), or through the bundled geenee CLI when the MCP connector is not available. Use whenever the user mentions Geenee, IGV, Juicebox, JuiceBot, a genome browser, Hi-C or contact maps, .hic files, loops, TADs, compartments, ENCODE or 4DN data, bigWig/BED/peak tracks, or asks to open, load, navigate, compare, track, or share a genome view.
 ---
 
 # Geenee: IGV and Juicebox from Claude
@@ -22,7 +22,7 @@ $G call igv_go_to_gene '{"gene":"MYC"}'        # any tool: call NAME 'JSON'
 $G call juicebox_load_map '{"url":"...hic","locus":"HOXA1"}' juicebox_load_track '{"url":"genes"}'   # several in one go
 ```
 
-If `${CLAUDE_PLUGIN_ROOT}` is unset, find the script with `find ~/.claude ~/.codex -path '*geenee/scripts/geenee.py' | head -1`, or download it: `curl -fsSL https://geenee-install.3dg.io/geenee.py -o geenee.py`. No dependencies. Exit code 2 means a tool reported an error (its message is printed); 1 means the server was unreachable. Details, options and troubleshooting: `references/cli.md`.
+If `${CLAUDE_PLUGIN_ROOT}` is unset, find the script with `find ~/.claude ~/.codex -path '*geenee/scripts/geenee.py' | head -1`, or download it: `curl -fsSL https://geenee-install-dev.3dg.io/geenee.py -o geenee.py`. No dependencies. Exit code 2 means a tool reported an error (its message is printed); 1 means the server was unreachable. Details, options and troubleshooting: `references/cli.md`.
 
 Chain calls that do not depend on each other into one `call` so the user waits for one shell command, not three. Do not retry a call that said no page or no viewer is connected; re-send the Workspace link instead.
 

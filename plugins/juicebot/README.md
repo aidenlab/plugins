@@ -11,10 +11,10 @@ Server source and tool reference: [aidenlab/geenee](https://github.com/aidenlab/
 Paste into Claude Code, Cowork, claude.ai, Codex or ChatGPT:
 
 ```
-Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.
+Set up Geenee (dev) for me: fetch https://geenee-install-dev.3dg.io and follow its instructions for the app you are running in.
 ```
 
-Manual paths for every client are in the [marketplace README](../../README.md). Quickest by hand: Claude Code `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins` then `codex plugin add juicebot@aidenlab`; Claude web/desktop/Cowork: https://claude.ai/new#settings/customize-plugins → Add → Add marketplace → `aidenlab/plugins` → Discover → Geenee → Add, then enable the Geenee connector; ChatGPT adds `https://geenee-dev.3dg.io/mcp` as a custom MCP server.
+Manual paths for every client are in the [marketplace README](../../README.md). Quickest by hand: Claude Code `/plugin install juicebot-dev --marketplace aidenlab/plugins#dev` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins --ref dev` then `codex plugin add juicebot-dev@aidenlab-dev`; Claude web/desktop/Cowork: https://claude.ai/new#settings/customize-plugins → Add → Add marketplace → `aidenlab/plugins` → Discover → Geenee → Add, then enable the Geenee connector; ChatGPT adds `https://geenee-dev.3dg.io/mcp` as a custom MCP server.
 
 ## Try it
 

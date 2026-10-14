@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "juicebot",
-  "version": "2.0.0",
-  "description": "Geenee: AI control of a genome workspace with the igv genome browser and the Juicebox Hi-C contact-map viewer side by side. Search ENCODE/4DN, load maps and tracks, navigate genes and loci, compare, share. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
+  "name": "juicebot-dev",
+  "version": "2.0.0-dev",
+  "description": "[dev build] Geenee: AI control of a genome workspace with the igv genome browser and the Juicebox Hi-C contact-map viewer side by side. Search ENCODE/4DN, load maps and tracks, navigate genes and loci, compare, share. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
   "author": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"
@@ -26,7 +26,7 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Geenee",
+        "displayName": "Geenee (dev)",
         "shortDescription": "Explore genomes and Hi-C maps",
         "longDescription": "Drive Geenee by typing plain requests: one page beside the chat holds the igv genome browser and the Juicebox Hi-C contact-map viewer. Search ENCODE and 4DN for maps and tracks, load them, navigate to genes and loci, compare views, and share links. The page opens in a browser tab that must stay open while you work. Connects to the Aiden Lab's hosted MCP server; no account is needed.",
         "developerName": "The Aiden Lab",

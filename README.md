@@ -1,5 +1,7 @@
 # Aiden Lab plugins
 
+> **Dev branch.** This is the `-dev` build of the plugin (`juicebot-dev@aidenlab-dev`, server name `Geenee-dev`), installable beside the production one. Production is on `main`.
+
 Plugins from [the Aiden Lab](https://aidenlab.org) for Claude, ChatGPT and Codex. One marketplace, `aidenlab/plugins`, in both the Claude Code and the OpenAI Agent Plugins layouts.
 
 | Plugin | What it does |
@@ -13,7 +15,7 @@ The plugin was called **JuiceBot** up to version 1.3 and drove Juicebox alone. V
 Paste this into Claude Code, Cowork, claude.ai, Codex or ChatGPT:
 
 ```
-Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.
+Set up Geenee (dev) for me: fetch https://geenee-install-dev.3dg.io and follow its instructions for the app you are running in.
 ```
 
 The assistant reads [`INSTALL-PROMPT.md`](INSTALL-PROMPT.md), works out which app it is in, installs what it can itself (Claude Code, Codex), walks you through the three clicks it cannot do (Claude's account-level plugin page, ChatGPT's custom MCP server), then hands you the first message for a new chat: Geenee opens, Juicebox loads a GM12878 map at HOXA with the gene track, IGV goes to HOXA1 with a CTCF track. If the short link is down, use `https://raw.githubusercontent.com/aidenlab/plugins/main/INSTALL-PROMPT.md` instead.
@@ -27,15 +29,15 @@ With the plugin installed but no connector, the skill falls back to `skills/geen
 **Claude — web, desktop Chat, Cowork (one account-level setup).** Plugins and marketplaces live on your Claude account and follow you to every surface, Claude Code included.
 
 1. Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (in the app: **Customize → Plugins**, in Cowork open the Cowork tab first). **Add → Add marketplace → Add from a repository** → `aidenlab/plugins`. The Discover tab opens; find **Geenee → Add**.
-2. On the plugin's **Manage** page turn on the **Geenee** server. If there is no switch, **Customize → Connectors** → enable **Geenee**; failing that, **Settings → Connectors → Add custom connector**, name `Geenee`, URL `https://geenee-dev.3dg.io/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
+2. On the plugin's **Manage** page turn on the **Geenee-dev** server. If there is no switch, **Customize → Connectors** → enable **Geenee-dev**; failing that, **Settings → Connectors → Add custom connector**, name `Geenee-dev`, URL `https://geenee-dev.3dg.io/mcp`, no auth. Team/Enterprise admins can add that connector once for everyone.
 
 Start a new conversation and the tools are there. Paid plans only (Pro, Max, Team, Enterprise).
 
-**Claude Code** — picks up the account install above on next start (`/login` forces it). Standalone: `/plugin install juicebot --marketplace aidenlab/plugins` then `/reload-plugins`; from a terminal `claude plugin install juicebot --marketplace aidenlab/plugins`. The plugin bundles the server.
+**Claude Code** — picks up the account install above on next start (`/login` forces it). Standalone: `/plugin install juicebot-dev --marketplace aidenlab/plugins#dev` then `/reload-plugins`; from a terminal `claude plugin install juicebot-dev --marketplace aidenlab/plugins#dev`. The plugin bundles the server.
 
-**Codex** — `codex plugin marketplace add aidenlab/plugins`, then `codex plugin add juicebot@aidenlab`. `codex mcp list` shows the `Geenee` server; start a new chat.
+**Codex** — `codex plugin marketplace add aidenlab/plugins --ref dev`, then `codex plugin add juicebot-dev@aidenlab-dev`. `codex mcp list` shows the `Geenee-dev` server; start a new chat.
 
-**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `Geenee`, the URL above, authentication **None**. Enable it in a new chat.
+**ChatGPT** — [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → **Add custom MCP server**, name `Geenee-dev`, the URL above, authentication **None**. Enable it in a new chat.
 
 **Other MCP clients** (Cursor, stdio-only tools) — point them at the URL; bridge stdio-only clients with `npx -y mcp-remote https://geenee-dev.3dg.io/mcp`.
 
@@ -43,9 +45,9 @@ Start a new conversation and the tools are there. Paid plans only (Pro, Max, Tea
 
 The plugin id did not change, so nothing has to be reinstalled.
 
-- **Claude Code**: `/plugin marketplace update aidenlab` then `/plugin update juicebot@aidenlab` (or turn on auto-update for the marketplace under `/plugin` → Marketplaces). The bundled server is now Geenee.
-- **claude.ai / desktop / Cowork**: on the plugin's **Manage** page take the update, turn on the **Geenee** server and turn off **JuiceBot**. If JuiceBot was added as a custom connector, add **Geenee** the same way and disable JuiceBot.
-- **Codex**: `codex plugin marketplace upgrade aidenlab`.
+- **Claude Code**: `/plugin marketplace update aidenlab-dev` then `/plugin update juicebot-dev@aidenlab-dev` (or turn on auto-update for the marketplace under `/plugin` → Marketplaces). The bundled server is now Geenee.
+- **claude.ai / desktop / Cowork**: on the plugin's **Manage** page take the update, turn on the **Geenee-dev** server and turn off **JuiceBot**. If JuiceBot was added as a custom connector, add **Geenee** the same way and disable JuiceBot.
+- **Codex**: `codex plugin marketplace upgrade aidenlab-dev`.
 - **ChatGPT**: add the Geenee custom MCP server; remove JuiceBot.
 
 The old server (`juicebot-mcp.3dg.io`) keeps running: Geenee forwards Juicebox commands to it.
@@ -81,15 +83,15 @@ plugins/juicebot/                   the Geenee plugin (id kept as juicebot, see 
   assets/                           icon.svg (source: make_icon.py), icon.png 512, icon-128.png — used by the OpenAI
                                     manifest and the directory submission form; claude.ai strips an `icon` key from plugin.json
 INSTALL-PROMPT.md                   what the one-line prompt fetches
-install-worker/                     Cloudflare Worker serving it at geenee-install.3dg.io (and juicebot-install.3dg.io)
+install-worker/                     Cloudflare Worker serving it at geenee-install-dev.3dg.io (and juicebot-install-dev.3dg.io)
 scripts/gen-tools-md.py             regenerates references/tools.md from the live server
 scripts/package.sh                  builds dist/juicebot.plugin
 scripts/make-dev.sh                 turns a checkout of main into the dev branch
 ```
 
 - Change the server URL in both `plugins/juicebot/.mcp.json` and `plugins/juicebot/mcp.json`, in `SERVERS` of both CLI scripts, and in the docs.
-- Bump `version` in all four manifests when anything changes; users on an older version stay there until they update (`/plugin marketplace update aidenlab` + `/plugin update juicebot@aidenlab` in Claude Code; `codex plugin marketplace upgrade aidenlab` in Codex). Never change the plugin `name`: it is the install id, and a rename breaks every existing install.
-- Validate: `claude plugin validate . && claude plugin validate ./plugins/juicebot`; `codex plugin marketplace add ./ && codex plugin add juicebot@aidenlab`.
+- Bump `version` in all four manifests when anything changes; users on an older version stay there until they update (`/plugin marketplace update aidenlab-dev` + `/plugin update juicebot-dev@aidenlab-dev` in Claude Code; `codex plugin marketplace upgrade aidenlab-dev` in Codex). Never change the plugin `name`: it is the install id, and a rename breaks every existing install.
+- Validate: `claude plugin validate . && claude plugin validate ./plugins/juicebot`; `codex plugin marketplace add ./ && codex plugin add juicebot-dev@aidenlab-dev`.
 - CLI smoke test against the live server: `scripts/test-cli.sh`. Regenerate `references/tools.md` after a tool change: `scripts/gen-tools-md.py`.
 - The MCP endpoint is `https://geenee-dev.3dg.io/mcp`, Geenee's development deployment (it forwards to the igv-bot and Juicebox dev servers). It will move to a production hostname without changing anything but the URL here.
 - Tagging `v*` runs the release workflow, which attaches `juicebot.plugin` to the GitHub release.

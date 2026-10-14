@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "Geenee": {
+    "Geenee-dev": {
       "type": "http",
       "url": "https://geenee-dev.3dg.io/mcp"
     }
