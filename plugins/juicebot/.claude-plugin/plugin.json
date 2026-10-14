@@ -1,16 +1,19 @@
 {
   "name": "juicebot",
-  "displayName": "JuiceBot",
-  "version": "1.3.2",
-  "description": "AI control of the Juicebox Hi-C contact-map viewer: search ENCODE/4DN, load maps and tracks, navigate loci, compare panels, share sessions. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
+  "displayName": "Geenee",
+  "version": "2.0.0",
+  "description": "Geenee: AI control of a genome workspace with the igv genome browser and the Juicebox Hi-C contact-map viewer side by side. Search ENCODE/4DN, load maps and tracks, navigate genes and loci, compare, share. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
   "author": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"
   },
-  "homepage": "https://github.com/weiszd/juicebox-mcp",
+  "homepage": "https://github.com/aidenlab/geenee",
   "repository": "https://github.com/aidenlab/plugins",
   "license": "MIT",
   "keywords": [
+    "geenee",
+    "igv",
+    "genome-browser",
     "hi-c",
     "juicebox",
     "genomics",

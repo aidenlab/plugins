@@ -5,7 +5,10 @@ compatibility_date = "2025-09-01"
 # Deploy from a machine logged in with `wrangler login` on the account that
 # owns the 3dg.io zone:   cd install-worker && npx wrangler deploy
 # Wrangler attaches the custom domain and creates its DNS record.
+# Both hostnames serve the same content; the juicebot-install name stays for
+# links handed out before the Geenee rebrand.
 routes = [
+  { pattern = "geenee-install.3dg.io", custom_domain = true },
   { pattern = "juicebot-install.3dg.io", custom_domain = true },
 ]
 workers_dev = false
@@ -14,11 +17,12 @@ preview_urls = false
 [vars]
 BRANCH = "main"
 
-# Dev stack: serves the repo's dev branch (which points at juicebot-mcp-dev.3dg.io).
+# Dev stack: serves the repo's dev branch (the -dev plugin, same Geenee dev server).
 #   cd install-worker && npx wrangler deploy --env dev
 [env.dev]
 name = "juicebot-install-dev"
 routes = [
+  { pattern = "geenee-install-dev.3dg.io", custom_domain = true },
   { pattern = "juicebot-install-dev.3dg.io", custom_domain = true },
 ]
 workers_dev = false

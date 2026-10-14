@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "JuiceBot": {
+    "Geenee": {
       "type": "http",
-      "url": "https://juicebot-mcp.3dg.io/mcp"
+      "url": "https://geenee-dev.3dg.io/mcp"
     }
   }
 }

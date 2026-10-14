@@ -1,8 +1,9 @@
 /**
- * juicebot-install.3dg.io — serves INSTALL-PROMPT.md from the aidenlab/plugins
- * repository so a user can paste one line into any assistant:
+ * geenee-install.3dg.io (and the older juicebot-install.3dg.io, same Worker) —
+ * serves INSTALL-PROMPT.md from the aidenlab/plugins repository so a user can
+ * paste one line into any assistant:
  *
- *   Set up JuiceBot for me: fetch https://juicebot-install.3dg.io and follow
+ *   Set up Geenee for me: fetch https://geenee-install.3dg.io and follow
  *   its instructions for the app you are running in.
  *
  * It proxies rather than redirects: several assistants' fetch tools do not
@@ -12,7 +13,8 @@
  *   GET /            the markdown (text/markdown; text/html wrapper for browsers)
  *   GET /raw         always text/plain
  *   GET /<path>      any other file from the repo's default branch, e.g. /README.md
- *   GET /juicebot.py, /juicebot.mjs   the CLI scripts from the plugin's skill
+ *   GET /geenee.py, /geenee.mjs       the CLI scripts from the plugin's skill
+ *                    (/juicebot.py and /juicebot.mjs serve the same files, for old docs)
  *   GET /plugin      302 to the latest juicebot.plugin release asset
  *   GET /plugins     302 to the claude.ai plugins settings page (an external link opens
  *                    in a new tab on claude.ai web, keeping the chat in place)
@@ -26,7 +28,7 @@ const CACHE_SECONDS = 300;
 async function fromGitHub(path, request, branch) {
   const upstream = `https://raw.githubusercontent.com/${REPO}/${branch}/${path}`;
   const res = await fetch(upstream, {
-    headers: { 'User-Agent': 'juicebot-install-worker' },
+    headers: { 'User-Agent': 'geenee-install-worker' },
     cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true }
   });
   if (!res.ok) {
@@ -43,11 +45,11 @@ function wantsHtml(request) {
 function htmlPage(markdown) {
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JuiceBot setup</title>
+<title>Geenee setup</title>
 <style>body{max-width:48rem;margin:2rem auto;padding:0 1rem;font:16px/1.5 system-ui,sans-serif;color:#222}pre{white-space:pre-wrap;background:#f6f6f6;padding:1rem;border-radius:6px}code{background:#f0f0f0;padding:.1em .3em;border-radius:3px}</style>
-<h1>JuiceBot setup</h1>
+<h1>Geenee setup</h1>
 <p>Paste this into Claude Code, Cowork, claude.ai, Codex or ChatGPT:</p>
-<pre><code>Set up JuiceBot for me: fetch https://juicebot-install.3dg.io and follow its instructions for the app you are running in.</code></pre>
+<pre><code>Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.</code></pre>
 <p>The assistant reads the instructions below and does the rest. Manual steps: <a href="https://github.com/${REPO}#manual-install">github.com/${REPO}</a>.</p>
 <hr>
 <pre>${esc(markdown)}</pre>`;
@@ -73,9 +75,10 @@ export default {
       return Response.redirect(`https://github.com/${REPO}/releases/latest/download/juicebot.plugin`, 302);
     }
 
-    const SCRIPTS = 'plugins/juicebot/skills/juicebot/scripts/';
+    const SCRIPTS = 'plugins/juicebot/skills/geenee/scripts/';
+    const script = /^\/(?:geenee|juicebot)\.(py|mjs)$/.exec(url.pathname);
     const path = url.pathname === '/' || url.pathname === '/raw' ? DOC
-      : /^\/juicebot\.(py|mjs)$/.test(url.pathname) ? SCRIPTS + url.pathname.slice(1)
+      : script ? `${SCRIPTS}geenee.${script[1]}`
       : url.pathname.slice(1);
     if (path.includes('..') || path.startsWith('.git/')) return new Response('Not found\n', { status: 404 });
 
