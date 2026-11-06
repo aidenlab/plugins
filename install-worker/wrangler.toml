@@ -1,6 +1,10 @@
 name = "geenee-install"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
+# The Cloudflare account that owns the 3dg.io zone (Theaidenlab@gmail.com's
+# Account), as in geenee's wrangler.toml. Named so that a login with access to
+# several accounts does not have to choose.
+account_id = "1eadb18bb8557fd1bd06b1d0310a902e"
 
 # Deploy from a machine logged in with `wrangler login` on the account that
 # owns the 3dg.io zone:   cd install-worker && npx wrangler deploy
