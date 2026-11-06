@@ -1,6 +1,5 @@
 /**
- * geenee-install.3dg.io (and the older juicebot-install.3dg.io, same Worker) —
- * serves INSTALL-PROMPT.md from the aidenlab/plugins repository so a user can
+ * geenee-install.3dg.io — serves INSTALL-PROMPT.md from the aidenlab/plugins repository so a user can
  * paste one line into any assistant:
  *
  *   Set up Geenee for me: fetch https://geenee-install.3dg.io and follow
@@ -14,14 +13,13 @@
  *   GET /raw         always text/plain
  *   GET /<path>      any other file from the repo's default branch, e.g. /README.md
  *   GET /geenee.py, /geenee.mjs       the CLI scripts from the plugin's skill
- *                    (/juicebot.py and /juicebot.mjs serve the same files, for old docs)
- *   GET /plugin      302 to the latest juicebot.plugin release asset
+ *   GET /plugin      302 to the latest geenee.plugin release asset
  *   GET /plugins     302 to the claude.ai plugins settings page (an external link opens
  *                    in a new tab on claude.ai web, keeping the chat in place)
  */
 
 const REPO = 'aidenlab/plugins';
-const DEFAULT_BRANCH = 'main';  // overridden by the BRANCH var ([env.dev] serves the dev branch)
+const DEFAULT_BRANCH = 'main';  // overridden by the BRANCH var
 const DOC = 'INSTALL-PROMPT.md';
 const CACHE_SECONDS = 300;
 
@@ -72,11 +70,11 @@ export default {
       return Response.redirect('https://claude.ai/new#settings/customize-plugins', 302);
     }
     if (url.pathname === '/plugin') {
-      return Response.redirect(`https://github.com/${REPO}/releases/latest/download/juicebot.plugin`, 302);
+      return Response.redirect(`https://github.com/${REPO}/releases/latest/download/geenee.plugin`, 302);
     }
 
-    const SCRIPTS = 'plugins/juicebot/skills/geenee/scripts/';
-    const script = /^\/(?:geenee|juicebot)\.(py|mjs)$/.exec(url.pathname);
+    const SCRIPTS = 'plugins/geenee/skills/geenee/scripts/';
+    const script = /^\/geenee\.(py|mjs)$/.exec(url.pathname);
     const path = url.pathname === '/' || url.pathname === '/raw' ? DOC
       : script ? `${SCRIPTS}geenee.${script[1]}`
       : url.pathname.slice(1);

@@ -4,8 +4,8 @@
 Python 3.8+, standard library only. A sibling geenee.mjs offers the same
 commands for machines without Python.
 
-Geenee drives two viewers (the igv genome browser and the Juicebox contact-map
-viewer) on one page, the Workspace, identified by a Room id. The first command
+Geenee drives three viewers (the igv genome browser, the Juicebox contact-map
+viewer and the Spacewalk 3D chromatin viewer) on one page, the Workspace, identified by a Room id. The first command
 opens a Room and remembers it, so later commands in any shell act on the same
 Workspace.
 
@@ -25,7 +25,7 @@ Options:
   --server URL   MCP endpoint for this invocation (overrides GEENEE_URL and the built-in list)
 
 Environment:
-  GEENEE_URL     MCP endpoint, e.g. https://geenee-dev.3dg.io/mcp
+  GEENEE_URL     MCP endpoint, e.g. https://geenee.3dg.io/mcp
   GEENEE_STATE   state file (default: ~/.local/state/geenee/room.json, or $XDG_STATE_HOME)
 
 Exit codes: 0 ok; 2 the tool reported an error (most often: no viewer connected); 1 transport or usage error.
@@ -37,18 +37,14 @@ import sys
 import urllib.error
 import urllib.request
 
-# PROFILE names the deployment this copy of the script belongs to ("" for
-# production, "dev" on the dev branch). It keeps the state files apart so a
-# dev and a production CLI on one machine never share a Room.
-PROFILE = ""
 # Candidate endpoints, tried in order when no Room is known yet. Override with
 # --server or GEENEE_URL. The one that answers is remembered with the Room.
 SERVERS = [
-    "https://geenee-dev.3dg.io/mcp",
+    "https://geenee.3dg.io/mcp",
 ]
 # A descriptive User-Agent: Cloudflare's Browser Integrity Check (error 1010)
 # rejects some library defaults on some hostnames.
-USER_AGENT = "geenee-cli/2.0 (+https://github.com/aidenlab/plugins)"
+USER_AGENT = "geenee-cli/1.0 (+https://github.com/aidenlab/plugins)"
 # Viewer acks take up to 15 s and catalogue searches can be slow; 60 s leaves headroom.
 TIMEOUT_SECONDS = 60
 OPEN_TOOL = "open_geenee"
@@ -56,7 +52,7 @@ ROOM_ID = re.compile(r"^[0-9A-HJKMNP-TV-Z]{10}$")
 
 STATE_PATH = os.environ.get("GEENEE_STATE") or os.path.join(
     os.environ.get("XDG_STATE_HOME") or os.path.join(os.path.expanduser("~"), ".local", "state"),
-    "geenee", "room%s.json" % ("-" + PROFILE if PROFILE else ""))
+    "geenee", "room.json")
 
 
 class Transport(Exception):
@@ -202,20 +198,24 @@ def print_opened(s, as_json):
 
 
 def status(s, as_json):
-    """Connection state of both viewers, from the tools that change nothing."""
+    """Connection state of the three viewers, from the tools that change nothing."""
     jb = s.call("juicebox_get_server_status", {})
     igv = s.call("igv_read_session_summary", {})
+    sw = s.call("spacewalk_read_viewer_state", {})
     jb_ok = "Browser Connected: Yes" in text_of(jb)
     igv_ok = not igv.get("isError")
+    m = re.search(r"Viewers connected: (\d+)", text_of(sw))
+    sw_ok = not sw.get("isError") and bool(m) and int(m.group(1)) > 0
+    word = lambda ok: "connected" if ok else "not connected"
     if as_json:
         print(json.dumps({"room": s.room, "server": s.url, "juicebox": {"connected": jb_ok, "result": jb},
-                          "igv": {"connected": igv_ok, "result": igv}}))
+                          "igv": {"connected": igv_ok, "result": igv}, "spacewalk": {"connected": sw_ok, "result": sw}}))
     else:
-        print("Room: %s\nServer: %s\nJuicebox: %s\nIGV: %s" % (
-            s.room, s.url, "connected" if jb_ok else "not connected", "connected" if igv_ok else "not connected"))
-        if not (jb_ok and igv_ok):
-            print("(open the Workspace link from `open` in a browser; both viewers connect from that page)")
-    return 0 if (jb_ok or igv_ok) else 2
+        print("Room: %s\nServer: %s\nJuicebox: %s\nIGV: %s\nSpacewalk: %s" % (
+            s.room, s.url, word(jb_ok), word(igv_ok), word(sw_ok)))
+        if not (jb_ok and igv_ok and sw_ok):
+            print("(open the Workspace link from `open` in a browser; all three viewers connect from that page)")
+    return 0 if (jb_ok or igv_ok or sw_ok) else 2
 
 
 def parse_args(argv):

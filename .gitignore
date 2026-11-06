@@ -5,3 +5,4 @@ install-worker/node_modules/
 install-worker/.wrangler/
 /.idea
 NOTES.md
+__pycache__/

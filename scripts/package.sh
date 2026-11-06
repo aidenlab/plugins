@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Build dist/<plugin>.plugin (a zip of the plugin directory contents) for
 # "Upload plugin" installs in Cowork / the Claude desktop app and for org-admin uploads.
-# Usage: scripts/package.sh [plugin-dir-name] [output-name]   (defaults: juicebot juicebot)
+# Usage: scripts/package.sh [plugin-dir-name] [output-name]   (defaults: geenee geenee)
 set -euo pipefail
 cd "$(dirname "$0")/.."
-name="${1:-juicebot}"
+name="${1:-geenee}"
 out_name="${2:-$name}"
 src="plugins/$name"
 [ -f "$src/.claude-plugin/plugin.json" ] || { echo "no plugin at $src" >&2; exit 1; }

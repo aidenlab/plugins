@@ -15,7 +15,7 @@ The CLI is an MCP client over plain HTTPS. The Geenee server is stateless Stream
 
 ```
 geenee.py open                                Workspace link for this shell's Room (opens a new Room if none)
-geenee.py status                              whether each viewer (Juicebox, IGV) is connected in the Room
+geenee.py status                              whether each viewer (Juicebox, IGV, Spacewalk) is connected in the Room
 geenee.py tools                               tool names with one-line descriptions
 geenee.py call TOOL [JSON] [TOOL [JSON] ...]  one or more tool calls in one process, in order; room filled in
 geenee.py room [ID_OR_LINK]                   show the current Room id, or switch to another Room
@@ -49,7 +49,7 @@ Use `python3` when present, else `node`. Nothing to install either way.
 
 - The first command calls `open_geenee`, which mints a Room id (10 letters and digits) and returns the Workspace link `https://<server>/?room=<ID>`; the CLI saves `{url, room}` to `~/.local/state/geenee/room.json` (`GEENEE_STATE` overrides). Later commands, in any shell, reuse it, so the Workspace stays the same for the whole conversation.
 - A `call` that had to open a new Room prints the Workspace link first, before the tool results: the user has to open it before anything shows.
-- `open` returns the link for the current Room (calling `open_geenee` with that Room, which gives the same Workspace back). `status` reports each viewer's connection from `juicebox_get_server_status` and `igv_read_session_summary`; exit 2 when neither is connected.
+- `open` returns the link for the current Room (calling `open_geenee` with that Room, which gives the same Workspace back). `status` reports each viewer's connection from `juicebox_get_server_status`, `igv_read_session_summary` and `spacewalk_read_viewer_state`; exit 2 when none is connected.
 - `room <id-or-link>` switches to a Room a page already shows or a colleague shared; `room` alone prints the current id.
 - A Room expires after a long idle. The server then reports no page or no viewer for it; `reset` (or `open_geenee` without `room`) starts a new one, and the user must open the new link.
 
@@ -68,9 +68,9 @@ Use `python3` when present, else `node`. Nothing to install either way.
 - `HTTP 405`: only `POST /mcp` exists; there is no SSE stream to GET.
 - `cannot reach ...` from Node in a sandbox: Node's `fetch` ignores `HTTPS_PROXY` unless `NODE_USE_ENV_PROXY=1`; `geenee.mjs` re-executes itself with it set, so this only affects hand-written code.
 - Both scripts fail but `curl` works: run with `--server` and the URL `curl` used, then check `GEENEE_URL`.
-- "geenee could not reach the server of the ... viewer": one upstream (igv-bot or Juicebox) is down; the other viewer's tools still work. Try again in a moment.
+- "geenee could not reach the server of the ... viewer": one upstream (igv, Juicebox or Spacewalk) is down; the other viewer's tools still work. Try again in a moment.
 - The viewers cannot run headless inside an agent sandbox (its proxy refuses WebSocket upgrades). The Workspace is always the user's browser or the assistant's browser pane; only tool calls come from the shell.
 
 ## Changing the server
 
-The scripts use `https://geenee-dev.3dg.io/mcp` and remember it with the Room. `GEENEE_URL` or `--server` overrides it. After a server change, `reset`.
+The scripts use `https://geenee.3dg.io/mcp` and remember it with the Room. `GEENEE_URL` or `--server` overrides it. After a server change, `reset`.

@@ -3,7 +3,7 @@
   "mcpServers": {
     "Geenee": {
       "type": "streamable-http",
-      "url": "https://geenee-dev.3dg.io/mcp"
+      "url": "https://geenee.3dg.io/mcp"
     }
   }
 }

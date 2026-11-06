@@ -1,25 +1,27 @@
 # Geenee tool reference
 
-Generated from the live server's `tools/list` (44 tools) by `scripts/gen-tools-md.py`. Call them as MCP tools when the connector is present, or as `geenee.py call <name> '<json>'` otherwise; names and arguments are identical. Every tool except `open_geenee` also takes `room` (string, required): the Room id from the reply of `open_geenee`. It is left out of the argument lists below; the CLI fills it in.
+Generated from the live server's `tools/list` (56 tools) by `scripts/gen-tools-md.py`. Call them as MCP tools when the connector is present, or as `geenee.py call <name> '<json>'` otherwise; names and arguments are identical. Every tool except `open_geenee` also takes `room` (string, required): the Room id from the reply of `open_geenee`. It is left out of the argument lists below; the CLI fills it in.
 
 ## Contents
 
 - Opening the Workspace: `open_geenee`
 - IGV: navigation: `igv_go_to_gene`, `igv_go_to_locus`, `igv_zoom_in`, `igv_zoom_out`, `igv_change_genome`
 - IGV: tracks and data: `igv_search_catalogues`, `igv_load_tracks`, `igv_remove_track`, `igv_set_track_height`
-- IGV: view, state and sharing: `igv_set_crosshairs`, `igv_set_centre_line`, `igv_read_session_summary`, `igv_get_shareable_url`
+- IGV: view, state and sharing: `igv_set_crosshairs`, `igv_set_centre_line`, `igv_set_controls`, `igv_read_session_summary`
 - Juicebox: status and help: `juicebox_get_server_status`, `juicebox_help`
 - Juicebox: finding data: `juicebox_search_map_catalogs`, `juicebox_get_map_details`, `juicebox_search_encode_hic`, `juicebox_search_encode`, `juicebox_list_data_sources`, `juicebox_get_data_source_statistics`
 - Juicebox: maps and navigation: `juicebox_load_map`, `juicebox_load_control_map`, `juicebox_goto_locus`, `juicebox_zoom_in`, `juicebox_zoom_out`, `juicebox_select_normalization`, `juicebox_set_color_scale`, `juicebox_set_map_foreground_color`, `juicebox_set_map_background_color`
-- Juicebox: panels: `juicebox_list_panels`, `juicebox_close_panel`
+- Juicebox: panels: `juicebox_list_panels`, `juicebox_close_panel`, `juicebox_show_panel_controls`
 - Juicebox: tracks: `juicebox_load_track`, `juicebox_list_tracks`, `juicebox_remove_track`, `juicebox_set_track_color`, `juicebox_set_track_name`, `juicebox_set_track_data_range`, `juicebox_set_track_autoscale`, `juicebox_set_track_log_scale`
 - Juicebox: sessions and sharing: `juicebox_save_session`, `juicebox_load_session`, `juicebox_create_shareable_url`
+- Spacewalk: ensembles and state: `spacewalk_list_example_ensembles`, `spacewalk_load_ensemble`, `spacewalk_select_ensemble_group`, `spacewalk_load_session`, `spacewalk_read_viewer_state`
+- Spacewalk: appearance and camera: `spacewalk_set_render_style`, `spacewalk_step_ball_radius`, `spacewalk_step_stick_radius`, `spacewalk_set_background_color`, `spacewalk_adjust_background`, `spacewalk_reset_camera`
 
 ## Opening the Workspace
 
 ### `open_geenee`
 
-Get the link that opens geenee: one page beside the conversation holding the igv genome browser and the Juicebox contact-map viewer. Use this before any other geenee tool, and when the user asks to open geenee, IGV, a genome browser, Juicebox or a contact map, or greets any of them ("hello geenee", "hi igv", "hello juicebox"): call this tool straight away instead of only greeting back. One call opens both viewers; there is no separate tool to open either. If you have a browser that shows pages inside this app, beside the conversation, open the link in it right away: both viewers connect there and later tool calls redraw them. Use only such an in-app browser; a tool that drives the user's own web browser is not one, and if there is no in-app browser do not try anything else. Do not repeat the link or the Room id in your reply. The result of this tool names the Room id: pass it as room on every later geenee tool call in this conversation.
+Get the link that opens geenee: one page beside the conversation holding the igv genome browser, the Juicebox contact-map viewer and the Spacewalk 3D chromatin viewer. Use this before any other geenee tool, and when the user asks to open geenee, IGV, a genome browser, Juicebox, a contact map, Spacewalk or 3D chromatin, or greets any of them ("hello geenee", "hi igv", "hello juicebox", "hello spacewalk"): call this tool straight away instead of only greeting back. One call opens all three viewers; there is no separate tool to open any one of them. If you have a browser that shows pages inside this app, beside the conversation, open the link in it right away: all three viewers connect there and later tool calls redraw them. Use only such an in-app browser; a tool that drives the user's own web browser is not one, and if there is no in-app browser do not try anything else. The user is shown a Card with an Open geenee button, for when the link is not opened beside the conversation. Do not repeat the link or the Room id in your reply. The result of this tool names the Room id: pass it as room on every later geenee tool call in this conversation.
 
 - `room` (string, optional): reopen an existing Room instead of minting a new one
 
@@ -106,15 +108,15 @@ Show or hide igv-bot's centre line: a vertical line marking the middle of the vi
 
 - `show` (boolean, required): True to show the centre line, false to hide it
 
+### `igv_set_controls`
+
+Show or hide igv-bot's controls: the navigation bar, and the Shareable URL where igv-bot shows one. The navigation bar is igv.js's own, with its locus box and its buttons; the Shareable URL is in a strip with a copy button. They are hidden and shown together, and start hidden; the genome browser takes the space they leave. The Session summary says whether they are showing, as controls; the user also hides and shows them by hand, with the button above the genome browser. Showing them does not change the view, and the Shareable URL is the same either way. The reply is the resulting Session summary: genome, loci, and tracks in display order.
+
+- `show` (boolean, required): True to show the controls, false to hide them
+
 ### `igv_read_session_summary`
 
-Read what igv-bot is showing now, without changing anything: genome, loci, tracks in display order with name, type, URL and height, and whether the crosshairs and centre line are showing. The user also changes igv-bot by hand (panning, zooming, reordering, resizing or removing tracks) and you are not told when they do. Call this before describing the view or acting on a reference to it, such as "this region" or "the second track", unless a reply from another igv-bot tool has just given you the Session summary.
-
-- no arguments besides `room`
-
-### `igv_get_shareable_url`
-
-Get a Shareable URL for what igv-bot is showing now: a link that opens the same genome, loci and tracks in igv-webapp, the IGV web application at igv.org, for anyone the user sends it to. Use this when the user asks for a link to share, send or keep. The link carries the whole Session in itself, so it is long, needs no igv-bot and no Room, and does not expire; it shows the view as it is now, so get a new one after the view changes. Give the user the link exactly as it is in the reply, whole and unshortened. It is not the Join link, which opens igv-bot itself: never give one for the other. The user can also copy the same link from igv-bot itself, where it is shown above the genome browser unless the user has hidden the controls. Nothing in igv-bot changes. The reply is the Shareable URL on a line of its own, then the Session summary of the view it opens.
+Read what igv-bot is showing now, without changing anything: genome, loci, tracks in display order with name, type, URL and height, and whether the crosshairs, centre line and controls are showing. The user also changes igv-bot by hand (panning, zooming, reordering, resizing or removing tracks) and you are not told when they do. Call this before describing the view or acting on a reference to it, such as "this region" or "the second track", unless a reply from another igv-bot tool has just given you the Session summary.
 
 - no arguments besides `room`
 
@@ -260,7 +262,7 @@ Set the background color of the contact map
 
 ### `juicebox_list_panels`
 
-List the panels (contact-map viewers) open in the page, left to right: position, whether it is the current one, map name, genome, control map, track count and locus. Tools that take `panel` address a panel by this position, by its map name, or "all".
+List the panels (contact-map viewers) open in the page, left to right: position, whether it is the current one, map name, genome, control map, track count and locus, then whether the Juicebox Panel Controls are shown. Tools that take `panel` address a panel by this position, by its map name, or "all".
 
 - no arguments besides `room`
 
@@ -269,6 +271,12 @@ List the panels (contact-map viewers) open in the page, left to right: position,
 Close one panel (contact-map viewer) of the page; the panels to its right move one position left. The last panel cannot be closed.
 
 - `panel` (integer/string, optional): panel: position from the left (1, 2, ...) or a map name, no "all"; required when more than one panel is open
+
+### `juicebox_show_panel_controls`
+
+Hide or show the Juicebox Panel Controls (the bar above each map with its map name, locus box and menus) on every panel of the page, and on panels opened later: the same switch as the controls button in the page header. It always acts on the whole page, so it takes no panel. Repeating the current state changes nothing; juicebox_list_panels says which it is.
+
+- `show` (boolean, required): true shows the Juicebox Panel Controls, false hides them
 
 ## Juicebox: tracks
 
@@ -354,5 +362,75 @@ Load a Juicebox session from JSON data, attached file, or remote URL. Sessions r
 ### `juicebox_create_shareable_url`
 
 Create a shareable URL for the current Juicebox session
+
+- no arguments besides `room`
+
+## Spacewalk: ensembles and state
+
+### `spacewalk_list_example_ensembles`
+
+List example ensembles to load into Spacewalk: the hosted .sw files of the full Spacewalk app's Load From List, by group, each with its name and URL. An ensemble is the collection of traces in one .sw file (the user may call this "the model"). Use this when the user asks what there is to look at, or names an example without its URL; then pass the URL to spacewalk_load_ensemble.
+
+- no arguments besides `room`
+
+### `spacewalk_load_ensemble`
+
+Load an ensemble into Spacewalk from the URL of its .sw file. An ensemble is the collection of traces in one .sw file (the user may call this "the model"). It opens at its default ensemble group and trace. Use spacewalk_list_example_ensembles for URLs of ensembles to try.
+
+- `url` (string, required): The URL of the .sw file.
+
+### `spacewalk_select_ensemble_group`
+
+Make one ensemble group of the loaded ensemble current, by its key. An ensemble group is a named subset of the traces in the .sw file; one is current at a time. Spacewalk shows the group at its default trace.
+
+- `key` (string, required): The key of the ensemble group.
+
+### `spacewalk_load_session`
+
+Load a Spacewalk session into the Room: what it shows, from a shareable URL of the full Spacewalk app or of this viewer, or from a bare session string. Only the Spacewalk part is read; the reply says what was ignored, such as IGV tracks and the Hi-C map. A URL that merely points at a session file to fetch is refused. To load a .sw file, use spacewalk_load_ensemble.
+
+- `session` (string, required): A shareable URL, or a session string (blob:…).
+
+### `spacewalk_read_viewer_state`
+
+Read what Spacewalk shows now, without changing it: the viewer state, how many Viewers are connected, and what changed since your last reply that you did not cause. An error only when the Room is unknown or expired.
+
+- no arguments besides `room`
+
+## Spacewalk: appearance and camera
+
+### `spacewalk_set_render_style`
+
+Choose how the 3D structure is drawn: ball_and_stick (a ball at each genomic extent, sticks joining them) or ribbon (a smooth tube through them). Only for an ensemble of traces: a point-cloud ensemble is always drawn as a point cloud. Once a Viewer has reported the ensemble a point cloud (kind in the viewer state), this is refused; before then, the Viewer reports the failure to draw it.
+
+- `style` (one of `ball_and_stick`, `ribbon`, required): The render style.
+
+### `spacewalk_step_ball_radius`
+
+Make the balls of the ball-and-stick render style one radius step bigger (up) or smaller (down). The ball radius is a rung 0–10 on Spacewalk's radius ladder, ballRadiusIndex in the viewer state; a step past either end stays there.
+
+- `direction` (one of `up`, `down`, required): up for one radius step bigger, down for one smaller.
+
+### `spacewalk_step_stick_radius`
+
+Make the sticks of the ball-and-stick render style one radius step thicker (up) or thinner (down). The stick radius is a rung 0–10 on Spacewalk's radius ladder, stickRadiusIndex in the viewer state; a step past either end stays there.
+
+- `direction` (one of `up`, `down`, required): up for one radius step bigger, down for one smaller.
+
+### `spacewalk_set_background_color`
+
+Set the color behind the 3D structure, by Apple crayon name or hex (#rrggbb). The crayons: licorice, lead, tungsten, iron, steel, tin, nickel, aluminum, magnesium, silver, mercury, snow, cayenne, mocha, aspargus, fern, clover, moss, teal, ocean, midnight, eggplant, plum, maroon, maraschino, tangerine, lemon, lime, spring, seam_foam, turquoise, aqua, blueberry, grape, magenta, strawberry, salmon, cantaloupe, banana, honeydew, flora, spindrift, ice, sky, orchid, lavender, bubblegum, carnation.
+
+- `color` (string, required): An Apple crayon name, or a hex color.
+
+### `spacewalk_adjust_background`
+
+Make the color behind the 3D structure one step lighter or darker, keeping its hue. A step past white or black stays there.
+
+- `direction` (one of `lighter`, `darker`, required): lighter or darker.
+
+### `spacewalk_reset_camera`
+
+Put the camera back where Spacewalk frames the whole 3D structure.
 
 - no arguments besides `room`
