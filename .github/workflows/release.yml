@@ -1,7 +1,7 @@
 name: release
 on:
   push:
-    tags: ["v*"]
+    tags: ["geenee--v*"]
 permissions:
   contents: write
 jobs:
@@ -13,9 +13,9 @@ jobs:
         with:
           node-version: 22
       - run: npm install -g @anthropic-ai/claude-code
-      - run: claude plugin validate . && claude plugin validate ./plugins/juicebot
-      - run: scripts/package.sh juicebot
+      - run: claude plugin validate . && claude plugin validate ./plugins/geenee
+      - run: scripts/package.sh geenee
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist/juicebot.plugin
+          files: dist/geenee.plugin
           generate_release_notes: true

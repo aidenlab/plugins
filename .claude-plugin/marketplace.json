@@ -5,15 +5,15 @@
     "url": "https://aidenlab.org"
   },
   "metadata": {
-    "description": "Claude, ChatGPT and Codex plugins from the Aiden Lab: genome browsing and Hi-C / 3D genome tooling.",
-    "version": "2.0.0"
+    "description": "Claude, ChatGPT and Codex plugins from the Aiden Lab: genome browsing, Hi-C and 3D genome tooling.",
+    "version": "3.0.0"
   },
   "plugins": [
     {
-      "name": "juicebot",
-      "source": "./plugins/juicebot",
-      "description": "Drive Geenee, the Aiden Lab's genome workspace (igv genome browser + Juicebox Hi-C contact maps), from Claude: search ENCODE/4DN, load maps and tracks, navigate loci, and share views.",
-      "version": "2.0.0",
+      "name": "geenee",
+      "source": "./plugins/geenee",
+      "description": "Drive Geenee, the Aiden Lab's genome workspace (igv genome browser, Juicebox Hi-C contact maps, Spacewalk 3D chromatin), by chatting: search ENCODE/4DN, load maps, tracks and ensembles, navigate loci, and share views.",
+      "version": "1.0.0",
       "category": "science",
       "keywords": [
         "geenee",
@@ -21,8 +21,10 @@
         "genome-browser",
         "hi-c",
         "juicebox",
+        "spacewalk",
         "genomics",
         "3d-genome",
+        "chromatin",
         "encode",
         "4dn"
       ],

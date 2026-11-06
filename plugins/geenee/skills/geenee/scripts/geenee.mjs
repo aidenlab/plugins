@@ -6,7 +6,7 @@
 //   options: --json  --room ID  --server URL      env: GEENEE_URL, GEENEE_STATE
 //   exit codes: 0 ok; 2 the tool reported an error (usually: no viewer connected); 1 transport/usage error
 //
-// Geenee drives two viewers (igv and Juicebox) on one page, the Workspace, named
+// Geenee drives three viewers (igv, Juicebox and Spacewalk) on one page, the Workspace, named
 // by a Room id. The first command opens a Room and remembers it; later commands
 // in any shell act on the same Workspace, filling `room` into every call.
 //
@@ -27,22 +27,19 @@ if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_US
   process.exit(r.status ?? 1);
 }
 
-// PROFILE names the deployment this copy belongs to ("" for production, "dev" on
-// the dev branch); it keeps the state files apart so two CLIs never share a Room.
-const PROFILE = '';
 // Candidate endpoints, tried in order when no Room is known yet. Override with
 // --server or GEENEE_URL. The one that answers is remembered with the Room.
 const SERVERS = [
-  'https://geenee-dev.3dg.io/mcp'
+  'https://geenee.3dg.io/mcp'
 ];
 // A descriptive User-Agent: Cloudflare's Browser Integrity Check (error 1010) rejects some library defaults.
-const USER_AGENT = 'geenee-cli/2.0 (+https://github.com/aidenlab/plugins)';
+const USER_AGENT = 'geenee-cli/1.0 (+https://github.com/aidenlab/plugins)';
 // Viewer acks take up to 15 s and catalogue searches can be slow.
 const TIMEOUT_MS = 60_000;
 const OPEN_TOOL = 'open_geenee';
 const ROOM_ID = /^[0-9A-HJKMNP-TV-Z]{10}$/;
 const STATE_PATH = process.env.GEENEE_STATE
-  || join(process.env.XDG_STATE_HOME || join(homedir(), '.local', 'state'), 'geenee', `room${PROFILE ? '-' + PROFILE : ''}.json`);
+  || join(process.env.XDG_STATE_HOME || join(homedir(), '.local', 'state'), 'geenee', 'room.json');
 
 class Transport extends Error {}
 let nextId = 0;
@@ -153,19 +150,23 @@ function printOpened(s, asJson) {
   else console.log(`Geenee link: ${workspaceUrl}\nRoom id: ${room}`);
 }
 
-// Connection state of both viewers, from the tools that change nothing.
+// Connection state of the three viewers, from the tools that change nothing.
 async function status(s, asJson) {
   const jb = await s.call('juicebox_get_server_status', {});
   const igv = await s.call('igv_read_session_summary', {});
+  const sw = await s.call('spacewalk_read_viewer_state', {});
   const jbOk = textOf(jb).includes('Browser Connected: Yes');
   const igvOk = !igv.isError;
+  const m = /Viewers connected: (\d+)/.exec(textOf(sw));
+  const swOk = !sw.isError && !!m && Number(m[1]) > 0;
+  const word = ok => (ok ? 'connected' : 'not connected');
   if (asJson) {
-    console.log(JSON.stringify({ room: s.room, server: s.url, juicebox: { connected: jbOk, result: jb }, igv: { connected: igvOk, result: igv } }));
+    console.log(JSON.stringify({ room: s.room, server: s.url, juicebox: { connected: jbOk, result: jb }, igv: { connected: igvOk, result: igv }, spacewalk: { connected: swOk, result: sw } }));
   } else {
-    console.log(`Room: ${s.room}\nServer: ${s.url}\nJuicebox: ${jbOk ? 'connected' : 'not connected'}\nIGV: ${igvOk ? 'connected' : 'not connected'}`);
-    if (!(jbOk && igvOk)) console.log('(open the Workspace link from `open` in a browser; both viewers connect from that page)');
+    console.log(`Room: ${s.room}\nServer: ${s.url}\nJuicebox: ${word(jbOk)}\nIGV: ${word(igvOk)}\nSpacewalk: ${word(swOk)}`);
+    if (!(jbOk && igvOk && swOk)) console.log('(open the Workspace link from `open` in a browser; all three viewers connect from that page)');
   }
-  return jbOk || igvOk ? 0 : 2;
+  return jbOk || igvOk || swOk ? 0 : 2;
 }
 
 function parseArgs(argv) {

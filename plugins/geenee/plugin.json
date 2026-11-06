@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "juicebot",
-  "version": "2.0.0",
-  "description": "Geenee: AI control of a genome workspace with the igv genome browser and the Juicebox Hi-C contact-map viewer side by side. Search ENCODE/4DN, load maps and tracks, navigate genes and loci, compare, share. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
+  "name": "geenee",
+  "version": "1.0.0",
+  "description": "Geenee: drive a genome workspace by chatting. One page beside the conversation holds the igv genome browser, the Juicebox Hi-C contact-map viewer and the Spacewalk 3D chromatin viewer. Search ENCODE/4DN, load maps, tracks and 3D ensembles, navigate genes and loci, compare, share. Connects to the Aiden Lab's hosted MCP server; nothing runs locally.",
   "author": {
     "name": "The Aiden Lab",
     "url": "https://aidenlab.org"
@@ -16,6 +16,7 @@
     "genome-browser",
     "hi-c",
     "juicebox",
+    "spacewalk",
     "genomics",
     "3d-genome",
     "chromatin",
@@ -27,8 +28,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Geenee",
-        "shortDescription": "Explore genomes and Hi-C maps",
-        "longDescription": "Drive Geenee by typing plain requests: one page beside the chat holds the igv genome browser and the Juicebox Hi-C contact-map viewer. Search ENCODE and 4DN for maps and tracks, load them, navigate to genes and loci, compare views, and share links. The page opens in a browser tab that must stay open while you work. Connects to the Aiden Lab's hosted MCP server; no account is needed.",
+        "shortDescription": "Explore genomes, Hi-C maps and 3D chromatin",
+        "longDescription": "Drive Geenee by typing plain requests: one page beside the chat holds the igv genome browser, the Juicebox Hi-C contact-map viewer and the Spacewalk 3D chromatin viewer. Search ENCODE and 4DN for maps and tracks, load them, navigate to genes and loci, look at 3D structure, compare views, and share links. The page opens in a browser tab that must stay open while you work. Connects to the Aiden Lab's hosted MCP server; no account is needed.",
         "developerName": "The Aiden Lab",
         "category": "Science",
         "capabilities": [
@@ -38,7 +39,7 @@
         "defaultPrompt": [
           "Open Geenee and load the GM12878 Hi-C map at the HOXA cluster.",
           "In IGV go to MYC and add a CTCF ChIP-seq track for K562.",
-          "Create a link I can share showing this view."
+          "Show me an example 3D chromatin structure in Spacewalk."
         ],
         "brandColor": "#e8231b",
         "composerIcon": "./assets/icon-128.png",

@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Installing Geenee: a cheat sheet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Same system as geenee's docs: one 38rem reading column, notes in the right margin, figures and wide tables across both. Ink throughout; red only for the one thing to remember. */
+:root {
+  --bg: #f5f6f4;
+  --box: #ffffff;
+  --fg: #1b1d1c;
+  --muted: #636966;
+  --rule: #cdd2ce;
+  --accent: #b8231a;
+  --serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151716; --box: #1e2120; --fg: #e5e7e4; --muted: #9aa19c; --rule: #3b403d; --accent: #ff7566;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151716; --box: #1e2120; --fg: #e5e7e4; --muted: #9aa19c; --rule: #3b403d; --accent: #ff7566;
+  color-scheme: dark;
+}
+
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--serif); font-size: 1.0625rem; line-height: 1.6; }
+.page {
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 3.5rem 5rem;
+}
+.page :is(h1, h2, h3, p, ol, ul, .tablewrap, .cmd) { max-width: 38rem; }
+
+h1 { font-family: var(--sans); font-weight: 600; font-size: 2rem; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 0.75rem; text-wrap: balance; }
+.lede { font-size: 1.2rem; line-height: 1.5; color: var(--muted); margin: 0 0 2.5rem; }
+h2 { font-family: var(--sans); font-weight: 600; font-size: 1.0625rem; margin: 3.25rem 0 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--fg); text-wrap: balance; }
+h3 { font-family: var(--sans); font-weight: 600; font-size: 0.95rem; margin: 2rem 0 0.5rem; }
+p { margin: 0 0 1rem; }
+ol, ul { margin: 0 0 1rem; padding-left: 1.4rem; }
+li { margin-bottom: 0.4rem; }
+code { font-family: var(--mono); font-size: 0.84em; }
+b, strong { font-weight: 600; }
+.ui { font-family: var(--sans); font-size: 0.92em; font-weight: 500; }
+a { color: inherit; text-decoration-color: var(--rule); text-underline-offset: 0.15em; }
+a:hover { text-decoration-color: currentColor; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+/* Contents */
+.toc { font-family: var(--sans); font-size: 0.85rem; line-height: 1.5; margin: 0 0 1rem; padding: 0; list-style: none; max-width: 38rem; columns: 2 14rem; }
+.toc li { margin: 0 0 0.2rem; break-inside: avoid; }
+.toc a { text-decoration: none; color: var(--muted); }
+.toc a:hover { color: var(--fg); }
+
+/* Margin notes */
+.note { font-family: var(--sans); font-size: 0.8rem; line-height: 1.45; color: var(--muted); max-width: 38rem; margin: 0 0 1rem; }
+@media (min-width: 64rem) {
+  .note { float: right; clear: right; width: 17rem; margin: 0.35rem 0 1rem 2rem; }
+}
+
+/* Something to copy: a command or a sentence. A rule on the left, no box. */
+.cmd { position: relative; margin: 0.75rem 0 1.25rem; border-left: 2px solid var(--fg); background: var(--box); }
+.cmd pre { margin: 0; padding: 0.7rem 4.5rem 0.7rem 0.9rem; font-family: var(--mono); font-size: 0.8rem; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.cmd.key { border-left-color: var(--accent); }
+.cmd.key pre { font-family: var(--serif); font-size: 1rem; }
+.cmd button {
+  position: absolute; top: 0.45rem; right: 0.45rem;
+  font-family: var(--sans); font-size: 0.72rem; color: var(--muted);
+  background: none; border: 1px solid var(--rule); border-radius: 2px; padding: 0.15rem 0.5rem; cursor: pointer;
+}
+.cmd button:hover { color: var(--fg); border-color: var(--fg); }
+
+/* Figures */
+figure { clear: both; margin: 2rem 0 2.25rem; }
+.figwrap { overflow-x: auto; }
+svg.fig { display: block; width: 100%; min-width: 46rem; height: auto; color: var(--fg); font-family: var(--sans); }
+figcaption { font-family: var(--sans); font-size: 0.8rem; line-height: 1.45; color: var(--muted); max-width: 38rem; margin-top: 0.75rem; }
+figcaption b { color: var(--fg); font-weight: 600; }
+.fig text { fill: currentColor; font-size: 12.5px; }
+.fig .t-h { font-weight: 600; }
+.fig .t-s { font-size: 10.5px; fill: var(--muted); }
+.fig .t-m { font-family: var(--mono); font-size: 11px; }
+.fig .t-band { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; fill: var(--muted); }
+.fig .k { paint-order: stroke; stroke: var(--bg); stroke-width: 5px; stroke-linejoin: round; }
+.fig .bx { fill: var(--box); stroke: currentColor; stroke-width: 1; }
+.fig .bx-g { fill: var(--box); stroke: currentColor; stroke-width: 1.75; }
+.fig .bx-q { fill: none; stroke: var(--rule); stroke-width: 1; }
+.fig .w { stroke: currentColor; stroke-width: 1; fill: none; }
+.fig .thick { stroke-width: 2.75; }
+.fig .dash { stroke-dasharray: 5 4; }
+.fig .acc { fill: var(--accent); }
+
+.keyline { display: flex; flex-wrap: wrap; gap: 0.4rem 1.75rem; font-family: var(--sans); font-size: 0.8rem; color: var(--muted); margin: 0.9rem 0 0; max-width: 50rem; }
+.keyline span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.keyline svg { width: 34px; height: 8px; color: var(--fg); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; margin: 1.25rem 0 1.5rem; }
+.page .tablewrap.wide { max-width: 64rem; }
+table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 0.85rem; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 0.5rem 1.1rem 0.5rem 0; border-bottom: 1px solid var(--rule); }
+thead th { font-weight: 600; border-bottom: 1px solid var(--fg); }
+tbody th { font-weight: 600; white-space: nowrap; }
+tbody tr:last-child :is(th, td) { border-bottom: 0; }
+td code, th code { font-size: 0.92em; }
+td.c { text-align: center; width: 4.5rem; }
+.yes::before { content: "●"; }
+.no::before { content: "○"; color: var(--muted); }
+.end { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); margin-top: 3.5rem; max-width: 38rem; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="a" viewBox="0 0 8 8" refX="7.5" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0.5 L8 4 L0 7.5z" style="fill: var(--fg)"/></marker>
+    <marker id="as" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0.5 L8 4 L0 7.5z" style="fill: var(--fg)"/></marker>
+  </defs>
+</svg>
+
+<main class="page">
+
+<h1>Installing Geenee: a cheat sheet</h1>
+<p class="lede">Geenee used to reach people as a bare server address they pasted into their connector settings. It now reaches them as a plugin in a marketplace: one install brings the server and a skill that teaches the assistant how to use it, and updates follow. This page shows how the pieces fit and what to do in each app.</p>
+
+<ul class="toc">
+  <li><a href="#fastest">The fastest way: one sentence</a></li>
+  <li><a href="#pieces">What gets installed, and where</a></li>
+  <li><a href="#apps">App by app</a></li>
+  <li><a href="#before">Before and after</a></li>
+  <li><a href="#works">Is it working?</a></li>
+  <li><a href="#update">Updates</a></li>
+  <li><a href="#juicebot">Replacing juicebot</a></li>
+  <li><a href="#words">Words</a></li>
+  <li><a href="#publish">For the maintainer: publishing a change</a></li>
+</ul>
+
+<h2 id="fastest">The fastest way: one sentence</h2>
+
+<aside class="note">The address serves <code>INSTALL-PROMPT.md</code> from the <code>aidenlab/plugins</code> repository: instructions written for the assistant, not for a person. Editing that file changes what every assistant does next time; nothing needs redeploying.</aside>
+
+<p>Paste this into any of Claude Code, Cowork, claude.ai, the Claude desktop app, Codex or ChatGPT:</p>
+
+<div class="cmd key"><pre>Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.</pre></div>
+
+<p>The assistant works out which app it is in. Where it can install things itself (Claude Code, Codex) it does. Where it cannot (a settings page in Claude or ChatGPT) it sends the exact clicks in one message. It finishes by handing over a first request to paste into a new chat. That one sentence is what to send people instead of a server address.</p>
+
+<h2 id="pieces">What gets installed, and where</h2>
+
+<figure>
+  <div class="figwrap">
+  <svg class="fig" viewBox="0 0 1000 400" role="img" aria-label="The aidenlab/plugins repository on GitHub is the marketplace. It holds the geenee plugin, which holds two things: the server address, geenee.3dg.io/mcp, and the skill. The plugin is installed once on a Claude account, which carries it to claude.ai, the desktop app, Cowork and Claude Code, and installed in Codex. ChatGPT is given only the server address, by hand. Every app then calls the geenee server for its tools.">
+
+    <text class="t-band" x="20" y="24">ON GITHUB</text>
+    <text class="t-band" x="500" y="24">IN EACH APP</text>
+    <text class="t-band" x="842" y="24">ON THE INTERNET</text>
+
+    <!-- Marketplace -->
+    <rect class="bx" x="20" y="40" width="380" height="340"/>
+    <text class="t-h" x="36" y="64">aidenlab/plugins</text>
+    <text class="t-s" x="36" y="81">the marketplace: a catalog of plugins, added once by name</text>
+
+    <!-- Plugin -->
+    <rect class="bx-g" x="40" y="100" width="340" height="260"/>
+    <text class="t-h" x="56" y="124">geenee</text>
+    <text class="t-s" x="56" y="141">the plugin: installed by name, updated by version</text>
+
+    <rect class="bx" x="56" y="160" width="308" height="70"/>
+    <text class="t-h" x="72" y="184" style="font-size:11.5px">Server address</text>
+    <text class="t-m" x="72" y="203">.mcp.json</text>
+    <text class="t-m acc" x="148" y="203">https://geenee.3dg.io/mcp</text>
+    <text class="t-s" x="72" y="220">what used to be pasted by hand</text>
+
+    <rect class="bx" x="56" y="246" width="308" height="98"/>
+    <text class="t-h" x="72" y="270" style="font-size:11.5px">Skill</text>
+    <text class="t-m" x="72" y="289">SKILL.md</text>
+    <text class="t-s" x="140" y="289">how to use the tools well</text>
+    <text class="t-m" x="72" y="307">references/</text>
+    <text class="t-s" x="160" y="307">every tool’s arguments</text>
+    <text class="t-m" x="72" y="325">scripts/</text>
+    <text class="t-s" x="136" y="325">a fallback that needs no connector</text>
+
+    <!-- Apps -->
+    <rect class="bx" x="500" y="40" width="250" height="150"/>
+    <text class="t-h" x="516" y="64">Your Claude account</text>
+    <text class="t-s" x="516" y="81">installed once, follows you to</text>
+    <text x="530" y="106" style="font-size:11.5px">claude.ai</text>
+    <text x="530" y="126" style="font-size:11.5px">Claude desktop app</text>
+    <text x="530" y="146" style="font-size:11.5px">Cowork</text>
+    <text x="530" y="166" style="font-size:11.5px">Claude Code</text>
+
+    <rect class="bx" x="500" y="212" width="250" height="62"/>
+    <text class="t-h" x="516" y="238">Codex</text>
+    <text class="t-s" x="516" y="256">installed per machine</text>
+
+    <rect class="bx-q" x="500" y="300" width="250" height="62"/>
+    <text class="t-h" x="516" y="326">ChatGPT</text>
+    <text class="t-s" x="516" y="344">server address only, no skill</text>
+
+    <!-- Plugin to apps -->
+    <path class="w thick" d="M380 130 H 494" marker-end="url(#a)"/>
+    <text class="t-s k" x="437" y="122" text-anchor="middle">server + skill</text>
+    <path class="w thick" d="M380 243 H 494" marker-end="url(#a)"/>
+    <text class="t-s k" x="437" y="235" text-anchor="middle">server + skill</text>
+    <path class="w dash" d="M364 195 H 440 V 331 H 494" marker-end="url(#as)"/>
+    <text class="t-s k" x="437" y="352" text-anchor="middle">address, by hand</text>
+
+    <!-- Server -->
+    <rect class="bx-g" x="842" y="150" width="138" height="110"/>
+    <text class="t-h" x="911" y="178" text-anchor="middle">geenee</text>
+    <text class="t-m" x="911" y="196" text-anchor="middle" style="font-size:10px">geenee.3dg.io</text>
+    <text class="t-s" x="911" y="218" text-anchor="middle">56 tools for IGV,</text>
+    <text class="t-s" x="911" y="233" text-anchor="middle">Juicebox, Spacewalk</text>
+
+    <path class="w" d="M750 115 H 790 V 172 H 836" marker-end="url(#as)"/>
+    <path class="w" d="M750 243 H 800 V 205 H 836" marker-end="url(#as)"/>
+    <path class="w" d="M750 331 H 812 V 238 H 836" marker-end="url(#as)"/>
+    <text class="t-s k" x="812" y="290" text-anchor="middle">tool calls</text>
+  </svg>
+  </div>
+  <figcaption><b>The plugin carries the address so no one types it.</b> Claude and Codex get the server and the skill from one install. ChatGPT cannot install this kind of plugin, so it is still given the address; it gets the tools and the server’s short built-in instructions, but not the skill.</figcaption>
+  <div class="keyline">
+    <span><svg viewBox="0 0 34 8"><line x1="0" y1="4" x2="34" y2="4" stroke="currentColor" stroke-width="2.75"/></svg>installed from the marketplace</span>
+    <span><svg viewBox="0 0 34 8"><line x1="0" y1="4" x2="34" y2="4" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4"/></svg>copied by hand</span>
+    <span><svg viewBox="0 0 34 8"><line x1="0" y1="4" x2="34" y2="4" stroke="currentColor" stroke-width="1"/></svg>requests while you work</span>
+  </div>
+</figure>
+
+<p>Geenee needs nothing installed on anyone’s computer. The server runs on the internet; the viewers open in a browser tab. The plugin is a handful of small text files that tell the app where the server is and how to use it.</p>
+
+<h2 id="apps">App by app</h2>
+
+<div class="tablewrap wide">
+<table>
+  <thead><tr><th>App</th><th>What to do</th><th class="c">Tools</th><th class="c">Skill</th><th>How often</th></tr></thead>
+  <tbody>
+    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, switch its server on: a few clicks on one settings page</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
+    <tr><th>Claude Code</th><td>Nothing, if the account has it. Otherwise one command</td><td class="c yes"></td><td class="c yes"></td><td>Once per account, or per machine</td></tr>
+    <tr><th>Codex</th><td>Two commands</td><td class="c yes"></td><td class="c yes"></td><td>Once per machine</td></tr>
+    <tr><th>ChatGPT</th><td>Add a custom MCP server with the address</td><td class="c yes"></td><td class="c no"></td><td>Once per ChatGPT account</td></tr>
+    <tr><th>Anything else</th><td>Point it at <code>https://geenee.3dg.io/mcp</code></td><td class="c yes"></td><td class="c no"></td><td>Per client</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>claude.ai, the Claude desktop app and Cowork</h3>
+
+<aside class="note">Plugins are added to the account, not the app, so this one setup also reaches Claude Code the next time it starts signed in (<code>/login</code> forces it). Team and Enterprise admins can add the connector once for the whole organization.</aside>
+
+<ol>
+  <li>Open <a href="https://claude.ai/new#settings/customize-plugins">claude.ai/new#settings/customize-plugins</a> in a new tab. In the app it is <span class="ui">Customize → Plugins</span>.</li>
+  <li><span class="ui">Add → Add marketplace → Add from a repository</span>, enter <code>aidenlab/plugins</code>.</li>
+  <li>In <span class="ui">Discover</span>, find <b>Geenee</b> and click <span class="ui">Add</span>.</li>
+  <li>On its <span class="ui">Manage</span> page, switch on the <b>Geenee</b> server. If there is no switch: <span class="ui">Customize → Connectors</span> → enable Geenee.</li>
+  <li>Start a new conversation.</li>
+</ol>
+
+<h3>Claude Code</h3>
+
+<p>Already there if the Claude account has Geenee. Otherwise:</p>
+<div class="cmd"><pre>claude plugin install geenee --marketplace aidenlab/plugins</pre></div>
+<p>Inside a running session, <code>/plugin install geenee --marketplace aidenlab/plugins</code> then <code>/reload-plugins</code> does the same.</p>
+
+<h3>Codex</h3>
+<div class="cmd"><pre>codex plugin marketplace add aidenlab/plugins
+codex plugin add geenee@aidenlab</pre></div>
+
+<h3>ChatGPT</h3>
+<ol>
+  <li><a href="https://chatgpt.com/plugins">chatgpt.com/plugins</a> → <span class="ui">+</span> → <span class="ui">Add custom MCP server</span>.</li>
+  <li>Name <code>Geenee</code>, address <code>https://geenee.3dg.io/mcp</code>, authentication <b>None</b>.</li>
+  <li>In a new chat, enable Geenee from the tools menu.</li>
+</ol>
+
+<h3>Other MCP clients</h3>
+<p>Cursor and other clients take the address directly. A client that only speaks stdio can be bridged:</p>
+<div class="cmd"><pre>npx -y mcp-remote https://geenee.3dg.io/mcp</pre></div>
+
+<h2 id="before">Before and after</h2>
+
+<div class="tablewrap wide">
+<table>
+  <thead><tr><th></th><th>Sending a server address</th><th>Sending people to the plugin</th></tr></thead>
+  <tbody>
+    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste, or a name to install</td></tr>
+    <tr><th>What they get</th><td>The tools</td><td>The tools, and a skill that teaches the assistant to use them well</td></tr>
+    <tr><th>Claude</th><td>A custom connector, set up per account</td><td>A plugin on the account, reaching every Claude app</td></tr>
+    <tr><th>A new server address</th><td>Everyone edits their settings by hand</td><td>Bump the version; everyone gets it with the next update</td></tr>
+    <tr><th>Better instructions</th><td>Only through the server’s own short instructions</td><td>Edit the skill, bump the version</td></tr>
+    <tr><th>ChatGPT</th><td colspan="2">The same either way: the address, added by hand</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="works">Is it working?</h2>
+
+<p>Ask, in a new conversation:</p>
+<div class="cmd key"><pre>Open Geenee. In Juicebox, load the ENCODE GM12878 in situ Hi-C map at the HOXA cluster and add the gene track. In IGV, go to HOXA1 and add the GM12878 CTCF ChIP-seq track.</pre></div>
+
+<p>The assistant answers with a Geenee link. Open it: one page with <b>IGV</b>, <b>Juicebox</b> and <b>Spacewalk</b> tabs. The page must stay open while you work; the assistant drives it from the conversation. Three states are worth telling apart when something is missing:</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>State</th><th>How you know</th><th>If not</th></tr></thead>
+  <tbody>
+    <tr><th>Installed</th><td>Geenee appears in the app’s plugin list</td><td>Repeat the steps for the app</td></tr>
+    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Switch the Geenee server on; start a new conversation</td></tr>
+    <tr><th>Viewer working</th><td>The page changes when you ask</td><td>Open, or reopen, the Geenee link</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="update">Updates</h2>
+
+<p>A new plugin version reaches people when their app refreshes the marketplace. Claude’s apps and Codex can do this automatically; by hand:</p>
+<div class="cmd"><pre>claude plugin marketplace update aidenlab &amp;&amp; claude plugin update geenee@aidenlab
+codex plugin marketplace upgrade aidenlab</pre></div>
+<p>Changes to the server itself, such as a new tool, need no update at all: every app asks the server for its tools afresh.</p>
+
+<h2 id="juicebot">Replacing juicebot</h2>
+
+<aside class="note">The plugin id is permanent: it is how every install finds its updates. That is why <code>juicebot</code> could not simply be renamed, and why <code>geenee</code> is a new plugin rather than a new version.</aside>
+
+<p>An earlier plugin, <code>juicebot</code> (shown as JuiceBot, later as Geenee), is retired and no longer updated. Anyone who has it should remove it and install <code>geenee</code>; the one-sentence setup does both. By hand:</p>
+<div class="cmd"><pre>claude plugin uninstall juicebot@aidenlab
+claude plugin marketplace update aidenlab
+claude plugin install geenee@aidenlab</pre></div>
+<p>In claude.ai, remove JuiceBot on the plugins page and any JuiceBot connector. In ChatGPT, remove any JuiceBot or <code>geenee-dev</code> server.</p>
+
+<h2 id="words">Words</h2>
+
+<div class="tablewrap">
+<table>
+  <tbody>
+    <tr><th>MCP server</th><td>The program that offers the tools, here <code>geenee.3dg.io/mcp</code>. It is the same with or without a plugin.</td></tr>
+    <tr><th>Connector</th><td>An app’s saved connection to an MCP server.</td></tr>
+    <tr><th>Skill</th><td>A Markdown file of know-how the assistant reads when a conversation needs it. Written by hand; only its tool reference is generated.</td></tr>
+    <tr><th>Plugin</th><td>A folder that packages a server address and a skill under one name and version.</td></tr>
+    <tr><th>Marketplace</th><td>A GitHub repository listing plugins. Added once; its plugins are then installed by name.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="publish">For the maintainer: publishing a change</h2>
+
+<ol>
+  <li>Edit on a branch: the skill in <code>plugins/geenee/skills/geenee/</code>, and after a tool change the generated reference (<code>scripts/gen-tools-md.py</code>).</li>
+  <li>Raise <code>version</code> in all four manifests: both <code>plugin.json</code> files and the <code>geenee</code> entry in both <code>marketplace.json</code> files. Never change the name.</li>
+  <li>Check: <code>claude plugin validate . &amp;&amp; claude plugin validate ./plugins/geenee</code>, then <code>scripts/test-cli.sh</code>.</li>
+  <li>Merge, then tag the release; the workflow attaches <code>geenee.plugin</code> to it.</li>
+</ol>
+<div class="cmd"><pre>claude plugin tag plugins/geenee --push</pre></div>
+
+<p class="end">Written 6 November 2026 for plugin version 1.0.0, against the server at <code>geenee.3dg.io</code>. The repository’s <code>README.md</code> has the full layout and maintenance notes; <code>docs/from-mcp-url-to-plugin.md</code> explains skills in more depth.</p>
+
+</main>
+
+<script>
+for (const block of document.querySelectorAll('.cmd')) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = 'Copy';
+  button.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(block.querySelector('pre').textContent);
+    button.textContent = 'Copied';
+    setTimeout(() => { button.textContent = 'Copy'; }, 1500);
+  });
+  block.append(button);
+}
+</script>
+</body>
+</html>
