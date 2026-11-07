@@ -12,7 +12,7 @@ In Claude Code or Codex, paste this and the assistant installs everything:
 Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.
 ```
 
-In claude.ai, the Claude desktop app, Cowork and ChatGPT no prompt can install it: a chat cannot change account settings. Those take a few clicks, listed in the [marketplace README](../../README.md). Quickest by hand: Claude Code `/plugin install geenee --marketplace aidenlab/plugins` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins` then `codex plugin add geenee@aidenlab`; Claude web/desktop/Cowork: https://claude.ai/new#settings/customize-plugins → Add → Add marketplace → `aidenlab/plugins` → Discover → Geenee → Add, then Geenee's Connectors tab → Connect; ChatGPT adds `https://geenee.3dg.io/mcp` as a custom MCP server.
+In claude.ai, the Claude desktop app and Cowork no prompt can install it: a chat cannot change account settings. Those take eight short steps, listed in the [marketplace README](../../README.md). In ChatGPT, use Codex in the ChatGPT desktop app and paste the one-line prompt there. Geenee is installed only from the marketplace, never by adding the server address by hand. Quickest by hand: Claude Code `/plugin install geenee --marketplace aidenlab/plugins` then `/reload-plugins`; Codex `codex plugin marketplace add aidenlab/plugins` then `codex plugin add geenee@aidenlab`.
 
 ## Try it
 

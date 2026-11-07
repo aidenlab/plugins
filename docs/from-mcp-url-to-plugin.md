@@ -28,8 +28,8 @@ Your understanding is mostly right, but how easy it gets depends on the app:
 |---|---|---|
 | **Claude Code** | `claude mcp add --transport http geenee <url>` | `claude plugin install geenee --marketplace aidenlab/plugins`: server **and** skill in one step, with updates through `/plugin update`. |
 | **Codex** | `codex mcp add …` | `codex plugin marketplace add aidenlab/plugins` + `codex plugin add geenee@aidenlab` |
-| **claude.ai / desktop / Cowork** | Settings → Connectors → Add custom connector → paste URL | Customize → Plugins → Add marketplace `aidenlab/plugins` → Geenee → Add, then Geenee's Connectors tab → **Connect** (claude.ai never connects a plugin's server automatically). **It's still a few clicks**, but they're done once per account and then reach every Claude surface, Claude Code included. |
-| **ChatGPT** | Add custom MCP server → paste URL | **The same** for now: ChatGPT still needs the custom MCP server step. |
+| **claude.ai / desktop / Cowork** | Settings → Connectors → Add custom connector → paste URL | Customize → Plugins → Add marketplace `aidenlab/plugins` → Geenee → Add, then Geenee's Connectors tab → **Connect** (step by step in the [README](../README.md)) (claude.ai never connects a plugin's server automatically). **It's still a few clicks**, but they're done once per account and then reach every Claude surface, Claude Code included. |
+| **ChatGPT** | Add custom MCP server → paste URL | Open **Codex** in the ChatGPT desktop app, paste the one-line setup prompt, click **Approve**: Codex installs the plugin from the marketplace. |
 
 Two things smooth over what's left:
 

@@ -67,7 +67,7 @@ export default {
     };
 
     if (url.pathname === '/plugins') {
-      return Response.redirect('https://claude.ai/new#settings/customize-plugins', 302);
+      return Response.redirect('https://claude.ai/customize/plugins', 302);
     }
     if (url.pathname === '/plugin') {
       return Response.redirect(`https://github.com/${REPO}/releases/latest/download/geenee.plugin`, 302);
