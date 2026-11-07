@@ -132,7 +132,7 @@ td.c { text-align: center; width: 4.5rem; }
 <p class="lede">Geenee used to reach people as a bare server address they pasted into their connector settings. It now reaches them as a plugin in a marketplace: one install brings the server and a skill that teaches the assistant how to use it, and updates follow. This page shows how the pieces fit and what to do in each app.</p>
 
 <ul class="toc">
-  <li><a href="#fastest">The fastest way: one sentence</a></li>
+  <li><a href="#fastest">Claude Code and Codex: one sentence</a></li>
   <li><a href="#pieces">What gets installed, and where</a></li>
   <li><a href="#apps">App by app</a></li>
   <li><a href="#before">Before and after</a></li>
@@ -143,15 +143,15 @@ td.c { text-align: center; width: 4.5rem; }
   <li><a href="#publish">For the maintainer: publishing a change</a></li>
 </ul>
 
-<h2 id="fastest">The fastest way: one sentence</h2>
+<h2 id="fastest">Claude Code and Codex: one sentence</h2>
 
 <aside class="note">The address serves <code>INSTALL-PROMPT.md</code> from the <code>aidenlab/plugins</code> repository: instructions written for the assistant, not for a person. Editing that file changes what every assistant does next time; nothing needs redeploying.</aside>
 
-<p>Paste this into any of Claude Code, Cowork, claude.ai, the Claude desktop app, Codex or ChatGPT:</p>
+<p>In Claude Code or Codex, paste this and the assistant installs everything itself:</p>
 
 <div class="cmd key"><pre>Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.</pre></div>
 
-<p>The assistant works out which app it is in. Where it can install things itself (Claude Code, Codex) it does. Where it cannot (a settings page in Claude or ChatGPT) it sends the exact clicks in one message. It finishes by handing over a first request to paste into a new chat. That one sentence is what to send people instead of a server address.</p>
+<p>In claude.ai, the Claude desktop app, Cowork and ChatGPT no prompt can install anything: adding a plugin or connector is an account setting, and a chat cannot change those. Pasted there, the sentence only gets you the list of clicks, so send people straight to the steps for their app below.</p>
 
 <h2 id="pieces">What gets installed, and where</h2>
 
@@ -242,7 +242,7 @@ td.c { text-align: center; width: 4.5rem; }
 <table>
   <thead><tr><th>App</th><th>What to do</th><th class="c">Tools</th><th class="c">Skill</th><th>How often</th></tr></thead>
   <tbody>
-    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, switch its server on: a few clicks on one settings page</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
+    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, click Connect on its Connectors tab: a few clicks on one settings page</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
     <tr><th>Claude Code</th><td>Nothing, if the account has it. Otherwise one command</td><td class="c yes"></td><td class="c yes"></td><td>Once per account, or per machine</td></tr>
     <tr><th>Codex</th><td>Two commands</td><td class="c yes"></td><td class="c yes"></td><td>Once per machine</td></tr>
     <tr><th>ChatGPT</th><td>Add a custom MCP server with the address</td><td class="c yes"></td><td class="c no"></td><td>Once per ChatGPT account</td></tr>
@@ -259,7 +259,7 @@ td.c { text-align: center; width: 4.5rem; }
   <li>Open <a href="https://claude.ai/new#settings/customize-plugins">claude.ai/new#settings/customize-plugins</a> in a new tab. In the app it is <span class="ui">Customize → Plugins</span>.</li>
   <li><span class="ui">Add → Add marketplace → Add from a repository</span>, enter <code>aidenlab/plugins</code>.</li>
   <li>In <span class="ui">Discover</span>, find <b>Geenee</b> and click <span class="ui">Add</span>.</li>
-  <li>On its <span class="ui">Manage</span> page, switch on the <b>Geenee</b> server. If there is no switch: <span class="ui">Customize → Connectors</span> → enable Geenee.</li>
+  <li>On Geenee's <span class="ui">Connectors</span> tab, click <span class="ui">Connect</span>. It shows “Not added” until you do: Claude never connects a plugin's server for you. No login is needed.</li>
   <li>Start a new conversation.</li>
 </ol>
 
@@ -290,7 +290,7 @@ codex plugin add geenee@aidenlab</pre></div>
 <table>
   <thead><tr><th></th><th>Sending a server address</th><th>Sending people to the plugin</th></tr></thead>
   <tbody>
-    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste, or a name to install</td></tr>
+    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste (Claude Code, Codex), or a few clicks (Claude apps)</td></tr>
     <tr><th>What they get</th><td>The tools</td><td>The tools, and a skill that teaches the assistant to use them well</td></tr>
     <tr><th>Claude</th><td>A custom connector, set up per account</td><td>A plugin on the account, reaching every Claude app</td></tr>
     <tr><th>A new server address</th><td>Everyone edits their settings by hand</td><td>Bump the version; everyone gets it with the next update</td></tr>
@@ -312,7 +312,7 @@ codex plugin add geenee@aidenlab</pre></div>
   <thead><tr><th>State</th><th>How you know</th><th>If not</th></tr></thead>
   <tbody>
     <tr><th>Installed</th><td>Geenee appears in the app’s plugin list</td><td>Repeat the steps for the app</td></tr>
-    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Switch the Geenee server on; start a new conversation</td></tr>
+    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Click Connect on Geenee's Connectors tab; start a new conversation</td></tr>
     <tr><th>Viewer working</th><td>The page changes when you ask</td><td>Open, or reopen, the Geenee link</td></tr>
   </tbody>
 </table>

@@ -28,12 +28,12 @@ Your understanding is mostly right, but how easy it gets depends on the app:
 |---|---|---|
 | **Claude Code** | `claude mcp add --transport http geenee <url>` | `claude plugin install geenee --marketplace aidenlab/plugins`: server **and** skill in one step, with updates through `/plugin update`. |
 | **Codex** | `codex mcp add …` | `codex plugin marketplace add aidenlab/plugins` + `codex plugin add geenee@aidenlab` |
-| **claude.ai / desktop / Cowork** | Settings → Connectors → Add custom connector → paste URL | Customize → Plugins → Add marketplace `aidenlab/plugins` → Geenee → Add, then turn the server on. **It's still a few clicks**, but they're done once per account and then reach every Claude surface, Claude Code included. |
+| **claude.ai / desktop / Cowork** | Settings → Connectors → Add custom connector → paste URL | Customize → Plugins → Add marketplace `aidenlab/plugins` → Geenee → Add, then Geenee's Connectors tab → **Connect** (claude.ai never connects a plugin's server automatically). **It's still a few clicks**, but they're done once per account and then reach every Claude surface, Claude Code included. |
 | **ChatGPT** | Add custom MCP server → paste URL | **The same** for now: ChatGPT still needs the custom MCP server step. |
 
 Two things smooth over what's left:
 
-1. **The one-line install prompt.** Users paste *"Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in."* The assistant works out which app it's in, runs the commands it can run itself, and gives the user the exact clicks it can't do. This is the real replacement for "here's a URL, go into settings".
+1. **The one-line install prompt.** Users paste *"Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in."* In Claude Code and Codex the assistant installs everything itself. In claude.ai, the desktop app, Cowork and ChatGPT it cannot: a chat cannot change account settings, so it can only list the clicks. There, the prompt does not replace the settings page; it only explains it.
 2. **A directory listing (not done yet).** Once the plugin is listed in Anthropic's community directory, it shows up in Claude's Discover tab with a one-click install card, and nobody has to add a marketplace. See "Directory listing" in `README.md`.
 
 The other big gain is **upgrades**. With the URL approach, once someone has pasted it you can't reach them again. With a plugin you bump the version and push, and users get the new skill, a new URL or new tools through the update flow.

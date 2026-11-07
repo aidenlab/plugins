@@ -19,25 +19,33 @@ Decide from your own environment; ask the user only if you cannot tell.
 
 - A shell with the `claude` CLI, or `/plugin` slash commands → **Claude Code**.
 - Any other Claude surface: claude.ai on the web, the Claude desktop app's Chat tab, or a Cowork task → **Claude (account path)**.
-- A shell with the `codex` CLI → **Codex**.
+- A shell with the `codex` CLI, or the Codex desktop app → **Codex**.
 - ChatGPT → **ChatGPT**.
 
 ## Claude (claude.ai web, desktop Chat, Cowork)
 
-Plugins and marketplaces are added to the user's **account**, once, and then follow them to web chat, the desktop app, Cowork and Claude Code. There is no command for this; it is a few clicks on one settings page. Keep the conversation short: two user actions in total, each as a single message. Do not build or send plugin files.
+Plugins and marketplaces are added to the user's **account**, once, and then follow them to web chat, the desktop app, Cowork and Claude Code, with updates. There is no command for this; it is a few clicks on one settings page. Do not build or send plugin files.
+
+**Setup has two parts and the user must do both: add the plugin, then click Connect.** Adding the plugin turns on its skill but not its server: Claude never connects a plugin's server automatically, and until the user clicks **Connect** the plugin page looks installed and enabled while Geenee does nothing. Users do not find this step on their own. Every message that tells the user how to add the plugin must include the Connect step in the same list, and you must not call setup done until the user has confirmed it.
 
 1. If Geenee tools are already callable here, skip to verification.
 2. If you have a tool that lists the plugins on the user's account, call it for `geenee` first. If the plugin is already there, skip to step 4. Otherwise, if you have a plugin-catalog search tool, search it for `geenee`; if listed, render the install card and tell the user to click **Install**, then go to step 4.
-3. **One message, all the clicks.** Do not open the settings page yourself; send exactly this and wait for the user to say they are done:
+3. **One message, all the clicks, Connect included.** Do not open the settings page yourself; send exactly this and wait for the user to say they are done:
 
-   > Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. If the `aidenlab` marketplace is not there yet, click **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins` and confirm. In the **Discover** tab, find **Geenee** and click **Add**. Tell me when that's done.
+   > Open **https://claude.ai/new#settings/customize-plugins** in a separate tab or window (Ctrl/Cmd-click, or right-click → Open in new tab) so this chat stays put. In the app the same page is **Customize → Plugins**; in Cowork, open the Cowork tab first. Then:
+   >
+   > 1. If the `aidenlab` marketplace is not there yet: **Add → Add marketplace → Add from a repository**, enter `aidenlab/plugins`, confirm.
+   > 2. In the **Discover** tab, find **Geenee** and click **Add**.
+   > 3. **Don't stop there.** Open Geenee's **Connectors** tab: it says **Not added**. Click **Connect**. No login is needed. Without this click Geenee looks installed but cannot do anything.
+   >
+   > Tell me when the Connectors tab shows Geenee as connected.
 
-4. **Confirm and connect the server.** When the user says it is done, call the tool that lists the plugins on their account, filtered to `geenee`. It renders a card for the plugin with a **Manage** button. Then say, as one message:
+4. **Confirm the Connect click.** When the user replies, if you have a tool that lists the plugins on their account, call it filtered to `geenee`. Then, unless the user has already said Geenee shows as connected, ask once, as one short message:
 
-   > Geenee is on your account. Click **Manage** on the card above and turn on the **Geenee** server (its MCP connection). If there is no server switch there, open **Customize → Connectors** and enable **Geenee**; and if it is not listed there either, use **Settings → Connectors → Add custom connector** with the name `Geenee`, the URL `https://geenee.3dg.io/mcp`, no authentication.
+   > Last check: on Geenee's **Connectors** tab, does it still say **Not added**? If so, click **Connect** there. If there is no Connect button, use **Settings → Connectors → Add custom connector** instead, name `Geenee`, URL `https://geenee.3dg.io/mcp`, no authentication.
 
    If the account also has the retired `juicebot` plugin or a JuiceBot connector, add one sentence asking them to remove it on the same page. On a Team or Enterprise plan, mention once that an admin can add the connector for the whole organization.
-5. The tools appear in a new conversation. End as described under "How to end your reply".
+5. Only once the user has confirmed Connect: the tools appear in a new conversation. End as described under "How to end your reply", and in its first line say that both parts are done (plugin added, server connected).
 
 Everything added this way also reaches Claude Code the next time it starts signed in with the same account (or after `/login`).
 
@@ -51,6 +59,8 @@ Everything added this way also reaches Claude Code the next time it starts signe
 
 ## Codex
 
+In the Codex CLI and the Codex desktop app (they share `~/.codex`, so an install from either reaches both). If `codex` is not on the PATH, look for the binary bundled inside the Codex app, or use `npx -y @openai/codex` when Node is installed. If none is available, walk the user through the app's plugin screen: add the marketplace `aidenlab/plugins`, then install **Geenee**. Codex enables the plugin's server automatically; there is no separate Connect step.
+
 1. Check `codex plugin list` for `geenee@aidenlab`. If installed, run `codex plugin marketplace upgrade aidenlab` and reuse it. If `juicebot@aidenlab` is installed, remove it.
 2. Otherwise run `codex plugin marketplace add aidenlab/plugins` (or `codex plugin marketplace upgrade aidenlab` if already added) then `codex plugin add geenee@aidenlab`.
 3. Verify: `codex plugin list` shows `installed, enabled`; `codex mcp list` shows `Geenee` with the server URL above. The plugin bundles the server; do not add it again with `codex mcp add`.
@@ -58,10 +68,14 @@ Everything added this way also reaches Claude Code the next time it starts signe
 
 ## ChatGPT
 
+ChatGPT does not use this marketplace: the user adds Geenee's server address by hand, and then must turn Geenee on in each chat. Both are manual; say so up front so the user knows there are two parts.
+
 1. If Geenee tools are already available here, skip to verification. If tools from a JuiceBot server or a `geenee-dev` server are available instead, guide them through step 2 and suggest removing the old server afterwards.
-2. Otherwise guide the user: **chatgpt.com/plugins → + → Add custom MCP server**, name `Geenee`, the server URL above, authentication **None**. Explain any confirmation ChatGPT shows in plain words.
-3. Then help them install the resulting plugin, start a new chat, and enable Geenee in it (the tools menu or `@Geenee`, whichever the app offers). If an option is missing, explain the account or workspace limitation you can verify and the next step.
-4. ChatGPT gets tools and the server's built-in instructions; it does not get the plugin skill. That is fine.
+2. Otherwise send one message with every step, numbered:
+   1. Open **chatgpt.com/plugins → + → Add custom MCP server**: name `Geenee`, URL the server URL above, authentication **None**. If ChatGPT says custom servers need **Developer mode**, turn it on where it points (Settings), then try again. Explain any confirmation ChatGPT shows in plain words.
+   2. **Don't stop there.** Start a new chat and turn Geenee on in it (the **+** / tools menu, or type `@Geenee`). Adding the server does not turn it on in chats.
+   If an option is missing, explain the account or workspace limitation you can verify and the next step.
+3. ChatGPT gets tools and the server's built-in instructions; it does not get the plugin skill. That is fine. Server-side changes (new tools, fixes) reach ChatGPT users automatically; only a change of server address would need them to redo step 2.
 
 ## How to end your reply when the tools are not callable yet (every application)
 
