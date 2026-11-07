@@ -13,7 +13,7 @@ plugins/geenee/                     the Geenee plugin
   skills/geenee/SKILL.md            the skill, shared by all
   skills/geenee/scripts/            geenee.py / geenee.mjs: connector-free CLI over HTTPS
   skills/geenee/references/         tools.md (generated from tools/list), cli.md
-  assets/                           icons (source: make_icon.py) for the OpenAI manifest and directory submissions
+  assets/                           icon.png 512, icon-128.png (from docs/geenee-icon-source.png): for the OpenAI manifest and directory submissions
 docs/install.html                   illustrated install cheat sheet
 INSTALL-PROMPT.md                   what the one-line prompt fetches
 install-worker/                     Cloudflare Worker serving it at geenee-install.3dg.io
