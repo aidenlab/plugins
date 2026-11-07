@@ -132,7 +132,7 @@ td.c { text-align: center; width: 4.5rem; }
 <p class="lede">Geenee used to reach people as a bare server address they pasted into their connector settings. It now reaches them as a plugin in a marketplace: one install brings the server and a skill that teaches the assistant how to use it, and updates follow. This page shows how the pieces fit and what to do in each app.</p>
 
 <ul class="toc">
-  <li><a href="#fastest">Claude Code and Codex: one sentence</a></li>
+  <li><a href="#fastest">Claude Code, Codex and ChatGPT: one sentence</a></li>
   <li><a href="#pieces">What gets installed, and where</a></li>
   <li><a href="#apps">App by app</a></li>
   <li><a href="#before">Before and after</a></li>
@@ -143,21 +143,23 @@ td.c { text-align: center; width: 4.5rem; }
   <li><a href="#publish">For the maintainer: publishing a change</a></li>
 </ul>
 
-<h2 id="fastest">Claude Code and Codex: one sentence</h2>
+<h2 id="fastest">Claude Code, Codex and ChatGPT: one sentence</h2>
 
 <aside class="note">The address serves <code>INSTALL-PROMPT.md</code> from the <code>aidenlab/plugins</code> repository: instructions written for the assistant, not for a person. Editing that file changes what every assistant does next time; nothing needs redeploying.</aside>
 
-<p>In Claude Code or Codex, paste this and the assistant installs everything itself:</p>
+<p>In Claude Code, Codex, or Codex inside the ChatGPT desktop app, paste this and the assistant installs everything itself. Each time it asks for permission, click <span class="ui">Approve</span>:</p>
 
 <div class="cmd key"><pre>Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.</pre></div>
 
-<p>In claude.ai, the Claude desktop app, Cowork and ChatGPT no prompt can install anything: adding a plugin or connector is an account setting, and a chat cannot change those. Pasted there, the sentence only gets you the list of clicks, so send people straight to the steps for their app below.</p>
+<p>In claude.ai, the Claude desktop app and Cowork no prompt can install anything: adding a plugin is an account setting, and a chat cannot change those. Pasted there, the sentence only gets you the list of clicks below. Plain ChatGPT chat cannot install Geenee at all; use Codex in the ChatGPT desktop app.</p>
+
+<p>Geenee is installed only from the marketplace, in every app, because only a marketplace install gets updates. The server address is never added by hand.</p>
 
 <h2 id="pieces">What gets installed, and where</h2>
 
 <figure>
   <div class="figwrap">
-  <svg class="fig" viewBox="0 0 1000 400" role="img" aria-label="The aidenlab/plugins repository on GitHub is the marketplace. It holds the geenee plugin, which holds two things: the server address, geenee.3dg.io/mcp, and the skill. The plugin is installed once on a Claude account, which carries it to claude.ai, the desktop app, Cowork and Claude Code, and installed in Codex. ChatGPT is given only the server address, by hand. Every app then calls the geenee server for its tools.">
+  <svg class="fig" viewBox="0 0 1000 400" role="img" aria-label="The aidenlab/plugins repository on GitHub is the marketplace. It holds the geenee plugin, which holds two things: the server address, geenee.3dg.io/mcp, and the skill. The plugin is installed once on a Claude account, which carries it to claude.ai, the desktop app, Cowork and Claude Code, and installed in Codex, including Codex inside the ChatGPT desktop app. Every app then calls the geenee server for its tools.">
 
     <text class="t-band" x="20" y="24">ON GITHUB</text>
     <text class="t-band" x="500" y="24">IN EACH APP</text>
@@ -186,7 +188,7 @@ td.c { text-align: center; width: 4.5rem; }
     <text class="t-m" x="72" y="307">references/</text>
     <text class="t-s" x="160" y="307">every tool’s arguments</text>
     <text class="t-m" x="72" y="325">scripts/</text>
-    <text class="t-s" x="136" y="325">a fallback that needs no connector</text>
+    <text class="t-s" x="136" y="325">a command-line helper</text>
 
     <!-- Apps -->
     <rect class="bx" x="500" y="40" width="250" height="150"/>
@@ -201,17 +203,17 @@ td.c { text-align: center; width: 4.5rem; }
     <text class="t-h" x="516" y="238">Codex</text>
     <text class="t-s" x="516" y="256">installed per machine</text>
 
-    <rect class="bx-q" x="500" y="300" width="250" height="62"/>
-    <text class="t-h" x="516" y="326">ChatGPT</text>
-    <text class="t-s" x="516" y="344">server address only, no skill</text>
+    <rect class="bx" x="500" y="300" width="250" height="62"/>
+    <text class="t-h" x="516" y="326">ChatGPT desktop</text>
+    <text class="t-s" x="516" y="344">through its Codex, like Codex</text>
 
     <!-- Plugin to apps -->
     <path class="w thick" d="M380 130 H 494" marker-end="url(#a)"/>
     <text class="t-s k" x="437" y="122" text-anchor="middle">server + skill</text>
     <path class="w thick" d="M380 243 H 494" marker-end="url(#a)"/>
     <text class="t-s k" x="437" y="235" text-anchor="middle">server + skill</text>
-    <path class="w dash" d="M364 195 H 440 V 331 H 494" marker-end="url(#as)"/>
-    <text class="t-s k" x="437" y="352" text-anchor="middle">address, by hand</text>
+    <path class="w thick" d="M380 331 H 494" marker-end="url(#a)"/>
+    <text class="t-s k" x="437" y="323" text-anchor="middle">server + skill</text>
 
     <!-- Server -->
     <rect class="bx-g" x="842" y="150" width="138" height="110"/>
@@ -226,10 +228,9 @@ td.c { text-align: center; width: 4.5rem; }
     <text class="t-s k" x="812" y="290" text-anchor="middle">tool calls</text>
   </svg>
   </div>
-  <figcaption><b>The plugin carries the address so no one types it.</b> Claude and Codex get the server and the skill from one install. ChatGPT cannot install this kind of plugin, so it is still given the address; it gets the tools and the server’s short built-in instructions, but not the skill.</figcaption>
+  <figcaption><b>The plugin carries the address so no one types it.</b> Claude, Codex and ChatGPT (through its Codex) get the server and the skill from one install, and updates follow.</figcaption>
   <div class="keyline">
     <span><svg viewBox="0 0 34 8"><line x1="0" y1="4" x2="34" y2="4" stroke="currentColor" stroke-width="2.75"/></svg>installed from the marketplace</span>
-    <span><svg viewBox="0 0 34 8"><line x1="0" y1="4" x2="34" y2="4" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4"/></svg>copied by hand</span>
     <span><svg viewBox="0 0 34 8"><line x1="0" y1="4" x2="34" y2="4" stroke="currentColor" stroke-width="1"/></svg>requests while you work</span>
   </div>
 </figure>
@@ -242,26 +243,38 @@ td.c { text-align: center; width: 4.5rem; }
 <table>
   <thead><tr><th>App</th><th>What to do</th><th class="c">Tools</th><th class="c">Skill</th><th>How often</th></tr></thead>
   <tbody>
-    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, click Connect on its Connectors tab: a few clicks on one settings page</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
+    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, then connect it on its Connectors tab: eight short steps in settings</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
     <tr><th>Claude Code</th><td>Nothing, if the account has it. Otherwise one command</td><td class="c yes"></td><td class="c yes"></td><td>Once per account, or per machine</td></tr>
     <tr><th>Codex</th><td>Two commands</td><td class="c yes"></td><td class="c yes"></td><td>Once per machine</td></tr>
-    <tr><th>ChatGPT</th><td>Add a custom MCP server with the address</td><td class="c yes"></td><td class="c no"></td><td>Once per ChatGPT account</td></tr>
-    <tr><th>Anything else</th><td>Point it at <code>https://geenee.3dg.io/mcp</code></td><td class="c yes"></td><td class="c no"></td><td>Per client</td></tr>
+    <tr><th>ChatGPT desktop</th><td>Open Codex, paste the one sentence, click Approve</td><td class="c yes"></td><td class="c yes"></td><td>Once per machine</td></tr>
   </tbody>
 </table>
 </div>
 
 <h3>claude.ai, the Claude desktop app and Cowork</h3>
 
-<aside class="note">Plugins are added to the account, not the app, so this one setup also reaches Claude Code the next time it starts signed in (<code>/login</code> forces it). Team and Enterprise admins can add the connector once for the whole organization.</aside>
+<aside class="note">Plugins are added to the account, not the app, so this one setup also reaches Claude Code the next time it starts signed in (<code>/login</code> forces it). On Team and Enterprise an Owner may first need to allow user-added marketplaces and add Geenee’s connector for the organization.</aside>
+
+<p>You need a paid Claude plan (Pro, Max, Team or Enterprise). There are two parts, adding Geenee and then connecting it. Do both.</p>
 
 <ol>
-  <li>Open <a href="https://claude.ai/new#settings/customize-plugins">claude.ai/new#settings/customize-plugins</a> in a new tab. In the app it is <span class="ui">Customize → Plugins</span>.</li>
-  <li><span class="ui">Add → Add marketplace → Add from a repository</span>, enter <code>aidenlab/plugins</code>.</li>
-  <li>In <span class="ui">Discover</span>, find <b>Geenee</b> and click <span class="ui">Add</span>.</li>
-  <li>On Geenee's <span class="ui">Connectors</span> tab, click <span class="ui">Connect</span>. It shows “Not added” until you do: Claude never connects a plugin's server for you. No login is needed.</li>
-  <li>Start a new conversation.</li>
+  <li>Click <span class="ui">Customize</span> in the left sidebar → <span class="ui">Plugins</span><br>
+    <i>In a web browser you can instead go straight to <a href="https://claude.ai/customize/plugins">claude.ai/customize/plugins</a>. In Cowork, click the <span class="ui">Cowork</span> tab first.</i><br>
+    ✓ You see a page called <b>Plugins</b> with a <b>Discover</b> tab.</li>
+  <li>Click <span class="ui">Add</span> → <span class="ui">Add marketplace</span> → <span class="ui">Add from a repository</span><br>
+    <i>Already see <b>aidenlab</b> in your list of marketplaces? Skip to step 5. No <span class="ui">Add marketplace</span>? Your organization has turned it off: ask your Claude admin to allow user-added marketplaces, then come back to this step.</i></li>
+  <li>Type <code>aidenlab/plugins</code> → click the button that adds it<br>
+    ✓ <b>aidenlab</b> now appears in your list of marketplaces.</li>
+  <li>If you see <span class="ui">Sync automatically</span> next to <b>aidenlab</b>, turn it on. This is how Geenee’s updates reach you.</li>
+  <li>Click the <span class="ui">Discover</span> tab → find <b>Geenee</b> → click <span class="ui">Add</span></li>
+  <li>Click <b>Geenee</b> → the <span class="ui">Connectors</span> tab<br>
+    ✓ It says <b>Not added</b>. That’s expected.</li>
+  <li>Click <span class="ui">Add</span> if you see it → then click <span class="ui">Connect</span>. No login is needed.<br>
+    ✓ It now says <b>Connected</b>. <i>Skip this step and Geenee looks installed but does nothing.</i></li>
+  <li>Start a new chat → click <span class="ui">+</span> in the message box → <span class="ui">Connectors</span> → make sure <b>Geenee</b> is switched on.</li>
 </ol>
+
+<p>Stuck at any step? Open an issue at <a href="https://github.com/aidenlab/plugins/issues">github.com/aidenlab/plugins/issues</a> and attach a screenshot of what you see.</p>
 
 <h3>Claude Code</h3>
 
@@ -275,14 +288,12 @@ codex plugin add geenee@aidenlab</pre></div>
 
 <h3>ChatGPT</h3>
 <ol>
-  <li><a href="https://chatgpt.com/plugins">chatgpt.com/plugins</a> → <span class="ui">+</span> → <span class="ui">Add custom MCP server</span>.</li>
-  <li>Name <code>Geenee</code>, address <code>https://geenee.3dg.io/mcp</code>, authentication <b>None</b>.</li>
-  <li>In a new chat, enable Geenee from the tools menu.</li>
+  <li>Open the <b>ChatGPT desktop app</b> → click <span class="ui">Codex</span>.</li>
+  <li>Paste the one sentence above.</li>
+  <li>Each time Codex asks for permission, click <span class="ui">Approve</span>.</li>
+  <li>When it finishes, it gives you a message. Paste that into a new chat.</li>
 </ol>
-
-<h3>Other MCP clients</h3>
-<p>Cursor and other clients take the address directly. A client that only speaks stdio can be bridged:</p>
-<div class="cmd"><pre>npx -y mcp-remote https://geenee.3dg.io/mcp</pre></div>
+<p>Plain ChatGPT chat cannot install Geenee.</p>
 
 <h2 id="before">Before and after</h2>
 
@@ -290,12 +301,12 @@ codex plugin add geenee@aidenlab</pre></div>
 <table>
   <thead><tr><th></th><th>Sending a server address</th><th>Sending people to the plugin</th></tr></thead>
   <tbody>
-    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste (Claude Code, Codex), or a few clicks (Claude apps)</td></tr>
+    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste (Claude Code, Codex, ChatGPT’s Codex), or eight short steps (Claude apps)</td></tr>
     <tr><th>What they get</th><td>The tools</td><td>The tools, and a skill that teaches the assistant to use them well</td></tr>
     <tr><th>Claude</th><td>A custom connector, set up per account</td><td>A plugin on the account, reaching every Claude app</td></tr>
     <tr><th>A new server address</th><td>Everyone edits their settings by hand</td><td>Bump the version; everyone gets it with the next update</td></tr>
     <tr><th>Better instructions</th><td>Only through the server’s own short instructions</td><td>Edit the skill, bump the version</td></tr>
-    <tr><th>ChatGPT</th><td colspan="2">The same either way: the address, added by hand</td></tr>
+    <tr><th>ChatGPT</th><td>A custom MCP server, added by hand</td><td>The plugin, installed by Codex in the ChatGPT desktop app</td></tr>
   </tbody>
 </table>
 </div>
@@ -312,7 +323,7 @@ codex plugin add geenee@aidenlab</pre></div>
   <thead><tr><th>State</th><th>How you know</th><th>If not</th></tr></thead>
   <tbody>
     <tr><th>Installed</th><td>Geenee appears in the app’s plugin list</td><td>Repeat the steps for the app</td></tr>
-    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Click Connect on Geenee's Connectors tab; start a new conversation</td></tr>
+    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Click Connect on Geenee's Connectors tab; in a new conversation, switch Geenee on under <span class="ui">+</span> → <span class="ui">Connectors</span></td></tr>
     <tr><th>Viewer working</th><td>The page changes when you ask</td><td>Open, or reopen, the Geenee link</td></tr>
   </tbody>
 </table>
@@ -333,7 +344,7 @@ codex plugin marketplace upgrade aidenlab</pre></div>
 <div class="cmd"><pre>claude plugin uninstall juicebot@aidenlab
 claude plugin marketplace update aidenlab
 claude plugin install geenee@aidenlab</pre></div>
-<p>In claude.ai, remove JuiceBot on the plugins page and any JuiceBot connector. In ChatGPT, remove any JuiceBot or <code>geenee-dev</code> server.</p>
+<p>In claude.ai, remove JuiceBot on the plugins page and any JuiceBot connector. In ChatGPT, remove any JuiceBot, <code>geenee-dev</code> or hand-added Geenee server, then install through Codex.</p>
 
 <h2 id="words">Words</h2>
 
