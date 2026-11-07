@@ -13,7 +13,7 @@
       "name": "geenee",
       "source": "./plugins/geenee",
       "description": "Drive Geenee, the Aiden Lab's genome workspace (igv genome browser, Juicebox Hi-C contact maps, Spacewalk 3D chromatin), by chatting: search ENCODE/4DN, load maps, tracks and ensembles, navigate loci, and share views.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "science",
       "keywords": [
         "geenee",
