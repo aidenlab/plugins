@@ -25,4 +25,4 @@ A Connector added by pasting the server address by hand. Not offered to users; i
 _Avoid_: Option B, manual install, URL install
 
 **Connect step**:
-The click in Claude that switches on a Plugin's Connector after the Plugin is added. Claude never does it automatically.
+The clicks on a Plugin's Connectors tab in Claude that switch on its Connector after the Plugin is added. Claude never does it automatically.

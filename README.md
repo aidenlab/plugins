@@ -19,37 +19,19 @@ In the ChatGPT desktop app, open **Codex** first, then paste the line there. Pla
 ### Claude (desktop app, claude.ai, Cowork): click through once
 
 <!-- claude-steps:start -->
-You need a paid Claude plan (Pro, Max, Team or Enterprise). There are two parts, adding Geenee and then connecting it. Do both.
+Follow these steps to install Geenee.
 
-1. Click **Customize** in the left sidebar → **Plugins**
+1. Go to **Customize → Plugins → +Add → Add marketplace → Add from a repository**. Enter this URL: `aidenlab/plugins`
+2. Click **Sync**
+3. You will be on the **Discover** tab. Click **Add** (Not **+Add**).
+4. Select the **Connectors** tab. **Connect → Continue → Add**
 
-   *In a web browser you can instead go straight to [claude.ai/customize/plugins](https://claude.ai/customize/plugins). In Cowork, click the **Cowork** tab first.*
+**Things to know:**
+- You need a paid plan.
+- If you see **Sync automatically** next to **aidenlab**, turn it on. That's how Geenee's updates reach you.
+- If you still have the old `juicebot` plugin, or a connection to `juicebot-mcp.3dg.io` or `geenee-dev.3dg.io`, remove it. Otherwise you'll get duplicate tools.
 
-   ✓ You see a page called **Plugins** with a **Discover** tab.
-
-2. Click **Add** → **Add marketplace** → **Add from a repository**
-
-   *Already see **aidenlab** in your list of marketplaces? Skip to step 5. No **Add marketplace**? Your organization has turned it off: ask your Claude admin to allow user-added marketplaces, then come back to this step.*
-
-3. Type `aidenlab/plugins` → click the button that adds it
-
-   ✓ **aidenlab** now appears in your list of marketplaces.
-
-4. If you see **Sync automatically** next to **aidenlab**, turn it on. This is how Geenee's updates reach you.
-
-5. Click the **Discover** tab → find **Geenee** → click **Add**
-
-6. Click **Geenee** → the **Connectors** tab
-
-   ✓ It says **Not added**. That's expected.
-
-7. Click **Add** if you see it → then click **Connect**. No login is needed.
-
-   ✓ It now says **Connected**. *Skip this step and Geenee looks installed but does nothing.*
-
-8. Start a new chat → click **+** in the message box → **Connectors** → make sure **Geenee** is switched on.
-
-Stuck at any step? Open an issue at [github.com/aidenlab/plugins/issues](https://github.com/aidenlab/plugins/issues) and attach a screenshot of what you see.
+**To check it worked:** start a new chat and ask me to open Geenee. I'll call `open_geenee` and give you a link to a page with IGV, Juicebox and Spacewalk tabs. Keep that browser tab open while you use it. If a step fails, report it at [github.com/aidenlab/plugins/issues](https://github.com/aidenlab/plugins/issues) with a screenshot.
 <!-- claude-steps:end -->
 
 This covers every Claude app on your account, Claude Code included. You can also paste the one-line prompt above into a Claude chat: it walks you through these same steps.
