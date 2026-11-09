@@ -34,42 +34,24 @@ Plugins and marketplaces are added to the user's **account**, once, and then fol
 3. **Send the steps below word for word.** Your whole message is: one sentence (what Geenee is, and that these steps add it in their Claude settings), then the block between the markers, exactly as written, as Markdown, without the marker comments. Do not shorten, reword, reorder, summarize or merge the steps. Do not add options, alternatives or fallbacks. Do not add a checklist after it. Then wait for the user to say they are done.
 
 <!-- claude-steps:start -->
-You need a paid Claude plan (Pro, Max, Team or Enterprise). There are two parts, adding Geenee and then connecting it. Do both.
+Follow these steps to install Geenee.
 
-1. Click **Customize** in the left sidebar → **Plugins**
+1. Go to **Customize → Plugins → +Add → Add marketplace → Add from a repository**. Enter this URL: `aidenlab/plugins`
+2. Click **Sync**
+3. You will be on the **Discover** tab. Click **Add** (Not **+Add**).
+4. Select the **Connectors** tab. **Connect → Continue → Add**
 
-   *In a web browser you can instead go straight to [claude.ai/customize/plugins](https://claude.ai/customize/plugins). In Cowork, click the **Cowork** tab first.*
+**Things to know:**
+- You need a paid plan.
+- If you see **Sync automatically** next to **aidenlab**, turn it on. That's how Geenee's updates reach you.
+- If you still have the old `juicebot` plugin, or a connection to `juicebot-mcp.3dg.io` or `geenee-dev.3dg.io`, remove it. Otherwise you'll get duplicate tools.
 
-   ✓ You see a page called **Plugins** with a **Discover** tab.
-
-2. Click **Add** → **Add marketplace** → **Add from a repository**
-
-   *Already see **aidenlab** in your list of marketplaces? Skip to step 5. No **Add marketplace**? Your organization has turned it off: ask your Claude admin to allow user-added marketplaces, then come back to this step.*
-
-3. Type `aidenlab/plugins` → click the button that adds it
-
-   ✓ **aidenlab** now appears in your list of marketplaces.
-
-4. If you see **Sync automatically** next to **aidenlab**, turn it on. This is how Geenee's updates reach you.
-
-5. Click the **Discover** tab → find **Geenee** → click **Add**
-
-6. Click **Geenee** → the **Connectors** tab
-
-   ✓ It says **Not added**. That's expected.
-
-7. Click **Add** if you see it → then click **Connect**. No login is needed.
-
-   ✓ It now says **Connected**. *Skip this step and Geenee looks installed but does nothing.*
-
-8. Start a new chat → click **+** in the message box → **Connectors** → make sure **Geenee** is switched on.
-
-Stuck at any step? Open an issue at [github.com/aidenlab/plugins/issues](https://github.com/aidenlab/plugins/issues) and attach a screenshot of what you see.
+**To check it worked:** start a new chat and ask me to open Geenee. I'll call `open_geenee` and give you a link to a page with IGV, Juicebox and Spacewalk tabs. Keep that browser tab open while you use it. If a step fails, report it at [github.com/aidenlab/plugins/issues](https://github.com/aidenlab/plugins/issues) with a screenshot.
 <!-- claude-steps:end -->
 
 4. **Confirm the Connect click.** When the user replies, if you have a tool that lists the plugins on their account, call it filtered to `geenee`. Then, unless the user has already said Geenee shows as **Connected**, ask once, as one short message:
 
-   > Last check: click **Customize** → **Plugins** → **Geenee** → the **Connectors** tab. Does it say **Connected**? If it says **Not added** or **Not connected**, click **Add** if you see it, then **Connect**.
+   > Last check: click **Customize** → **Plugins** → **Geenee** → the **Connectors** tab. Does it say **Connected**? If not, click **Connect → Continue → Add** there.
 
    If it still does not connect, send them to https://github.com/aidenlab/plugins/issues with a screenshot. On a Team or Enterprise plan, add one sentence: an Owner may need to add Geenee's connector for the organization first.
 5. Only once the user has confirmed Connect: the tools appear in a new conversation. End as described under "How to end your reply", and in its first line say that both parts are done (plugin added, server connected).
