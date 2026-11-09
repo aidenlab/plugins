@@ -1,37 +1,10 @@
 # Geenee setup — instructions for the assistant
 
-You are reading this because a user pasted a one-line request to set up Geenee. Follow it in the application you are running in. Talk to the user as someone comfortable with chat but unfamiliar with plugins, terminals and MCP: plain language, short explanations, one action at a time when their participation is needed. Perform every step you can yourself; never ask them to type a terminal command you could run.
+## In claude.ai, the Claude desktop app or Cowork: send the block below, exactly
 
-Start by telling them, in one or two sentences: Geenee lets them drive three genome viewers by typing ordinary requests: the IGV genome browser, the Juicebox Hi-C contact-map viewer and the Spacewalk 3D chromatin viewer, together on one page. That page opens in a browser tab, which must stay open while you work together. (On the Claude account path below, fold this into the single sentence before the steps.)
+If you are running in claude.ai on the web, the Claude desktop app's Chat tab, or a Cowork task, and the Geenee tools (`open_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`) are not already callable here:
 
-## Facts
-
-- Marketplace: `aidenlab/plugins` on GitHub (marketplace name `aidenlab`). Plugin: `geenee`, so `geenee@aidenlab`. Display name **Geenee**.
-- MCP server: `https://geenee.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top. The server name is **Geenee**.
-- A server connection supplies tools (`open_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`). The plugin supplies the skill. Both is best; tools alone are enough to work.
-- **Marketplace only.** Geenee is installed only from the `aidenlab` marketplace, in every app, because only a marketplace install receives updates. Never offer, suggest or fall back to adding the server address by hand (a "custom connector" or "custom MCP server"), not even when a step fails. When a step fails, send the user to https://github.com/aidenlab/plugins/issues.
-- Reuse anything already installed or connected. Never add a second connection to the same server.
-- Retired: an older plugin with the id `juicebot` (shown as JuiceBot or Geenee), and connections to `juicebot-mcp.3dg.io` or `geenee-dev.3dg.io`. If you find one, help the user remove or turn it off so two tool sets do not both appear.
-- Distinguish three states and report only what you have verified: **installed** (plugin present and enabled), **server connected** (Geenee tools are callable in this conversation), **viewer working** (the page answered a command).
-
-## Which application am I in?
-
-Decide from your own environment; ask the user only if you cannot tell.
-
-- A shell with the `claude` CLI, or `/plugin` slash commands → **Claude Code**.
-- Any other Claude surface: claude.ai on the web, the Claude desktop app's Chat tab, or a Cowork task → **Claude (account path)**.
-- A shell with the `codex` CLI, the Codex desktop app, or Codex inside the ChatGPT desktop app → **Codex**.
-- Plain ChatGPT chat (no Codex, no shell) → **ChatGPT**.
-
-## Claude (claude.ai web, desktop Chat, Cowork)
-
-Plugins and marketplaces are added to the user's **account**, once, and then follow them to web chat, the desktop app, Cowork and Claude Code, with updates. There is no command for this; the user clicks through their settings. Do not build or send plugin files, and do not open the settings page yourself.
-
-**Setup has two parts and the user must do both: add the plugin, then connect it.** Claude never connects a plugin's server automatically; until the user clicks **Connect**, Geenee looks installed but does nothing. Do not call setup done until the user has confirmed it.
-
-1. If Geenee tools are already callable here, skip to verification.
-2. If you have a tool that lists the plugins on the user's account, call it for `geenee` (and `juicebot`) first. If Geenee is already there, skip to **Confirm the Connect click** below. Do not report these checks to the user, except to ask them to remove a retired `juicebot` plugin or JuiceBot connector you actually found.
-3. **Send the steps below word for word.** Your whole message is: one sentence (what Geenee is, and that these steps add it in their Claude settings), then the block between the markers, exactly as written, as Markdown, without the marker comments. Do not shorten, reword, reorder, summarize or merge the steps. Do not add options, alternatives or fallbacks. Do not add a checklist after it. Then wait for the user to say they are done.
+**Your entire reply is the block between the markers below, copied character for character as Markdown, without the marker comments.** Nothing before it and nothing after it. Do not summarize, shorten, reword, reorder, renumber, merge or add steps. Do not add notes, options, sources, a checklist, or an explanation of why you cannot install it yourself. Do not search for the plugin first. Then wait for the user.
 
 <!-- claude-steps:start -->
 Follow these steps to install Geenee.
@@ -49,14 +22,43 @@ Follow these steps to install Geenee.
 **To check it worked:** start a new chat and ask me to open Geenee. I'll call `open_geenee` and give you a link to a page with IGV, Juicebox and Spacewalk tabs. Keep that browser tab open while you use it. If a step fails, report it at [github.com/aidenlab/plugins/issues](https://github.com/aidenlab/plugins/issues) with a screenshot.
 <!-- claude-steps:end -->
 
-4. **Confirm the Connect click.** When the user replies, if you have a tool that lists the plugins on their account, call it filtered to `geenee`. Then, unless the user has already said Geenee shows as **Connected**, ask once, as one short message:
+When the user replies that they are done:
+
+1. Unless they have already said Geenee shows as **Connected**, ask once, as one short message:
 
    > Last check: click **Customize** → **Plugins** → **Geenee** → the **Connectors** tab. Does it say **Connected**? If not, click **Connect → Continue → Add** there.
 
    If it still does not connect, send them to https://github.com/aidenlab/plugins/issues with a screenshot. On a Team or Enterprise plan, add one sentence: an Owner may need to add Geenee's connector for the organization first.
-5. Only once the user has confirmed Connect: the tools appear in a new conversation. End as described under "How to end your reply", and in its first line say that both parts are done (plugin added, server connected).
+2. Once they confirm Connected, end as described under "How to end your reply" below.
 
-Everything added this way also reaches Claude Code the next time it starts signed in with the same account (or after `/login`).
+If the Geenee tools are already callable here, skip the block and go to "Verification and first use" below.
+
+Never offer to add the server address by hand (a "custom connector"), not even when a step fails. Do not build or send plugin files, and do not open the settings page yourself.
+
+## Every other application
+
+You are reading this because a user pasted a one-line request to set up Geenee. Follow it in the application you are running in. Talk to the user as someone comfortable with chat but unfamiliar with plugins, terminals and MCP: plain language, short explanations, one action at a time when their participation is needed. Perform every step you can yourself; never ask them to type a terminal command you could run.
+
+Start by telling them, in one or two sentences: Geenee lets them drive three genome viewers by typing ordinary requests: the IGV genome browser, the Juicebox Hi-C contact-map viewer and the Spacewalk 3D chromatin viewer, together on one page. That page opens in a browser tab, which must stay open while you work together.
+
+## Facts
+
+- Marketplace: `aidenlab/plugins` on GitHub (marketplace name `aidenlab`). Plugin: `geenee`, so `geenee@aidenlab`. Display name **Geenee**.
+- MCP server: `https://geenee.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top. The server name is **Geenee**.
+- A server connection supplies tools (`open_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`). The plugin supplies the skill. Both is best; tools alone are enough to work.
+- **Marketplace only.** Geenee is installed only from the `aidenlab` marketplace, in every app, because only a marketplace install receives updates. Never offer, suggest or fall back to adding the server address by hand (a "custom connector" or "custom MCP server"), not even when a step fails. When a step fails, send the user to https://github.com/aidenlab/plugins/issues.
+- Reuse anything already installed or connected. Never add a second connection to the same server.
+- Retired: an older plugin with the id `juicebot` (shown as JuiceBot or Geenee), and connections to `juicebot-mcp.3dg.io` or `geenee-dev.3dg.io`. If you find one, help the user remove or turn it off so two tool sets do not both appear.
+- Distinguish three states and report only what you have verified: **installed** (plugin present and enabled), **server connected** (Geenee tools are callable in this conversation), **viewer working** (the page answered a command).
+
+## Which application am I in?
+
+Decide from your own environment; ask the user only if you cannot tell.
+
+- A shell with the `claude` CLI, or `/plugin` slash commands → **Claude Code**.
+- Any other Claude surface: claude.ai on the web, the Claude desktop app's Chat tab, or a Cowork task → the section at the top of this file.
+- A shell with the `codex` CLI, the Codex desktop app, or Codex inside the ChatGPT desktop app → **Codex**.
+- Plain ChatGPT chat (no Codex, no shell) → **ChatGPT**.
 
 ## Claude Code
 
