@@ -3,8 +3,8 @@
  *
  * Built on each request from README.md's claude-steps block, so the Claude steps
  * have one copy, and no assistant sits between the steps and the person to
- * reword them. Only the numbered steps and the paid-plan note are taken from
- * the block; its juicebot cleanup note and Claude-voiced check stay behind.
+ * reword them. Only the numbered steps, the paid-plan note and the Sync automatically
+ * note are taken from the block; its juicebot cleanup note and Claude-voiced check stay behind.
  */
 
 export const ONE_LINE = 'Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.';
@@ -32,13 +32,14 @@ export function claudeSteps(readme) {
   const intro = lines[0] && !NUMBERED.test(lines[0]) ? lines[0] : null;
   const steps = lines.filter(l => NUMBERED.test(l)).map(l => l.replace(NUMBERED, ''));
   const paidPlan = lines.find(l => /^- .*paid plan/i.test(l))?.slice(2);
+  const syncAutomatically = lines.find(l => /^- .*Sync automatically/.test(l))?.slice(2) ?? null;
   if (steps.length === 0 || !paidPlan) return null;
-  return { intro, steps, paidPlan };
+  return { intro, steps, paidPlan, syncAutomatically };
 }
 
 const copyable = text => `<div class="cmd"><pre>${esc(text)}</pre></div>`;
 
-export function installPage({ intro, steps, paidPlan }) {
+export function installPage({ intro, steps, paidPlan, syncAutomatically }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -86,7 +87,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-of
 
 <h2>Claude <span class="for">claude.ai, the desktop app, Cowork</span></h2>
 <p>ChatGPT and Claude Code install Geenee from one line you paste in. Claude’s apps can’t: adding a plugin there is an account setting, so you click through these steps yourself, once. They cover every Claude app on your account.</p>
-<p class="note">${inline(paidPlan)}</p>
+<p class="note">${inline(paidPlan)}${syncAutomatically ? `<br>${inline(syncAutomatically)}` : ''}</p>
 ${intro ? `<p>${inline(intro)}</p>\n` : ''}<ol>
 ${steps.map(s => `  <li>${inline(s)}</li>`).join('\n')}
 </ol>

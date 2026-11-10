@@ -78,3 +78,8 @@ test('/install works with the README.md in this repository', async () => {
   assert.equal((text.match(/<li>/g) || []).length >= 4, true);
   assert.match(text, /You need a paid plan\./);
 });
+
+test('/install tells Claude users to turn on Sync automatically, word for word from README.md', async () => {
+  const { text } = await get('/install');
+  assert.ok(text.includes("If you see <b>Sync automatically</b> next to <b>aidenlab</b>, turn it on. That's how Geenee's updates reach you."));
+});
