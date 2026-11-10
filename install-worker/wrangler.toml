@@ -17,3 +17,7 @@ preview_urls = false
 
 [vars]
 BRANCH = "main"
+
+# Keep console.log output (the Accept-header log on /) in the dashboard's Logs.
+[observability]
+enabled = true
