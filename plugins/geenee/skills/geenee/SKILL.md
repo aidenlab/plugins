@@ -34,7 +34,7 @@ Chain calls that do not depend on each other into one `call`, so the user waits 
    - To get the Workspace back beside the conversation: call `open_geenee` with the same `room`.
 2. If a browser pane inside this app is available (Claude's built-in browser), open the link in it right away so Geenee sits beside the conversation. Do not drive the user's own browser with it.
 3. Where the host draws geenee's Card (Claude desktop, claude.ai, through the MCP tools), it shows the user an **Open geenee** button, the Room link and a QR code; do not repeat them in your reply. Everywhere else, including every time you used the CLI, show the user these three things after `open_geenee` / `share_geenee` (`$G open` / `$G share`):
-   - the Room link (`…/r/<Room id>`, the `Room link:` line), as a plain clickable URL, not in a code block; opening it opens the Workspace, and others who open it join the Room;
+   - the Room link (`…/r/<Room id>`, the `Room link:` line), written out in full as the visible text so it can be copied, e.g. `https://geenee.3dg.io/r/<Room id>`; never hide it behind other words such as "Geenee workspace", and not in a code block. Opening it opens the Workspace, and others who open it join the Room;
    - the Room id;
    - the QR code, as a Markdown image of the address the reply gives (the `QR code:` line, `…/r/<Room id>/qr.png`): `![QR code of the Room link](<QR code address>)`.
 
