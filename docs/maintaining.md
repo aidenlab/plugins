@@ -36,6 +36,7 @@ scripts/check-install-steps.sh      fails if the Claude steps in README.md and I
 - Validate: `claude plugin validate . && claude plugin validate ./plugins/geenee`; for Codex, `codex plugin marketplace add ./ && codex plugin add geenee@aidenlab`.
 - CLI smoke test: `scripts/test-cli.sh`.
 - After a tool change: `scripts/gen-tools-md.py` (new tools land under "Other" until added to `GROUPS`).
+- Host check, before a version bump merges: install the branch's Plugin version and run the Host check in [aidenlab/geenee `docs/host-check.md`](https://github.com/aidenlab/geenee/blob/main/docs/host-check.md) (written in [aidenlab/geenee#88](https://github.com/aidenlab/geenee/issues/88)) in every Host it lists, ChatGPT desktop (Codex mode) included. Merge only when it passes; record the version and result on the PR.
 - Release: `claude plugin tag plugins/geenee --push` pushes `geenee--v<version>`; the workflow attaches `geenee.plugin` to the GitHub release.
 
 ## Where installs can and cannot be automated

@@ -10,8 +10,8 @@ opens a Room and remembers it, so later commands in any shell act on the same
 Workspace.
 
 Usage:
-  geenee.py open                          Workspace link for this shell's Room (opens a new Room if none)
-  geenee.py share                         Room link for others to join this Room (opens a new Room if none)
+  geenee.py open                          Workspace link, Room link, QR code address and Room id (opens a new Room if none)
+  geenee.py share                         Room link and QR code address for others to join this Room (opens a new Room if none)
   geenee.py status                        whether each viewer is connected in the Room
   geenee.py tools                         tool names with one-line descriptions
   geenee.py call TOOL [JSON] [TOOL [JSON] ...]
@@ -190,13 +190,24 @@ def print_result(result, as_json):
     return 2 if result.get("isError") else 0
 
 
+def room_links(sc, room):
+    """The Room link (…/r/ID) and its QR code address (…/r/ID/qr.png), from a reply's structuredContent."""
+    link = sc.get("roomUrl")
+    if not link:
+        origin = re.match(r"^https?://[^/]+", sc.get("workspaceUrl") or "")
+        link = "%s/r/%s" % (origin.group(0), room) if origin else None
+    qr = sc.get("qrUrl") or (link + "/qr.png" if link else None)
+    return link, qr
+
+
 def print_opened(s, as_json):
-    """The Workspace link and Room id, in the shape print_result uses."""
+    """The Workspace link, Room link, QR code address and Room id."""
     sc = s.opened["structuredContent"]
+    link, qr = room_links(sc, sc["room"])
     if as_json:
-        print(json.dumps({"room": sc["room"], "workspaceUrl": sc["workspaceUrl"]}))
+        print(json.dumps({"room": sc["room"], "workspaceUrl": sc["workspaceUrl"], "roomUrl": link, "qrUrl": qr}))
     else:
-        print("Geenee link: %s\nRoom id: %s" % (sc["workspaceUrl"], sc["room"]))
+        print("Geenee link: %s\nRoom link: %s\nQR code: %s\nRoom id: %s" % (sc["workspaceUrl"], link, qr, sc["room"]))
 
 
 def share(s, as_json):
@@ -209,12 +220,12 @@ def share(s, as_json):
             print(text_of(result))
         return 2
     sc = result.get("structuredContent") or {}
-    link = sc.get("roomUrl") or sc.get("workspaceUrl")
     room = sc.get("room") or s.room
+    link, qr = room_links(sc, room)
     if as_json:
-        print(json.dumps({"room": room, "roomUrl": link}))
+        print(json.dumps({"room": room, "roomUrl": link, "qrUrl": qr}))
     else:
-        print("Room link: %s\nRoom id: %s" % (link, room))
+        print("Room link: %s\nQR code: %s\nRoom id: %s" % (link, qr, room))
     return 0
 
 
