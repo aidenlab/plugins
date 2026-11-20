@@ -1,6 +1,6 @@
 ---
 name: geenee
-description: Drives Geenee, the Aiden Lab's genome workspace holding the igv genome browser, the Juicebox Hi-C contact-map viewer and the Spacewalk 3D chromatin viewer, through the Geenee MCP tools (open_geenee, igv_*, juicebox_*, spacewalk_*), or through the bundled geenee CLI when the MCP connector is not available. Use whenever the user mentions Geenee, IGV, Juicebox, Spacewalk, a genome browser, Hi-C or contact maps, .hic or .sw files, loops, TADs, compartments, 3D chromatin structure or ensembles, ENCODE or 4DN data, bigWig/BED/peak tracks, or asks to open, load, navigate, compare, track, or share a genome view.
+description: Drives Geenee, the Aiden Lab's genome workspace holding the igv genome browser, the Juicebox Hi-C contact-map viewer and the Spacewalk 3D chromatin viewer, through the Geenee MCP tools (open_geenee, share_geenee, igv_*, juicebox_*, spacewalk_*), or through the bundled geenee CLI when the MCP connector is not available. Use whenever the user mentions Geenee, IGV, Juicebox, Spacewalk, a genome browser, Hi-C or contact maps, .hic or .sw files, loops, TADs, compartments, 3D chromatin structure or ensembles, ENCODE or 4DN data, bigWig/BED/peak tracks, or asks to open, load, navigate, compare, track, or share a genome view.
 ---
 
 # Geenee: IGV, Juicebox and Spacewalk from the conversation
@@ -24,16 +24,18 @@ $G call juicebox_load_map '{"url":"...hic","locus":"HOXA1"}' juicebox_load_track
 
 If `${CLAUDE_PLUGIN_ROOT}` is unset, find the script with `find ~/.claude ~/.codex -path '*geenee/scripts/geenee.py' | head -1`, or download it: `curl -fsSL https://geenee-install.3dg.io/geenee.py -o geenee.py`. No dependencies. Exit code 2 means a tool reported an error (its message is printed); 1 means the server was unreachable. Details, options and troubleshooting: `references/cli.md`.
 
-Chain calls that do not depend on each other into one `call`, so the user waits for one shell command rather than three. Do not retry a call that said no page or no viewer is connected; re-send the Workspace link instead.
+Chain calls that do not depend on each other into one `call`, so the user waits for one shell command rather than three. Do not retry a call that said no page or no viewer is connected; give the Workspace link again instead (`$G open`).
 
 ## Session start: one Room per conversation
 
-1. Call `open_geenee` once (or `$G open`). Its reply gives the Workspace link and the **Room id**. Keep the Room id for the whole conversation and pass it as `room` on every later tool call, for all three viewers (the CLI does this itself). Never call `open_geenee` again just to get a link: call it with the same `room` to get the same Workspace back.
+1. Call `open_geenee` first (or `$G open`), before any other geenee tool and before replying, even when the user only greets geenee or one of its viewers ("hello geenee", "hi igv"). Its reply gives the Workspace link and the **Room id**. Keep the Room id for the whole conversation and pass it as `room` on every later tool call, for all three viewers (the CLI does this itself). Call it first again, without `room`, when a tool replies that the Room has expired; call it when a tool replies that there is no Room, then repeat the refused call.
+   - To show the Card again so others can join ("show the QR code again", "share geenee", "how do others join", "someone just arrived"): call `share_geenee` with the `room`. It opens no new Room; everyone keeps their link.
+   - To get the Workspace back beside the conversation: call `open_geenee` with the same `room`.
 2. If a browser pane inside this app is available (Claude's built-in browser), open the link in it right away so Geenee sits beside the conversation. Do not drive the user's own browser with it.
 3. Through the MCP tools, the host shows the user a Card with an **Open geenee** button, the link and a QR code; do not repeat the link in your reply. Through the CLI there is no Card: give the user the link as a plain clickable URL, not in a code block, and ask them to open it.
 4. Do not send viewer commands until the page is connected: the user confirms, or `$G status` (or `juicebox_get_server_status` showing `Browser Connected: Yes`, `igv_read_session_summary` answering without error, `spacewalk_read_viewer_state` showing `Viewers connected:` above 0) says so.
-5. If the user pastes a Workspace link they already have (`…?room=ID` or `…/r/ID`, theirs or a colleague's), use that Room id instead of opening a new one (`$G room <link>`). Everyone in a Room sees the same Workspace, which is also how a group looks at one view together.
-6. "No page is connected" / "no Viewer is in Room" means the tab is closed, still loading, or on another Room: re-send the Workspace link. A Room that has expired stays expired: open a new one and tell the user the link changed.
+5. If the user pastes a Workspace link they already have (`…?room=ID` or `…/r/ID`, theirs or a colleague's), call `open_geenee` with that `room` instead of opening a new one (`$G room <link>`). Everyone in a Room sees the same Workspace, which is also how a group looks at one view together.
+6. "No page is connected" / "no Viewer is in Room" means the tab is closed, still loading, or on another Room: show the Workspace link again (`share_geenee`, or `$G open`). A Room that has expired stays expired: open a new one and tell the user the link changed.
 
 ## Which viewer
 
@@ -73,7 +75,7 @@ Report only what is verified, and keep three states apart: *installed* (the plug
 
 ## Links
 
-The **Workspace link** (from `open_geenee`) is live and shared: whoever opens it joins the Room and follows along. A **shareable link** (`juicebox_create_shareable_url`, or IGV's Shareable URL strip via `igv_set_controls`) is a snapshot of one viewer's current view. Never give one in place of the other.
+The **Workspace link** (from `open_geenee`, shown again by `share_geenee`) is live and shared: whoever opens it joins the Room and follows along. A **shareable link** (`juicebox_create_shareable_url`, or IGV's Shareable URL strip via `igv_set_controls`) is a snapshot of one viewer's current view. Never give one in place of the other.
 
 ## Conventions
 
