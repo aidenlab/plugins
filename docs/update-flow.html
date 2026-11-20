@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Geenee Updates Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: a maintainer's reference, read once closely then scanned
+   IDEA a planning office's routing sheet: where each kind of change travels and who must act
+   PICTURE a route map: three sources, the lane each travels, the apps at the end, who acts
+   COLOUR stone ground, black ink, brick for "someone must act", white panels; night #171513
+   TYPE Schibsted Grotesk 700 display + Schibsted Grotesk text
+   LAYOUT finding as title over the full-width route map; ruled tables below; phone stacks lanes */
+:root{color-scheme:light dark;--bg:light-dark(#e7e4df,#171513);--ink:light-dark(#111,#ece8e2);--mute:light-dark(#5b5650,#a59f97);--panel:light-dark(#fff,#221f1c);--rule:light-dark(#cfcac3,#3a3631);--brick:light-dark(#c8371e,#ec6a50);--ok:light-dark(#2f5d3a,#8cc79a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Schibsted Grotesk",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-size:clamp(30px,4.2vw,48px);line-height:1.05;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance;max-width:24ch}
+h2{font-size:24px;line-height:1.15;letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+p{margin:0 0 12px;max-width:70ch}
+.lede{font-size:17px;max-width:68ch}
+code{font-size:.9em;background:color-mix(in srgb,var(--ink) 7%,transparent);padding:1px 5px;border-radius:3px;overflow-wrap:anywhere}
+a{color:inherit;text-decoration-color:var(--brick);text-underline-offset:3px}
+.status{display:inline-flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--rule);padding:8px 12px;border-radius:4px;font-size:15px;margin-top:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ok);flex:none}
+/* route map */
+.map{margin-top:28px;display:grid;gap:12px}
+.lane{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.6fr) minmax(0,1.25fr);background:var(--panel);border:1px solid var(--rule);border-radius:4px}
+.lane>div{padding:16px 18px;position:relative}
+.lane>div+div{border-left:1px solid var(--rule)}
+.lane>div+div::before{content:"";position:absolute;left:-7px;top:24px;width:12px;height:12px;background:var(--panel);border-top:1px solid var(--rule);border-right:1px solid var(--rule);transform:rotate(45deg)}
+.k{font-size:13px;color:var(--mute);margin-bottom:4px}
+.big{font-weight:700;font-size:18px;line-height:1.25}
+.steps{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-top:6px}
+.steps span{background:color-mix(in srgb,var(--ink) 6%,transparent);padding:3px 8px;border-radius:3px;font-size:14px}
+.steps i{font-style:normal;color:var(--mute)}
+.who{font-weight:700}
+.who.act{color:var(--brick)}
+.lane.main{border-color:var(--brick);border-width:2px}
+.note{font-size:14px;color:var(--mute);margin-top:6px}
+/* tables */
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;background:var(--panel);font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font-size:14px;font-weight:700;border-bottom:2px solid var(--ink)}
+td:first-child{font-weight:700}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+ol.check{margin:0;padding-left:22px}
+ol.check li{margin-bottom:10px}
+pre{background:var(--panel);border:1px solid var(--rule);padding:12px 14px;border-radius:4px;font-size:14px;margin:6px 0 0;overflow-x:auto}
+.unk{border-left:3px solid var(--brick);padding:2px 0 2px 14px;margin-bottom:14px}
+.unk b{display:block}
+.alt{background:color-mix(in srgb,var(--panel) 55%,var(--bg))}
+@media(max-width:820px){.lane{grid-template-columns:minmax(0,1fr)}.lane>div+div{border-left:0;border-top:1px solid var(--rule)}.lane>div+div::before{left:24px;top:-7px;transform:rotate(-45deg)}.two{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--rule)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;font-weight:400;color:var(--mute)}.stack td:empty{display:none}}
+</style><script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+
+<section class="band"><div class="wrap">
+<h1>Merging a version bump publishes Geenee; each app picks it up when it syncs the marketplace</h1>
+<p class="lede">The aidenlab Marketplace is the <code>main</code> branch of <code>aidenlab/plugins</code>. Claude and ChatGPT (through Codex) both read it from there. The release tag doesn't send anything to Marketplace installs: it builds <code>geenee.plugin</code> for organization admins and for the <code>/plugin</code> download link.</p>
+<div class="status" id="status"><span class="dot"></span><span>geenee 1.2.0 is on <code>main</code> and tagged <code>geenee--v1.2.0</code> (20 Nov 2026).</span></div>
+
+<div class="map" aria-label="Routes an update takes">
+  <div class="lane main">
+    <div><div class="k">Plugin change</div><div class="big">Skill, CLI scripts, Connector settings, icons</div></div>
+    <div><div class="k">Route</div>
+      <div class="steps"><span>PR with version bump</span><i>→</i><span>merge to <code>main</code></span><i>→</i><span>both marketplace catalogs list the new version</span><i>→</i><span>app syncs the Marketplace</span></div>
+      <div class="note">Claude reads <code>.claude-plugin/marketplace.json</code>; Codex and ChatGPT read <code>.agents/plugins/marketplace.json</code>. Both point to the same <code>plugins/geenee</code> folder.</div></div>
+    <div><div class="k">Who has to act</div><div class="who act">Each user, unless their app syncs automatically</div><div class="note">Sync in Claude's settings, or one command in Claude Code or Codex (details below).</div></div>
+  </div>
+  <div class="lane">
+    <div><div class="k">Server change</div><div class="big">New or changed tools, Room behaviour</div></div>
+    <div><div class="k">Route</div>
+      <div class="steps"><span>deploy <code>geenee.3dg.io</code></span><i>→</i><span>apps ask the server for its tools</span></div>
+      <div class="note">Apps fetch the tool list from the server rather than from the plugin, so <code>share_geenee</code> appeared everywhere when the server was deployed.</div></div>
+    <div><div class="k">Who has to act</div><div class="who">No one</div><div class="note">Users see it in their next new conversation.</div></div>
+  </div>
+  <div class="lane">
+    <div><div class="k">Served straight from <code>main</code></div><div class="big">CLI downloaded with curl, install prompt, install page</div></div>
+    <div><div class="k">Route</div>
+      <div class="steps"><span>merge to <code>main</code></span><i>→</i><span>install worker proxies <code>raw.githubusercontent.com</code></span></div>
+      <div class="note"><code>geenee-install.3dg.io/geenee.py</code>, <code>/geenee.mjs</code>, <code>/</code> and <code>/install</code>. The worker caches for up to 5 minutes.</div></div>
+    <div><div class="k">Who has to act</div><div class="who">No one</div><div class="note">Live within minutes of the merge.</div></div>
+  </div>
+  <div class="lane">
+    <div><div class="k">Release tag</div><div class="big"><code>geenee.plugin</code> file</div></div>
+    <div><div class="k">Route</div>
+      <div class="steps"><span><code>claude plugin tag plugins/geenee --push</code></span><i>→</i><span>release workflow validates and packages</span><i>→</i><span>GitHub release</span></div>
+      <div class="note"><code>geenee-install.3dg.io/plugin</code> redirects to the latest release's file.</div></div>
+    <div><div class="k">Who has to act</div><div class="who act">Org admins who upload the file by hand</div><div class="note">Everyone else is unaffected.</div></div>
+  </div>
+</div>
+</div></section>
+
+<section class="band alt"><div class="wrap">
+<h2>Each app needs its own refresh to pick up a new plugin version</h2>
+<p>The version in the manifests is what tells an app there's something new. If the files change but the version doesn't, a sync finds nothing to install. That's why <code>docs/maintaining.md</code> says to bump the version in all four manifests on every change.</p>
+<div class="scroll"><table class="stack">
+<thead><tr><th>App</th><th>How a user gets the new version</th><th>Automatic?</th></tr></thead>
+<tbody>
+<tr><td>Claude: claude.ai, desktop, Cowork</td><td>Customize → Plugins → <b>aidenlab</b> → <b>Sync</b></td><td>Yes, if they turned on <b>Sync automatically</b>. The install steps ask them to.</td></tr>
+<tr><td>Claude Code</td><td><code>claude plugin marketplace update aidenlab &amp;&amp; claude plugin update geenee@aidenlab</code></td><td>Only if auto-update is on for the aidenlab marketplace in <code>/plugin</code>. See open questions.</td></tr>
+<tr><td>Claude Team / Enterprise org</td><td>An Owner syncs the org's GitHub mirror, or uploads the release's <code>geenee.plugin</code></td><td>No. An admin has to do it.</td></tr>
+<tr><td>Codex CLI</td><td><code>codex plugin marketplace upgrade aidenlab</code></td><td>Not confirmed. See open questions.</td></tr>
+<tr><td>ChatGPT desktop</td><td>Through its Codex: the same <code>codex plugin marketplace upgrade aidenlab</code>, or ask Codex to run it</td><td>Not confirmed. See open questions.</td></tr>
+<tr><td>Plain ChatGPT chat</td><td>No plugin there. People are sent to Codex in the desktop app (ADR 0001).</td><td>Not applicable</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="band"><div class="wrap two">
+<div>
+<h2>The release ceremony, in order</h2>
+<ol class="check">
+<li>In the PR, bump <code>version</code> in all four manifests: <code>plugins/geenee/plugin.json</code>, <code>plugins/geenee/.claude-plugin/plugin.json</code>, and the <code>geenee</code> entry in both marketplace catalogs.</li>
+<li>Merge. Marketplace users can update from this point on.</li>
+<li>On an up-to-date <code>main</code>, validate and tag:
+<pre>git checkout main &amp;&amp; git pull
+claude plugin validate . &amp;&amp; claude plugin validate ./plugins/geenee
+claude plugin tag plugins/geenee --push</pre></li>
+<li>Check that the <b>release</b> workflow passed and that the GitHub release <code>geenee--v&lt;version&gt;</code> has <code>geenee.plugin</code> attached: <code>gh run list --workflow release.yml -L 1</code>.</li>
+<li>If the change matters to people now, tell them to Sync (or to run the update command). Org admins also have to re-sync or re-upload.</li>
+</ol>
+</div>
+<div>
+<h2>What 1.2.0 changed, and how each part reaches users</h2>
+<div class="scroll"><table class="stack">
+<thead><tr><th>Change</th><th>Live for</th></tr></thead>
+<tbody>
+<tr><td><code>share_geenee</code> tool (server, #83)</td><td>Everyone, since the server deploy</td></tr>
+<tr><td>CLI <code>share</code> via curl</td><td>Everyone, since the merge</td></tr>
+<tr><td>CLI <code>share</code> bundled in the plugin, plus the skill's re-share wording</td><td>Each user after their next Sync or update</td></tr>
+<tr><td><code>geenee.plugin</code> 1.2.0</td><td>Org admins: the <a href="https://github.com/aidenlab/plugins/releases/tag/geenee--v1.2.0">GitHub release</a> has it attached</td></tr>
+</tbody></table></div>
+<p class="note" style="margin-top:12px">There's no <code>geenee--v1.1.0</code> tag. Version 1.1.0 reached Marketplace users through <code>main</code>, but no release file was built for it. The release history goes 1.0.0, then 1.2.0.</p>
+</div>
+</div></section>
+
+<section class="band alt"><div class="wrap">
+<h2>Open questions to check in the apps</h2>
+<div class="unk"><b>Does Claude Code update third-party marketplaces on its own?</b>As I understand it, automatic updates are on by default only for Anthropic's own marketplaces, and users switch them on per marketplace in <code>/plugin</code>. The README also says that adding aidenlab in Claude's settings covers Claude Code. Both are worth checking on a test machine.</div>
+<div class="unk"><b>Do Codex or ChatGPT desktop ever refresh a marketplace in the background?</b><code>docs/maintaining.md</code> assumes it's manual (<code>codex plugin marketplace upgrade</code>). Not yet seen either way.</div>
+<div class="unk"><b>Does a change to the Connector settings need the Connect step again?</b>A skill or CLI change doesn't touch the Connector. A changed server address or authentication might need users to reconnect on the Connectors tab. Test this before shipping such a change.</div>
+<div class="unk"><b>How a user can confirm their version</b>The plugins page in Claude, and the plugin list in Claude Code and Codex, should show the installed version next to geenee. It should read 1.2.0 after a sync.</div>
+</div></section>
+
+</body>
+</html>
