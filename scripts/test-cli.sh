@@ -23,6 +23,13 @@ for cli in "python3 geenee.py" "node geenee.mjs"; do
   $cli room "$room" | grep -q "$room" || { echo "FAIL: room switch"; fail=1; }
   [ "$($cli room)" = "$room" ] || { echo "FAIL: room switch persisted"; fail=1; }
   $cli --room "$room" room | grep -q "$room" || { echo "FAIL: --room"; fail=1; }
+  out="$($cli share)"; code=$?
+  [ $code -eq 0 ] && echo "$out" | grep -q "^Room link: https://.*/r/$room\$" && echo "$out" | grep -q "^Room id: $room\$" || { echo "FAIL: share"; fail=1; }
+  echo "$out" | grep -qi "card" && { echo "FAIL: share printed the Card text"; fail=1; }
+  [ "$($cli room)" = "$room" ] || { echo "FAIL: share changed the Room"; fail=1; }
+  $cli --json share | python3 -c 'import json,sys; r=json.load(sys.stdin); assert set(r)=={"room","roomUrl"} and r["room"]=="'"$room"'"' || { echo "FAIL: share --json"; fail=1; }
+  $cli --room 0000000000 share 2>&1 | grep -q "expired"; [ "${PIPESTATUS[0]}" -eq 2 ] || { echo "FAIL: share on an expired Room"; fail=1; }
+  [ "$($cli room)" = "$room" ] || { echo "FAIL: share on an expired Room changed the saved Room"; fail=1; }
 done
 rm -f "$GEENEE_STATE"
 [ $fail -eq 0 ] && echo "all passed" || exit 1

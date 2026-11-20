@@ -11,6 +11,7 @@ Workspace.
 
 Usage:
   geenee.py open                          Workspace link for this shell's Room (opens a new Room if none)
+  geenee.py share                         Room link for others to join this Room (opens a new Room if none)
   geenee.py status                        whether each viewer is connected in the Room
   geenee.py tools                         tool names with one-line descriptions
   geenee.py call TOOL [JSON] [TOOL [JSON] ...]
@@ -48,6 +49,7 @@ USER_AGENT = "geenee-cli/1.0 (+https://github.com/aidenlab/plugins)"
 # Viewer acks take up to 15 s and catalogue searches can be slow; 60 s leaves headroom.
 TIMEOUT_SECONDS = 60
 OPEN_TOOL = "open_geenee"
+SHARE_TOOL = "share_geenee"
 ROOM_ID = re.compile(r"^[0-9A-HJKMNP-TV-Z]{10}$")
 
 STATE_PATH = os.environ.get("GEENEE_STATE") or os.path.join(
@@ -197,6 +199,25 @@ def print_opened(s, as_json):
         print("Geenee link: %s\nRoom id: %s" % (sc["workspaceUrl"], sc["room"]))
 
 
+def share(s, as_json):
+    """The Room link from share_geenee, without the text meant for a Host that draws the Card."""
+    result = s.call(SHARE_TOOL, {})
+    if result.get("isError"):
+        if as_json:
+            print(json.dumps(result))
+        else:
+            print(text_of(result))
+        return 2
+    sc = result.get("structuredContent") or {}
+    link = sc.get("roomUrl") or sc.get("workspaceUrl")
+    room = sc.get("room") or s.room
+    if as_json:
+        print(json.dumps({"room": room, "roomUrl": link}))
+    else:
+        print("Room link: %s\nRoom id: %s" % (link, room))
+    return 0
+
+
 def status(s, as_json):
     """Connection state of the three viewers, from the tools that change nothing."""
     jb = s.call("juicebox_get_server_status", {})
@@ -283,6 +304,8 @@ def main(argv):
             first = t.get("description", "").split(". ")[0]
             print("%-34s %s" % (t["name"], first[:100]))
         return 0
+    if cmd == "share":
+        return share(s, opts["json"])
     if cmd == "status":
         return status(s, opts["json"])
     if cmd == "call":

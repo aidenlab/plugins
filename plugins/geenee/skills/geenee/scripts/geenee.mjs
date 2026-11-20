@@ -2,7 +2,7 @@
 // geenee.mjs - call the Geenee MCP server without an MCP connector.
 // Node 18+, no dependencies. Same commands and output as geenee.py:
 //
-//   geenee.mjs open | status | tools | call TOOL [JSON] [TOOL [JSON] ...] | room [ID_OR_LINK] | reset
+//   geenee.mjs open | share | status | tools | call TOOL [JSON] [TOOL [JSON] ...] | room [ID_OR_LINK] | reset
 //   options: --json  --room ID  --server URL      env: GEENEE_URL, GEENEE_STATE
 //   exit codes: 0 ok; 2 the tool reported an error (usually: no viewer connected); 1 transport/usage error
 //
@@ -37,6 +37,7 @@ const USER_AGENT = 'geenee-cli/1.0 (+https://github.com/aidenlab/plugins)';
 // Viewer acks take up to 15 s and catalogue searches can be slow.
 const TIMEOUT_MS = 60_000;
 const OPEN_TOOL = 'open_geenee';
+const SHARE_TOOL = 'share_geenee';
 const ROOM_ID = /^[0-9A-HJKMNP-TV-Z]{10}$/;
 const STATE_PATH = process.env.GEENEE_STATE
   || join(process.env.XDG_STATE_HOME || join(homedir(), '.local', 'state'), 'geenee', 'room.json');
@@ -150,6 +151,21 @@ function printOpened(s, asJson) {
   else console.log(`Geenee link: ${workspaceUrl}\nRoom id: ${room}`);
 }
 
+// The Room link from share_geenee, without the text meant for a Host that draws the Card.
+async function share(s, asJson) {
+  const result = await s.call(SHARE_TOOL, {});
+  if (result.isError) {
+    console.log(asJson ? JSON.stringify(result) : textOf(result));
+    return 2;
+  }
+  const sc = result.structuredContent || {};
+  const link = sc.roomUrl || sc.workspaceUrl;
+  const room = sc.room || s.room;
+  if (asJson) console.log(JSON.stringify({ room, roomUrl: link }));
+  else console.log(`Room link: ${link}\nRoom id: ${room}`);
+  return 0;
+}
+
 // Connection state of the three viewers, from the tools that change nothing.
 async function status(s, asJson) {
   const jb = await s.call('juicebox_get_server_status', {});
@@ -192,6 +208,7 @@ function parseArgs(argv) {
 const HELP = `geenee.mjs - call the Geenee MCP server without an MCP connector.
 
   geenee.mjs open                          Workspace link for this shell's Room (opens a new Room if none)
+  geenee.mjs share                         Room link for others to join this Room (opens a new Room if none)
   geenee.mjs status                        whether each viewer is connected in the Room
   geenee.mjs tools                         tool names with one-line descriptions
   geenee.mjs call TOOL [JSON] [TOOL [JSON] ...]   call one or more tools in one process, in order; room is filled in
@@ -230,6 +247,7 @@ async function main(argv) {
     for (const t of await s.tools()) console.log(t.name.padEnd(34) + ' ' + (t.description || '').split('. ')[0].slice(0, 100));
     return 0;
   }
+  if (cmd === 'share') return share(s, opts.json);
   if (cmd === 'status') return status(s, opts.json);
   if (cmd === 'call') {
     if (!rest.length) throw new Transport('call needs at least one tool name');
