@@ -13,9 +13,12 @@ URL = sys.argv[1] if len(sys.argv) > 1 else "https://geenee.3dg.io/mcp"
 OUT = os.path.join(os.path.dirname(__file__), "..", "plugins", "geenee", "skills", "geenee", "references", "tools.md")
 
 GROUPS = [
-    ("Opening the Workspace", ["open_geenee"]),
+    ("Opening and sharing the Workspace", ["open_geenee", "share_geenee"]),
     ("IGV: navigation", ["igv_go_to_gene", "igv_go_to_locus", "igv_zoom_in", "igv_zoom_out", "igv_change_genome"]),
     ("IGV: tracks and data", ["igv_search_catalogues", "igv_load_tracks", "igv_remove_track", "igv_set_track_height"]),
+    ("IGV: track appearance", ["igv_rename_track", "igv_set_track_color", "igv_set_data_range", "igv_set_signal_style",
+                               "igv_set_display_mode", "igv_set_color_by", "igv_group_reads", "igv_show_track_parts",
+                               "igv_set_visibility_window", "igv_set_arcs"]),
     ("IGV: view, state and sharing", ["igv_set_crosshairs", "igv_set_centre_line", "igv_set_controls", "igv_read_session_summary",
                                       "igv_get_shareable_url"]),
     ("Juicebox: status and help", ["juicebox_get_server_status", "juicebox_help"]),
@@ -64,7 +67,7 @@ def arg_lines(schema, indent=""):
     required = set(schema.get("required") or [])
     lines = []
     for name, s in props.items():
-        if name == "room":
+        if name == "room" and name in required:
             continue
         desc = (s.get("description") or "").strip().replace("\n", " ")
         flag = "required" if name in required else "optional"
@@ -103,7 +106,7 @@ def main():
             t = tools[n]
             out += ["### `%s`" % n, "", (t.get("description") or "").strip(), ""]
             args = arg_lines(t.get("inputSchema") or {})
-            out += args if args else ["- no arguments besides `room`" if n != "open_geenee" else "- `room` (string, optional): reopen an existing Room instead of minting a new one"]
+            out += args if args else ["- no arguments besides `room`"]
             out.append("")
     with open(OUT, "w") as f:
         f.write("\n".join(out).rstrip() + "\n")

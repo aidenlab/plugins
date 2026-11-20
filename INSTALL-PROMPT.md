@@ -2,7 +2,7 @@
 
 ## In claude.ai, the Claude desktop app or Cowork: send the block below, exactly
 
-If you are running in claude.ai on the web, the Claude desktop app's Chat tab, or a Cowork task, and the Geenee tools (`open_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`) are not already callable here:
+If you are running in claude.ai on the web, the Claude desktop app's Chat tab, or a Cowork task, and the Geenee tools (`open_geenee`, `share_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`) are not already callable here:
 
 **Your entire reply is the block between the markers below, copied character for character as Markdown, without the marker comments.** Nothing before it and nothing after it. Do not summarize, shorten, reword, reorder, renumber, merge or add steps. Do not add notes, options, sources, a checklist, or an explanation of why you cannot install it yourself. Do not search for the plugin first. Then wait for the user.
 
@@ -45,7 +45,7 @@ Start by telling them, in one or two sentences: Geenee lets them drive three gen
 
 - Marketplace: `aidenlab/plugins` on GitHub (marketplace name `aidenlab`). Plugin: `geenee`, so `geenee@aidenlab`. Display name **Geenee**.
 - MCP server: `https://geenee.3dg.io/mcp`, Streamable HTTP, no authentication. It sends workflow instructions to every client on connect; the plugin adds a fuller skill on top. The server name is **Geenee**.
-- A server connection supplies tools (`open_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`). The plugin supplies the skill. Both is best; tools alone are enough to work.
+- A server connection supplies tools (`open_geenee`, `share_geenee`, `igv_*`, `juicebox_*`, `spacewalk_*`). The plugin supplies the skill. Both is best; tools alone are enough to work.
 - **Marketplace only.** Geenee is installed only from the `aidenlab` marketplace, in every app, because only a marketplace install receives updates. Never offer, suggest or fall back to adding the server address by hand (a "custom connector" or "custom MCP server"), not even when a step fails. When a step fails, send the user to https://github.com/aidenlab/plugins/issues.
 - Reuse anything already installed or connected. Never add a second connection to the same server.
 - Retired: an older plugin with the id `juicebot` (shown as JuiceBot or Geenee), and connections to `juicebot-mcp.3dg.io` or `geenee-dev.3dg.io`. If you find one, help the user remove or turn it off so two tool sets do not both appear.
@@ -106,8 +106,8 @@ Do not put the message inside a bullet or a paragraph, do not add alternatives a
 
 ## Verification and first use (every application)
 
-1. Call `open_geenee` once. It returns the Geenee link and a **Room id**; pass that Room id as `room` on every later tool call in this conversation. Open the link yourself only if you have a browser pane inside this app (never drive the user's own browser). If the app shows a Geenee card with an **Open geenee** button, point the user to it; otherwise show the link as a clickable URL. Ask the user to confirm the page is open: it has **IGV**, **Juicebox** and **Spacewalk** tabs.
-2. Do not send viewer commands until the page is connected. If a tool reports "no page is connected" or "no Viewer is in Room", re-send the link.
+1. Call `open_geenee` first, before any other Geenee tool. It returns the Geenee link and a **Room id**; pass that Room id as `room` on every later tool call in this conversation. Open the link yourself only if you have a browser pane inside this app (never drive the user's own browser). If the app shows a Geenee card with an **Open geenee** button, point the user to it; otherwise show the link as a clickable URL. Ask the user to confirm the page is open: it has **IGV**, **Juicebox** and **Spacewalk** tabs.
+2. Do not send viewer commands until the page is connected. If a tool reports "no page is connected" or "no Viewer is in Room", show the link again (`share_geenee`).
 3. Juicebox: find the ENCODE GM12878 in situ Hi-C map (`juicebox_search_map_catalogs`), load it at the HOXA cluster (`juicebox_load_map` with `locus`), and add the gene track (`juicebox_load_track` with `"url": "genes"`). IGV: `igv_go_to_gene` HOXA1, then `igv_search_catalogues` for GM12878 CTCF ChIP-seq and `igv_load_tracks` with the first bigWig result.
 4. Tell the user what they should see: on the Juicebox tab a contact map with the HOXA region and gene annotations under it; on the IGV tab the HOXA1 locus with a CTCF signal track above the genes. Say which of installed / server connected / viewer working you have confirmed.
 5. If a viewer disconnects, help them reopen the current Geenee link; if the Room has expired, open a new one.
