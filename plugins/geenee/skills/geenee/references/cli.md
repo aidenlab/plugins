@@ -15,6 +15,7 @@ The CLI is an MCP client over plain HTTPS. The Geenee server is stateless Stream
 
 ```
 geenee.py open                                Workspace link for this shell's Room (opens a new Room if none)
+geenee.py share                               Room link for others to join this Room (opens a new Room if none)
 geenee.py status                              whether each viewer (Juicebox, IGV, Spacewalk) is connected in the Room
 geenee.py tools                               tool names with one-line descriptions
 geenee.py call TOOL [JSON] [TOOL [JSON] ...]  one or more tool calls in one process, in order; room filled in
@@ -50,6 +51,7 @@ Use `python3` when present, else `node`. Nothing to install either way.
 - The first command calls `open_geenee`, which mints a Room id (10 letters and digits) and returns the Workspace link `https://<server>/?room=<ID>`; the CLI saves `{url, room}` to `~/.local/state/geenee/room.json` (`GEENEE_STATE` overrides). Later commands, in any shell, reuse it, so the Workspace stays the same for the whole conversation.
 - A `call` that had to open a new Room prints the Workspace link first, before the tool results: the user has to open it before anything shows.
 - `open` returns the link for the current Room (calling `open_geenee` with that Room, which gives the same Workspace back). `status` reports each viewer's connection from `juicebox_get_server_status`, `igv_read_session_summary` and `spacewalk_read_viewer_state`; exit 2 when none is connected.
+- `share` gives the Room link (`https://<server>/r/<ID>`) for Guests to join the same Room, through `share_geenee`: it opens no new Room, everyone keeps their link, and the Room's day starts again. Use it when someone missed the link or just arrived; give the user the link as a plain URL. There is no QR code through the CLI. With `--json` it prints `{"room", "roomUrl"}`. For an expired Room it prints the expired message and exits 2, keeping the saved Room; `reset` then opens a new one. With no Room yet it opens one first, like every other command.
 - `room <id-or-link>` switches to a Room a page already shows or a colleague shared; `room` alone prints the current id.
 - A Room expires after a long idle. The server then reports no page or no viewer for it; `reset` (or `open_geenee` without `room`) starts a new one, and the user must open the new link.
 
