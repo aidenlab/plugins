@@ -145,10 +145,22 @@ function printResult(result, asJson) {
   return result.isError ? 2 : 0;
 }
 
+// The Room link (…/r/ID) and its QR code address (…/r/ID/qr.png), from a reply's structuredContent.
+function roomLinks(sc, room) {
+  let link = sc.roomUrl;
+  if (!link) {
+    const origin = /^https?:\/\/[^/]+/.exec(sc.workspaceUrl || '');
+    link = origin ? `${origin[0]}/r/${room}` : null;
+  }
+  return [link, sc.qrUrl || (link ? link + '/qr.png' : null)];
+}
+
+// The Workspace link, Room link, QR code address and Room id.
 function printOpened(s, asJson) {
   const { room, workspaceUrl } = s.opened.structuredContent;
-  if (asJson) console.log(JSON.stringify({ room, workspaceUrl }));
-  else console.log(`Geenee link: ${workspaceUrl}\nRoom id: ${room}`);
+  const [roomUrl, qrUrl] = roomLinks(s.opened.structuredContent, room);
+  if (asJson) console.log(JSON.stringify({ room, workspaceUrl, roomUrl, qrUrl }));
+  else console.log(`Geenee link: ${workspaceUrl}\nRoom link: ${roomUrl}\nQR code: ${qrUrl}\nRoom id: ${room}`);
 }
 
 // The Room link from share_geenee, without the text meant for a Host that draws the Card.
@@ -159,10 +171,10 @@ async function share(s, asJson) {
     return 2;
   }
   const sc = result.structuredContent || {};
-  const link = sc.roomUrl || sc.workspaceUrl;
   const room = sc.room || s.room;
-  if (asJson) console.log(JSON.stringify({ room, roomUrl: link }));
-  else console.log(`Room link: ${link}\nRoom id: ${room}`);
+  const [roomUrl, qrUrl] = roomLinks(sc, room);
+  if (asJson) console.log(JSON.stringify({ room, roomUrl, qrUrl }));
+  else console.log(`Room link: ${roomUrl}\nQR code: ${qrUrl}\nRoom id: ${room}`);
   return 0;
 }
 
@@ -207,8 +219,8 @@ function parseArgs(argv) {
 
 const HELP = `geenee.mjs - call the Geenee MCP server without an MCP connector.
 
-  geenee.mjs open                          Workspace link for this shell's Room (opens a new Room if none)
-  geenee.mjs share                         Room link for others to join this Room (opens a new Room if none)
+  geenee.mjs open                          Workspace link, Room link, QR code address and Room id (opens a new Room if none)
+  geenee.mjs share                         Room link and QR code address for others to join this Room (opens a new Room if none)
   geenee.mjs status                        whether each viewer is connected in the Room
   geenee.mjs tools                         tool names with one-line descriptions
   geenee.mjs call TOOL [JSON] [TOOL [JSON] ...]   call one or more tools in one process, in order; room is filled in

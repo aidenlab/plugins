@@ -12,11 +12,12 @@ Geenee is one page beside the conversation, the **Workspace**, with three tabs: 
 Check once, at the start:
 
 - **MCP tools present** (`open_geenee`, `igv_go_to_gene`, `juicebox_load_map`, `spacewalk_load_ensemble`, ... are callable): use them.
-- **Not present**: run the bundled CLI from a shell. Same tool names, same JSON arguments, same text results; the CLI remembers the Room and fills `room` in for you.
+- **Not in the tool list**: some hosts load tools on demand, so search for `open_geenee` by name with the host's tool search before concluding the tools are absent. Use the tools if the search finds them.
+- **Still not present**: run the bundled CLI from a shell. Same tool names, same JSON arguments, same text results; the CLI remembers the Room and fills `room` in for you.
 
 ```bash
 G="python3 ${CLAUDE_PLUGIN_ROOT}/skills/geenee/scripts/geenee.py"   # or node .../geenee.mjs
-$G open                                        # Workspace link + Room id (opens a Room the first time)
+$G open                                        # Workspace link, Room link, QR code, Room id (opens a Room the first time)
 $G status                                      # Juicebox / IGV / Spacewalk: connected, once the page is open
 $G call igv_go_to_gene '{"gene":"MYC"}'        # any tool: call NAME 'JSON'
 $G call juicebox_load_map '{"url":"...hic","locus":"HOXA1"}' juicebox_load_track '{"url":"genes"}'   # several in one go
@@ -29,10 +30,15 @@ Chain calls that do not depend on each other into one `call`, so the user waits 
 ## Session start: one Room per conversation
 
 1. Call `open_geenee` first (or `$G open`), before any other geenee tool and before replying, even when the user only greets geenee or one of its viewers ("hello geenee", "hi igv"). Its reply gives the Workspace link and the **Room id**. Keep the Room id for the whole conversation and pass it as `room` on every later tool call, for all three viewers (the CLI does this itself). Call it first again, without `room`, when a tool replies that the Room has expired; call it when a tool replies that there is no Room, then repeat the refused call.
-   - To show the Card again so others can join ("show the QR code again", "share geenee", "how do others join", "someone just arrived"): call `share_geenee` with the `room` (`$G share`, which prints the Room link to give the user). It opens no new Room; everyone keeps their link.
+   - To show the Card again so others can join ("show the QR code again", "share geenee", "how do others join", "someone just arrived"): call `share_geenee` with the `room` (`$G share`, which prints the Room link, the QR code address and the Room id; show them as in step 3). It opens no new Room; everyone keeps their link.
    - To get the Workspace back beside the conversation: call `open_geenee` with the same `room`.
 2. If a browser pane inside this app is available (Claude's built-in browser), open the link in it right away so Geenee sits beside the conversation. Do not drive the user's own browser with it.
-3. Through the MCP tools, the host shows the user a Card with an **Open geenee** button, the link and a QR code; do not repeat the link in your reply. Through the CLI there is no Card: give the user the link as a plain clickable URL, not in a code block, and ask them to open it.
+3. Where the host draws geenee's Card (Claude desktop, claude.ai, through the MCP tools), it shows the user an **Open geenee** button, the Room link and a QR code; do not repeat them in your reply. Everywhere else, including every time you used the CLI, show the user these three things after `open_geenee` / `share_geenee` (`$G open` / `$G share`):
+   - the Room link (`…/r/<Room id>`, the `Room link:` line), as a plain clickable URL, not in a code block; opening it opens the Workspace, and others who open it join the Room;
+   - the Room id;
+   - the QR code, as a Markdown image of the address the reply gives (the `QR code:` line, `…/r/<Room id>/qr.png`): `![QR code of the Room link](<QR code address>)`.
+
+   After opening, ask the user to open the link (unless step 2 already opened it beside the conversation).
 4. Do not send viewer commands until the page is connected: the user confirms, or `$G status` (or `juicebox_get_server_status` showing `Browser Connected: Yes`, `igv_read_session_summary` answering without error, `spacewalk_read_viewer_state` showing `Viewers connected:` above 0) says so.
 5. If the user pastes a Workspace link they already have (`…?room=ID` or `…/r/ID`, theirs or a colleague's), call `open_geenee` with that `room` instead of opening a new one (`$G room <link>`). Everyone in a Room sees the same Workspace, which is also how a group looks at one view together.
 6. "No page is connected" / "no Viewer is in Room" means the tab is closed, still loading, or on another Room: show the Workspace link again (`share_geenee`, or `$G share`). A Room that has expired stays expired: open a new one and tell the user the link changed.
