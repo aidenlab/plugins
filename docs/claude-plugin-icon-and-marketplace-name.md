@@ -1,0 +1,45 @@
+# Claude plugin icon and "From …" marketplace name
+
+Research for issue #20, 2026-11-21. In the Claude desktop app, Geenee's plugin page shows a placeholder icon, and the source line reads **From plugins** (the repo name) where we want the Aiden Lab.
+
+## Short answers
+
+**1. Icon.** A field exists. `plugin.json` takes a documented top-level `icon`, a path to an image file inside the plugin. The docs say only **Anthropic's directory** reads it, for a plugin you submit there. Claude Code ignores it at load time. No doc says the claude.ai, desktop or Cowork plugin page reads it for a plugin added from a marketplace. An open user report says it doesn't: a plugin with `icon` set still showed the placeholder. So adding the field is correct and costs nothing, but it most likely **won't** fix the placeholder for marketplace installs. It will matter once we submit to the directory.
+
+Recommended change to `plugins/geenee/.claude-plugin/plugin.json` (not made here):
+
+```json
+"icon": "./assets/icon.png",
+```
+
+That file is a 512×512 PNG, the same size as the icons in the first-party examples below. Optional, to test in the app: also copy it to `plugins/geenee/.claude-plugin/icon.png`, which is where two first-party Anthropic plugins keep theirs (see the evidence).
+
+**2. "From …" name.** Not documented, and no manifest field controls it. In Claude Code, a marketplace is registered under `marketplace.json` `name` (`aidenlab`). The desktop/claude.ai plugin browser instead shows the GitHub **repository basename** (`plugins`), and changes to `name`, `owner.name` and `author.name` don't affect it. That bug report was closed by the stale bot as "not planned". The only lever we know of is renaming the repo, which a user saw change the label. **No manifest change is recommended.** It isn't the user's alias either, because the app's Add marketplace dialog takes only a repo URL or `owner/repo`.
+
+Confidence: high that the documented schema is as stated. Medium on how the app behaves, since that rests on user reports in `anthropics/claude-code`, not on docs.
+
+## Evidence
+
+### Icon
+
+- **Documented.** The `plugin.json` field table lists `icon` (String): "Icon for the plugin's listing in Anthropic's directory. Claude Code doesn't read it." In "Directory listing fields": the directory reads `icon` (and `documentationUrl`, `supportUrl`, `privacyPolicyUrl`, `termsOfServiceUrl`) "when you submit the plugin. Claude Code ignores them at load time. Set them only in `plugin.json`." In a marketplace entry, validate reports them as unknown fields. "Set `icon` to the path of an image file inside the plugin, such as `./logo.png`." The page states no size or format. `claude plugin validate` warns about the field before v2.1.281, so `--strict` fails on those versions. https://code.claude.com/docs/en/plugins-reference.md
+- **Documented.** Directory file rules allow "complete PNG, JPEG, GIF, and WebP images" and SVG, and hold `.ico` for review. Images are exempt from the 256 KiB cap that applies to other files, so our 197 KB `icon.png` is fine. https://claude.com/docs/plugins/pre-submission-checklist.md
+- **Documented.** For a directory listing, the portal's Listing details step is "read from `plugin.json` and the README". https://claude.com/docs/plugins/submit.md. For a connector listing, the icon is edited in the developer portal ("Listing metadata: … and icon"). https://claude.com/docs/connectors/building/managing-your-listing.md
+- **Not found.** None of these say the plugin page reads an icon for a marketplace-added, org-synced or uploaded plugin: the claude.ai plugin docs (https://claude.com/docs/plugins/overview.md, https://claude.com/docs/plugins/build.md, https://claude.com/docs/cowork/guide/plugins.md, https://claude.com/docs/plugins/admin.md, https://claude.com/docs/plugins/org-sync.md) or the marketplace reference (https://code.claude.com/docs/en/plugins/marketplace-reference.md). Marketplace entries have no icon field.
+- **User report (open).** `anthropics/claude-code#100818`, "Show plugin.json icon (and author) for organization-synced plugins in Cowork / claude.ai". The reporter set `"icon": "./logo.png"` (512×512 PNG) and synced a new version. The page updated the version and description but kept the placeholder icon and the `by <owner>/<repo>` byline. A comment from 2026-10-27 reports the same for public Community plugins. https://github.com/anthropics/claude-code/issues/100818. An earlier request, #28187 "Support custom icons/images for plugins in marketplace", was closed as not planned: https://github.com/anthropics/claude-code/issues/28187
+- **Inferred from example repos.** `anthropics/claude-plugins-official` has two plugins with a `.claude-plugin/icon.png` and **no** `icon` field in their `plugin.json`: `plugins/champion-kit` (512×512, added in #7017, 2026-11-06) and `plugins/claude-for-manufacturing` (1024×1024, #7084, 2026-11-12). https://github.com/anthropics/claude-plugins-official/tree/main/plugins/champion-kit/.claude-plugin. That suggests some Anthropic surface looks up the file by name. It is undocumented, and we can't tell whether it works for third-party marketplaces. No other plugin in that marketplace, and nothing in `anthropics/knowledge-work-plugins`, `life-sciences` or `claude-for-legal`, carries an icon file or field. Icons that first-party plugins show in the app therefore probably come from Anthropic's side. The only community-marketplace example with an `icon` field is `quickdesign` (`"icon": "./icon.svg"`, kept in `.claude-plugin/`). https://github.com/anthropics/claude-plugins-community/tree/main/quickdesign/.claude-plugin
+- **Claude Code `/plugin` UI.** It is a terminal UI, and the docs say Claude Code doesn't read `icon`. No icon is shown there.
+- **agent-plugins.org.** Its schema (`https://agent-plugins.org/schemas/1.0.0/plugin.schema.json`) defines only `name`, `version`, `description`, `author`, `homepage`, `repository`, `license`, `keywords` and `extensions`, with no icon field. `extensions` is a bag keyed by namespace, which is where our `com.openai` icon lives. Nothing in it is Claude-relevant.
+
+### "From …" name
+
+- **Documented (Claude Code only).** `marketplace.json` `name` is the "Marketplace identifier … Users type the name after `@` in a plugin id". `owner` is "Maintainer information", and `description` (or `metadata.description`) is the "Marketplace description shown to users". There is no display-name field for a marketplace. A plugin entry's `displayName` names the plugin, not the marketplace. https://code.claude.com/docs/en/plugins/marketplace-reference.md. Plugins install as `<plugin>@<marketplace>`, "where `<marketplace>` is the name the marketplace registered under". https://code.claude.com/docs/en/plugins/install.md. A GitHub marketplace is downloaded into a folder named `<owner>-<repo>`, "whatever that marketplace's own `name` is". https://code.claude.com/docs/en/plugins/marketplace-reference.md
+- **Documented (app).** Add marketplace takes only "a repository URL … or the `owner/repo` shorthand". There is no name or alias input. https://claude.com/docs/plugins/overview.md, https://claude.com/docs/cowork/guide/plugins.md. How the app labels the marketplace isn't documented.
+- **User report (closed, not planned by stale bot, 2026-11-17).** `anthropics/claude-code#93581`, "Claude Desktop plugin browser shows repository name as author and marketplace source, ignoring metadata". The reporter's repo was named `plugins`, with marketplace `name` `"anjsolution"` and `owner.name` `"Ai-Ops"`, and the source filter showed `plugins`. Renaming the repo to `anjsolution-marketplace` changed the label to `anjsolution-marketplace`. Setting `author` on the plugin entries had no effect, while `displayName` did update plugin titles. The reporter calls it a regression from the redesigned plugin browser. https://github.com/anthropics/claude-code/issues/93581. This matches what we see exactly.
+
+## Open questions and in-app checks
+
+1. **Icon field on a marketplace install.** Add `"icon": "./assets/icon.png"`, bump the version, run **Check for updates** in the desktop app, and see whether the placeholder changes. The reports above predict it won't.
+2. **The `.claude-plugin/icon.png` convention.** Copy `assets/icon.png` to `plugins/geenee/.claude-plugin/icon.png` in the same release and check again. This can only be confirmed in the app.
+3. **Directory listing.** Once Geenee is submitted, check that the portal's Listing details step picks up `icon`. That is the documented path.
+4. **Repo rename.** Would renaming `aidenlab/plugins` (for example to `aidenlab/aidenlab-plugins`) make the app say **From aidenlab-plugins**? It worked for the #93581 reporter. The costs are links in the README, the install prompt and the worker, and existing marketplace registrations (GitHub redirects the old name, but #93581 leaves open whether registrations follow a rename). Run `claude plugin validate --strict` before shipping on the Claude Code versions users run: before v2.1.281 the `icon` field gets an `Unknown field` warning, which fails a `--strict` run.
