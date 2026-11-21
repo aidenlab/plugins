@@ -105,7 +105,7 @@ pre{background:var(--panel);border:1px solid var(--rule);padding:12px 14px;borde
 <div class="scroll"><table class="stack">
 <thead><tr><th>App</th><th>How a user gets the new version</th><th>Automatic?</th></tr></thead>
 <tbody>
-<tr><td>Claude: claude.ai, desktop, Cowork</td><td>Customize → Plugins → <b>aidenlab</b> → <b>Sync</b></td><td>Yes, if they turned on <b>Sync automatically</b>. The install steps ask them to.</td></tr>
+<tr><td>Claude: claude.ai, desktop, Cowork</td><td>Nothing to do with <b>Sync automatically</b> on. A manual Sync is not yet found in the November 2026 app. See open questions.</td><td>Yes, with <b>Sync automatically</b> on. It is on by default when the marketplace is added, and the install steps say to leave it on.</td></tr>
 <tr><td>Claude Code</td><td><code>claude plugin marketplace update aidenlab &amp;&amp; claude plugin update geenee@aidenlab</code></td><td>Only if auto-update is on for the aidenlab marketplace in <code>/plugin</code>. See open questions.</td></tr>
 <tr><td>Claude Team / Enterprise org</td><td>An Owner syncs the org's GitHub mirror, or uploads the release's <code>geenee.plugin</code></td><td>No. An admin has to do it.</td></tr>
 <tr><td>Codex CLI</td><td><code>codex plugin marketplace upgrade aidenlab</code></td><td>Not confirmed. See open questions.</td></tr>
@@ -144,10 +144,11 @@ claude plugin tag plugins/geenee --push</pre></li>
 
 <section class="band alt"><div class="wrap">
 <h2>Open questions to check in the apps</h2>
+<div class="unk"><b>Where is a manual Sync in the Claude desktop app now?</b>The November 2026 app moved the plugin screens. The old path (Customize → Plugins → aidenlab → Sync) is gone, and the new one hasn't been walked through. Each new version on <code>main</code> was also seen to uninstall Geenee in Claude desktop without any message, three times in November 2026. The install steps carry a recovery line for this.</div>
 <div class="unk"><b>Does Claude Code update third-party marketplaces on its own?</b>As I understand it, automatic updates are on by default only for Anthropic's own marketplaces, and users switch them on per marketplace in <code>/plugin</code>. The README also says that adding aidenlab in Claude's settings covers Claude Code. Both are worth checking on a test machine.</div>
 <div class="unk"><b>Do Codex or ChatGPT desktop ever refresh a marketplace in the background?</b><code>docs/maintaining.md</code> assumes it's manual (<code>codex plugin marketplace upgrade</code>). Not yet seen either way.</div>
 <div class="unk"><b>Does a change to the Connector settings need the Connect step again?</b>A skill or CLI change doesn't touch the Connector. A changed server address or authentication might need users to Connect again under Connectors on Geenee's page. Test this before shipping such a change.</div>
-<div class="unk"><b>How a user can confirm their version</b>The plugins page in Claude, and the plugin list in Claude Code and Codex, should show the installed version next to geenee. It should read 1.2.0 after a sync.</div>
+<div class="unk"><b>How a user can confirm their version</b>The plugins page in Claude, and the plugin list in Claude Code and Codex, should show the installed version next to geenee. After a sync it should match the version in the manifests.</div>
 </div></section>
 
 </body>
