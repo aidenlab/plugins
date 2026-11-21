@@ -51,7 +51,7 @@ export function installPage({ intro, steps, paidPlan, syncAutomatically, recover
 <title>Install Geenee</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <style>
-/* The tokens of docs/install.html and geenee's pages. */
+/* The tokens of geenee's pages. */
 :root {
   --bg: #f5f6f4; --box: #ffffff; --fg: #1b1d1c; --muted: #636966; --rule: #cdd2ce; --accent: #b8231a;
   --serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
