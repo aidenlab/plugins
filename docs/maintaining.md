@@ -14,7 +14,6 @@ plugins/geenee/                     the Geenee plugin
   skills/geenee/scripts/            geenee.py / geenee.mjs: connector-free CLI over HTTPS
   skills/geenee/references/         tools.md (generated from tools/list), cli.md
   assets/                           icon.png 512, icon-128.png (from docs/geenee-icon-source.png): for the OpenAI manifest and directory submissions
-docs/install.html                   illustrated install cheat sheet
 INSTALL-PROMPT.md                   what the one-line prompt fetches
 install-worker/                     Cloudflare Worker serving it at geenee-install.3dg.io
 scripts/gen-tools-md.py             regenerates references/tools.md from the live server
@@ -28,7 +27,7 @@ scripts/check-install-steps.sh      fails if the Claude steps in README.md and I
 - **Server URL** is `https://geenee.3dg.io/mcp`. To change it, edit both MCP files, `SERVERS` in both CLI scripts, the default in `scripts/gen-tools-md.py`, and the docs (`grep -rn geenee.3dg.io .`).
 - **Bump `version`** in all four manifests on any change. Users update with `claude plugin marketplace update aidenlab` + `claude plugin update geenee@aidenlab`, or `codex plugin marketplace upgrade aidenlab`.
 - **Marketplace only** ([ADR 0001](adr/0001-marketplace-only-distribution.md)). Never document adding the server URL by hand as an install route.
-- **The Claude click-through steps** live between `<!-- claude-steps -->` markers in `README.md` (canonical) and `INSTALL-PROMPT.md` (sent word for word). Edit both; `scripts/check-install-steps.sh` (also run in CI) catches drift. Mirror changes in `docs/install.html` by hand.
+- **The Claude click-through steps** live between `<!-- claude-steps -->` markers in `README.md` (canonical) and `INSTALL-PROMPT.md` (sent word for word). Edit both; `scripts/check-install-steps.sh` (also run in CI) catches drift.
 - **Never rename the plugin `name`.** It is the install id; a rename breaks every install.
 
 ## Commands
