@@ -21,8 +21,12 @@ The only supported way to set up Geenee: add the Marketplace, then install the P
 _Avoid_: Option A, the plugin route
 
 **Custom connector**:
-A Connector added by pasting the server address by hand. Not offered to users; it gets no updates.
+A Connector added by pasting the server address by hand. Not offered to users; it gets no updates. A Connector switched on from a Plugin's page is not one, even though Claude titles that window "Add custom connector".
 _Avoid_: Option B, manual install, URL install
 
 **Connect step**:
-The clicks on a Plugin's Connectors tab in Claude that switch on its Connector after the Plugin is added. Claude never does it automatically.
+The clicks on a Plugin's page in Claude that switch on its Connector after the Plugin is added. Claude never does it automatically.
+
+**Claude install steps**:
+The steps a person clicks through once to install Geenee in Claude's apps, since Claude cannot install a Plugin for them. Written only from a walk through the app as it is now.
+_Avoid_: card, install card (geenee's Card is the in-chat message)

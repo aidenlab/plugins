@@ -7,18 +7,32 @@ test('/install serves an HTML page built from README.md on main', async () => {
   assert.equal(res.status, 200);
   assert.match(res.headers.get('Content-Type'), /^text\/html/);
   assert.deepEqual(requested, ['README.md']);
-  assert.match(text, /<li>Click <b>Sync<\/b><\/li>/);
+  assert.match(text, /click <b>Sync<\/b>\.<\/li>/);
 });
 
-test('/install gives the four Claude steps word for word, and the paid-plan note', async () => {
+test('/install gives the six Claude steps word for word, and the paid-plan note', async () => {
   const { text } = await get('/install');
   for (const step of [
-    '<li>Go to <b>Customize → Plugins → +Add → Add marketplace → Add from a repository</b>. Enter this URL: <code>aidenlab/plugins</code></li>',
-    '<li>Click <b>Sync</b></li>',
-    '<li>You will be on the <b>Discover</b> tab. Click <b>Add</b> (Not <b>+Add</b>).</li>',
-    '<li>Select the <b>Connectors</b> tab. <b>Connect → Continue → Add</b></li>'
+    '<li>In the side panel, click <b>Plugins</b>, then <b>Add → Add marketplace → Add from a repository</b>.</li>',
+    '<li>In <b>URL</b>, type <code>aidenlab/plugins</code>. Leave <b>Sync automatically</b> on and click <b>Sync</b>.</li>',
+    '<li>In the <b>Search</b> box, type <code>geenee</code> and open <b>Geenee</b>. Search is the only way to reach it.</li>',
+    '<li>Click <b>Add</b>.</li>',
+    '<li>Under <b>Connectors</b>, click <b>Connect</b> next to Geenee, then <b>Continue</b>. The window says &quot;Add custom connector&quot;; that\'s expected.</li>',
+    '<li>Leave <b>No sign-in</b> selected (marked &quot;Detected&quot;) and click <b>Add</b>.</li>'
   ]) assert.ok(text.includes(step), `missing step: ${step}`);
   assert.match(text, /You need a paid plan\./);
+});
+
+test('/install says when the Claude steps were last checked, after the steps', async () => {
+  const { text } = await get('/install');
+  const at = text.indexOf('Last checked in Claude desktop on 2026-11-21');
+  assert.ok(at > text.indexOf('No sign-in'), 'last-checked line missing or before the steps');
+  assert.ok(at < text.search(/<h2[^>]*>ChatGPT desktop\b/), 'last-checked line outside the Claude section');
+});
+
+test('/install tells Claude users how to get Geenee back if an update removes it', async () => {
+  const { text } = await get('/install');
+  assert.ok(text.includes('If Geenee disappears after an update: Plugins → search <code>geenee</code> → Add, then Connect again.'));
 });
 
 test('/install leaves out the juicebot cleanup note and the Claude-voiced check', async () => {
@@ -75,11 +89,13 @@ test('/install works with the README.md in this repository', async () => {
   const readme = await readFile(new URL('../../README.md', import.meta.url), 'utf8');
   const { res, text } = await get('/install', { files: { 'README.md': readme } });
   assert.equal(res.status, 200);
-  assert.equal((text.match(/<li>/g) || []).length >= 4, true);
+  assert.equal((text.match(/<li>/g) || []).length >= 6, true);
   assert.match(text, /You need a paid plan\./);
+  assert.match(text, /Last checked in Claude desktop on \d{4}-\d{2}-\d{2}/);
+  assert.match(text, /If Geenee disappears after an update/);
 });
 
 test('/install tells Claude users to turn on Sync automatically, word for word from README.md', async () => {
   const { text } = await get('/install');
-  assert.ok(text.includes("If you see <b>Sync automatically</b> next to <b>aidenlab</b>, turn it on. That's how Geenee's updates reach you."));
+  assert.ok(text.includes("Keep <b>Sync automatically</b> on for the marketplace. That's how Geenee's updates reach you."));
 });

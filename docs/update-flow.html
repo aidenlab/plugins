@@ -146,7 +146,7 @@ claude plugin tag plugins/geenee --push</pre></li>
 <h2>Open questions to check in the apps</h2>
 <div class="unk"><b>Does Claude Code update third-party marketplaces on its own?</b>As I understand it, automatic updates are on by default only for Anthropic's own marketplaces, and users switch them on per marketplace in <code>/plugin</code>. The README also says that adding aidenlab in Claude's settings covers Claude Code. Both are worth checking on a test machine.</div>
 <div class="unk"><b>Do Codex or ChatGPT desktop ever refresh a marketplace in the background?</b><code>docs/maintaining.md</code> assumes it's manual (<code>codex plugin marketplace upgrade</code>). Not yet seen either way.</div>
-<div class="unk"><b>Does a change to the Connector settings need the Connect step again?</b>A skill or CLI change doesn't touch the Connector. A changed server address or authentication might need users to reconnect on the Connectors tab. Test this before shipping such a change.</div>
+<div class="unk"><b>Does a change to the Connector settings need the Connect step again?</b>A skill or CLI change doesn't touch the Connector. A changed server address or authentication might need users to Connect again under Connectors on Geenee's page. Test this before shipping such a change.</div>
 <div class="unk"><b>How a user can confirm their version</b>The plugins page in Claude, and the plugin list in Claude Code and Codex, should show the installed version next to geenee. It should read 1.2.0 after a sync.</div>
 </div></section>
 
