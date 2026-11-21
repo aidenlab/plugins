@@ -243,7 +243,7 @@ td.c { text-align: center; width: 4.5rem; }
 <table>
   <thead><tr><th>App</th><th>What to do</th><th class="c">Tools</th><th class="c">Skill</th><th>How often</th></tr></thead>
   <tbody>
-    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, then connect it on its Connectors tab: four short steps in settings</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
+    <tr><th>claude.ai, desktop, Cowork</th><td>Add the marketplace, add Geenee, then connect it under Connectors: six short steps in settings</td><td class="c yes"></td><td class="c yes"></td><td>Once per Claude account</td></tr>
     <tr><th>Claude Code</th><td>Nothing, if the account has it. Otherwise one command</td><td class="c yes"></td><td class="c yes"></td><td>Once per account, or per machine</td></tr>
     <tr><th>Codex</th><td>Two commands</td><td class="c yes"></td><td class="c yes"></td><td>Once per machine</td></tr>
     <tr><th>ChatGPT desktop</th><td>Open Codex, paste the one sentence, click Approve</td><td class="c yes"></td><td class="c yes"></td><td>Once per machine</td></tr>
@@ -258,20 +258,25 @@ td.c { text-align: center; width: 4.5rem; }
 <p>Follow these steps to install Geenee.</p>
 
 <ol>
-  <li>Go to <span class="ui">Customize → Plugins → +Add → Add marketplace → Add from a repository</span>. Enter this URL: <code>aidenlab/plugins</code></li>
-  <li>Click <span class="ui">Sync</span></li>
-  <li>You will be on the <span class="ui">Discover</span> tab. Click <span class="ui">Add</span> (Not <span class="ui">+Add</span>).</li>
-  <li>Select the <span class="ui">Connectors</span> tab. <span class="ui">Connect → Continue → Add</span></li>
+  <li>In the side panel, click <span class="ui">Plugins</span>, then <span class="ui">Add → Add marketplace → Add from a repository</span>.</li>
+  <li>In <span class="ui">URL</span>, type <code>aidenlab/plugins</code>. Leave <span class="ui">Sync automatically</span> on and click <span class="ui">Sync</span>.</li>
+  <li>In the <span class="ui">Search</span> box, type <code>geenee</code> and open <span class="ui">Geenee</span>. Search is the only way to reach it.</li>
+  <li>Click <span class="ui">Add</span>.</li>
+  <li>Under <span class="ui">Connectors</span>, click <span class="ui">Connect</span> next to Geenee, then <span class="ui">Continue</span>. The window says “Add custom connector”; that’s expected.</li>
+  <li>Leave <span class="ui">No sign-in</span> selected (marked “Detected”) and click <span class="ui">Add</span>.</li>
 </ol>
 
 <p><b>Things to know:</b></p>
 <ul>
   <li>You need a paid plan.</li>
-  <li>If you see <span class="ui">Sync automatically</span> next to <b>aidenlab</b>, turn it on. That’s how Geenee’s updates reach you.</li>
+  <li>Keep <span class="ui">Sync automatically</span> on for the marketplace. That’s how Geenee’s updates reach you.</li>
+  <li>If Geenee disappears after an update: <span class="ui">Plugins</span> → search <code>geenee</code> → <span class="ui">Add</span>, then <span class="ui">Connect</span> again.</li>
   <li>If you still have the old <code>juicebot</code> plugin, or a connection to <code>juicebot-mcp.3dg.io</code> or <code>geenee-dev.3dg.io</code>, remove it. Otherwise you’ll get duplicate tools.</li>
 </ul>
 
 <p><b>To check it worked:</b> start a new chat and ask Claude to open Geenee. It calls <code>open_geenee</code> and gives you a link to a page with IGV, Juicebox and Spacewalk tabs. Keep that browser tab open while you use it. If a step fails, report it at <a href="https://github.com/aidenlab/plugins/issues">github.com/aidenlab/plugins/issues</a> with a screenshot.</p>
+
+<p>Last checked in Claude desktop on 2026-11-21</p>
 
 <h3>Claude Code</h3>
 
@@ -298,7 +303,7 @@ codex plugin add geenee@aidenlab</pre></div>
 <table>
   <thead><tr><th></th><th>Sending a server address</th><th>Sending people to the plugin</th></tr></thead>
   <tbody>
-    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste (Claude Code, Codex, ChatGPT’s Codex), or four short steps (Claude apps)</td></tr>
+    <tr><th>What people receive</th><td>A URL, and directions to a settings page</td><td>One sentence to paste (Claude Code, Codex, ChatGPT’s Codex), or six short steps (Claude apps)</td></tr>
     <tr><th>What they get</th><td>The tools</td><td>The tools, and a skill that teaches the assistant to use them well</td></tr>
     <tr><th>Claude</th><td>A custom connector, set up per account</td><td>A plugin on the account, reaching every Claude app</td></tr>
     <tr><th>A new server address</th><td>Everyone edits their settings by hand</td><td>Bump the version; everyone gets it with the next update</td></tr>
@@ -320,7 +325,7 @@ codex plugin add geenee@aidenlab</pre></div>
   <thead><tr><th>State</th><th>How you know</th><th>If not</th></tr></thead>
   <tbody>
     <tr><th>Installed</th><td>Geenee appears in the app’s plugin list</td><td>Repeat the steps for the app</td></tr>
-    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Click Connect on Geenee's Connectors tab; in a new conversation, switch Geenee on under <span class="ui">+</span> → <span class="ui">Connectors</span></td></tr>
+    <tr><th>Server connected</th><td>The assistant can call <code>open_geenee</code></td><td>Click Connect under Connectors on Geenee's page; in a new conversation, switch Geenee on under <span class="ui">+</span> → <span class="ui">Connectors</span></td></tr>
     <tr><th>Viewer working</th><td>The page changes when you ask</td><td>Open, or reopen, the Geenee link</td></tr>
   </tbody>
 </table>

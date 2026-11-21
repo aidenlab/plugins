@@ -3,8 +3,9 @@
  *
  * Built on each request from README.md's claude-steps block, so the Claude steps
  * have one copy, and no assistant sits between the steps and the person to
- * reword them. Only the numbered steps, the paid-plan note and the Sync automatically
- * note are taken from the block; its juicebot cleanup note and Claude-voiced check stay behind.
+ * reword them. Only the numbered steps, the paid-plan, Sync automatically and recovery
+ * notes and the last-checked line are taken from the block; its juicebot cleanup note
+ * and Claude-voiced check stay behind.
  */
 
 export const ONE_LINE = 'Set up Geenee for me: fetch https://geenee-install.3dg.io and follow its instructions for the app you are running in.';
@@ -33,13 +34,15 @@ export function claudeSteps(readme) {
   const steps = lines.filter(l => NUMBERED.test(l)).map(l => l.replace(NUMBERED, ''));
   const paidPlan = lines.find(l => /^- .*paid plan/i.test(l))?.slice(2);
   const syncAutomatically = lines.find(l => /^- .*Sync automatically/.test(l))?.slice(2) ?? null;
+  const recovery = lines.find(l => /^- If Geenee disappears/.test(l))?.slice(2) ?? null;
+  const lastChecked = lines.find(l => /^Last checked\b/.test(l)) ?? null;
   if (steps.length === 0 || !paidPlan) return null;
-  return { intro, steps, paidPlan, syncAutomatically };
+  return { intro, steps, paidPlan, syncAutomatically, recovery, lastChecked };
 }
 
 const copyable = text => `<div class="cmd"><pre>${esc(text)}</pre></div>`;
 
-export function installPage({ intro, steps, paidPlan, syncAutomatically }) {
+export function installPage({ intro, steps, paidPlan, syncAutomatically, recovery, lastChecked }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -87,11 +90,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-of
 
 <h2>Claude <span class="for">claude.ai, the desktop app, Cowork</span></h2>
 <p>ChatGPT and Claude Code install Geenee from one line you paste in. Claude’s apps can’t: adding a plugin there is an account setting, so you click through these steps yourself, once. They cover every Claude app on your account.</p>
-<p class="note">${inline(paidPlan)}${syncAutomatically ? `<br>${inline(syncAutomatically)}` : ''}</p>
+<p class="note">${[paidPlan, syncAutomatically, recovery].filter(Boolean).map(inline).join('<br>')}</p>
 ${intro ? `<p>${inline(intro)}</p>\n` : ''}<ol>
 ${steps.map(s => `  <li>${inline(s)}</li>`).join('\n')}
 </ol>
-
+${lastChecked ? `<p class="note">${inline(lastChecked)}</p>\n` : ''}
 <h2>ChatGPT desktop</h2>
 <ol>
   <li>Open the ChatGPT desktop app and click <b>Codex</b>.</li>

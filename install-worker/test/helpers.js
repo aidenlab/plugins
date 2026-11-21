@@ -7,17 +7,22 @@ export const README = `# Aiden Lab plugins
 <!-- claude-steps:start -->
 Follow these steps to install Geenee.
 
-1. Go to **Customize → Plugins → +Add → Add marketplace → Add from a repository**. Enter this URL: \`aidenlab/plugins\`
-2. Click **Sync**
-3. You will be on the **Discover** tab. Click **Add** (Not **+Add**).
-4. Select the **Connectors** tab. **Connect → Continue → Add**
+1. In the side panel, click **Plugins**, then **Add → Add marketplace → Add from a repository**.
+2. In **URL**, type \`aidenlab/plugins\`. Leave **Sync automatically** on and click **Sync**.
+3. In the **Search** box, type \`geenee\` and open **Geenee**. Search is the only way to reach it.
+4. Click **Add**.
+5. Under **Connectors**, click **Connect** next to Geenee, then **Continue**. The window says "Add custom connector"; that's expected.
+6. Leave **No sign-in** selected (marked "Detected") and click **Add**.
 
 **Things to know:**
 - You need a paid plan.
-- If you see **Sync automatically** next to **aidenlab**, turn it on. That's how Geenee's updates reach you.
+- Keep **Sync automatically** on for the marketplace. That's how Geenee's updates reach you.
+- If Geenee disappears after an update: Plugins → search \`geenee\` → Add, then Connect again.
 - If you still have the old \`juicebot\` plugin, or a connection to \`juicebot-mcp.3dg.io\` or \`geenee-dev.3dg.io\`, remove it. Otherwise you'll get duplicate tools.
 
 **To check it worked:** start a new chat and ask me to open Geenee.
+
+Last checked in Claude desktop on 2026-11-21
 <!-- claude-steps:end -->
 `;
 
