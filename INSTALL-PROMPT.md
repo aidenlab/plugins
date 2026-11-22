@@ -11,10 +11,9 @@ Follow these steps to install Geenee.
 
 1. In the side panel, click **Plugins**, then **Add → Add marketplace → Add from a repository**.
 2. In **URL**, type `aidenlab/plugins`. Leave **Sync automatically** on and click **Sync**.
-3. In the **Search** box, type `geenee` and open **Geenee**. Search is the only way to reach it.
-4. Click **Add**.
-5. Under **Connectors**, click **Connect** next to Geenee, then **Continue**. The window says "Add custom connector"; that's expected.
-6. Leave **No sign-in** selected (marked "Detected") and click **Add**.
+3. Geenee is listed under **← Discover**. Click **+** next to it (it says "Add Geenee" when you point at it).
+4. Geenee's page opens. Under **Connectors**, click **Connect** next to Geenee, then **Continue**. The window says "Add custom connector"; that's expected.
+5. Leave **No sign-in** selected (marked "Detected") and click **Add**.
 
 **Things to know:**
 - You need a paid plan.
@@ -24,7 +23,7 @@ Follow these steps to install Geenee.
 
 **To check it worked:** start a new chat and ask me to open Geenee. I'll call `open_geenee` and give you a link to a page with IGV, Juicebox and Spacewalk tabs. Keep that browser tab open while you use it. If a step fails, report it at [github.com/aidenlab/plugins/issues](https://github.com/aidenlab/plugins/issues) with a screenshot.
 
-Last checked in Claude desktop on 2026-11-21
+Last checked in Claude desktop on 2026-11-22
 <!-- claude-steps:end -->
 
 When the user replies that they are done:
