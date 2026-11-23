@@ -6,20 +6,23 @@
 .claude-plugin/marketplace.json     Claude Code marketplace catalog
 .agents/plugins/marketplace.json    OpenAI (Codex) marketplace catalog
 plugins/geenee/                     the Geenee plugin
-  .claude-plugin/plugin.json        Claude manifest
+  .claude-plugin/plugin.json        Claude manifest (icon: ./assets/icon.png)
+  .claude-plugin/icon.png           copy of assets/icon.png, by the first-party convention (docs/claude-plugin-icon-and-marketplace-name.md)
   .mcp.json                         Claude MCP server (type: http)
   plugin.json                       portable Agent Plugins manifest (Codex)
   mcp.json                          portable MCP server (type: streamable-http)
   skills/geenee/SKILL.md            the skill, shared by all
   skills/geenee/scripts/            geenee.py / geenee.mjs: connector-free CLI over HTTPS
   skills/geenee/references/         tools.md (generated from tools/list), cli.md
-  assets/                           icon.png 512, icon-128.png (from docs/geenee-icon-source.png): for the OpenAI manifest and directory submissions
+  assets/                           icon.png 512, icon-128.png (from docs/geenee-icon-source.png): for both manifests and directory submissions
 INSTALL-PROMPT.md                   what the one-line prompt fetches
-install-worker/                     Cloudflare Worker serving it at geenee-install.3dg.io
+install-worker/                     Cloudflare Worker serving it at geenee-install.3dg.io, plus the /install page built from README.md's Claude steps
 scripts/gen-tools-md.py             regenerates references/tools.md from the live server
 scripts/package.sh                  builds dist/geenee.plugin
 scripts/test-cli.sh                 smoke-tests both CLIs against the live server
 scripts/check-install-steps.sh      fails if the Claude steps in README.md and INSTALL-PROMPT.md differ
+.github/workflows/                  check.yml runs check-install-steps.sh; release.yml packages geenee.plugin on a geenee--v* tag
+docs/update-flow.html               how a change reaches users in each app
 ```
 
 ## Rules
@@ -36,7 +39,7 @@ scripts/check-install-steps.sh      fails if the Claude steps in README.md and I
 - CLI smoke test: `scripts/test-cli.sh`.
 - After a tool change: `scripts/gen-tools-md.py` (new tools land under "Other" until added to `GROUPS`).
 - Host check, before a version bump merges: install the branch's Plugin version and run the Host check in [aidenlab/geenee `docs/host-check.md`](https://github.com/aidenlab/geenee/blob/main/docs/host-check.md) (written in [aidenlab/geenee#88](https://github.com/aidenlab/geenee/issues/88)) in every Host it lists, ChatGPT desktop (Codex mode) included. Merge only when it passes; record the version and result on the PR.
-- Release: `claude plugin tag plugins/geenee --push` pushes `geenee--v<version>`; the workflow attaches `geenee.plugin` to the GitHub release.
+- Release: `claude plugin tag plugins/geenee --push` pushes `geenee--v<version>`; the workflow attaches `geenee.plugin` to the GitHub release. Marketplace installs update from `main` without a tag; the release file is for org admins and `geenee-install.3dg.io/plugin` ([update flow](update-flow.html)).
 
 ## Where installs can and cannot be automated
 
