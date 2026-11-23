@@ -1,18 +1,20 @@
 # Claude plugin icon and "From …" marketplace name
 
-Research for issue #20, 2026-11-21. In the Claude desktop app, Geenee's plugin page shows a placeholder icon, and the source line reads **From plugins** (the repo name) where we want the Aiden Lab.
+Research for issue #20, 2026-11-21. **Outcome:** geenee 1.3.3 (#25) added the `icon` field and `.claude-plugin/icon.png`, not yet checked in the app; the "From …" name was left alone. #20 is closed.
+
+In the Claude desktop app, Geenee's plugin page shows a placeholder icon, and the source line reads **From plugins** (the repo name) where we want the Aiden Lab.
 
 ## Short answers
 
 **1. Icon.** A field exists. `plugin.json` takes a documented top-level `icon`, a path to an image file inside the plugin. The docs say only **Anthropic's directory** reads it, for a plugin you submit there. Claude Code ignores it at load time. No doc says the claude.ai, desktop or Cowork plugin page reads it for a plugin added from a marketplace. An open user report says it doesn't: a plugin with `icon` set still showed the placeholder. So adding the field is correct and costs nothing, but it most likely **won't** fix the placeholder for marketplace installs. It will matter once we submit to the directory.
 
-Recommended change to `plugins/geenee/.claude-plugin/plugin.json` (not made here):
+Recommended change to `plugins/geenee/.claude-plugin/plugin.json` (made in 1.3.3):
 
 ```json
 "icon": "./assets/icon.png",
 ```
 
-That file is a 512×512 PNG, the same size as the icons in the first-party examples below. Optional, to test in the app: also copy it to `plugins/geenee/.claude-plugin/icon.png`, which is where two first-party Anthropic plugins keep theirs (see the evidence).
+That file is a 512×512 PNG, the same size as the icons in the first-party examples below. Optional, to test in the app: also copy it to `plugins/geenee/.claude-plugin/icon.png` (also done in 1.3.3), which is where two first-party Anthropic plugins keep theirs (see the evidence).
 
 **2. "From …" name.** Not documented, and no manifest field controls it. In Claude Code, a marketplace is registered under `marketplace.json` `name` (`aidenlab`). The desktop/claude.ai plugin browser instead shows the GitHub **repository basename** (`plugins`), and changes to `name`, `owner.name` and `author.name` don't affect it. That bug report was closed by the stale bot as "not planned". The only lever we know of is renaming the repo, which a user saw change the label. **No manifest change is recommended.** It isn't the user's alias either, because the app's Add marketplace dialog takes only a repo URL or `owner/repo`.
 
@@ -39,7 +41,7 @@ Confidence: high that the documented schema is as stated. Medium on how the app 
 
 ## Open questions and in-app checks
 
-1. **Icon field on a marketplace install.** Add `"icon": "./assets/icon.png"`, bump the version, run **Check for updates** in the desktop app, and see whether the placeholder changes. The reports above predict it won't.
-2. **The `.claude-plugin/icon.png` convention.** Copy `assets/icon.png` to `plugins/geenee/.claude-plugin/icon.png` in the same release and check again. This can only be confirmed in the app.
+1. **Icon field on a marketplace install.** Shipped in 1.3.3. Once the desktop app has synced 1.3.3, see whether the placeholder changes. The reports above predict it won't.
+2. **The `.claude-plugin/icon.png` convention.** Also shipped in 1.3.3; check it in the same look. This can only be confirmed in the app.
 3. **Directory listing.** Once Geenee is submitted, check that the portal's Listing details step picks up `icon`. That is the documented path.
 4. **Repo rename.** Would renaming `aidenlab/plugins` (for example to `aidenlab/aidenlab-plugins`) make the app say **From aidenlab-plugins**? It worked for the #93581 reporter. The costs are links in the README, the install prompt and the worker, and existing marketplace registrations (GitHub redirects the old name, but #93581 leaves open whether registrations follow a rename). Run `claude plugin validate --strict` before shipping on the Claude Code versions users run: before v2.1.281 the `icon` field gets an `Unknown field` warning, which fails a `--strict` run.
